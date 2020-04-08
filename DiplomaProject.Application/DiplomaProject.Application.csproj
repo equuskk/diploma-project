@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\DiplomaProject.DataAccess\DiplomaProject.DataAccess.csproj" />
+      <ProjectReference Include="..\DiplomaProject.Domain\DiplomaProject.Domain.csproj" />
+    </ItemGroup>
+
+</Project>

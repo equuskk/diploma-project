@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <AssemblyName>DiplomaProject.WebApp</AssemblyName>
+        <RootNamespace>DiplomaProject.WebApp</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\DiplomaProject.Application\DiplomaProject.Application.csproj" />
+      <ProjectReference Include="..\DiplomaProject.DataAccess\DiplomaProject.DataAccess.csproj" />
+      <ProjectReference Include="..\DiplomaProject.Domain\DiplomaProject.Domain.csproj" />
+    </ItemGroup>
+
+</Project>

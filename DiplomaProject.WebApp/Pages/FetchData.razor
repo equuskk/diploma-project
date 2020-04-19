@@ -14,27 +14,20 @@
 }
 else
 {
-    <table class="table">
-        <thead>
-        <tr>
+    <MatTable Items="@forecasts" class="mat-elevation-z5" ShowFooter="false" ShowPaging="false">
+        <MatTableHeader>
             <th>Дата</th>
             <th>Температура (C)</th>
             <th>Температура (F)</th>
             <th>Описание</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach(var forecast in forecasts)
-        {
-            <tr>
-                <td>@forecast.Date.ToShortDateString()</td>
-                <td>@forecast.TemperatureC</td>
-                <td>@forecast.TemperatureF</td>
-                <td>@forecast.Summary</td>
-            </tr>
-        }
-        </tbody>
-    </table>
+        </MatTableHeader>
+        <MatTableRow>
+            <td>@context.Date.ToShortDateString()</td>
+            <td>@context.TemperatureC</td>
+            <td>@context.TemperatureF</td>
+            <td>@context.Summary</td>
+        </MatTableRow>
+    </MatTable>
 }
 
 @code {
@@ -44,5 +37,4 @@ else
     {
         forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
     }
-
 }

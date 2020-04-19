@@ -1,3 +1,5 @@
+using System;
+using System.Net.Http;
 using DiplomaProject.WebApp.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,6 +23,9 @@ namespace DiplomaProject.WebApp
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
+
+
+            services.AddScoped<HttpClient>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

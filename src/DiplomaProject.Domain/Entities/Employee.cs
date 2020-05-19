@@ -12,7 +12,7 @@ namespace DiplomaProject.Domain.Entities
         public Sex Sex { get; set; }
         public DateTime BirthDay { get; set; }
 
-        public int EmployeePositionId { get; set; }
+        public int EmployeePositionId { get; set; } = 1; //TODO:
         public DateTime EmploymentDate { get; set; }
 
         public virtual ICollection<EmployeeExpedition> Expeditions { get; set; }

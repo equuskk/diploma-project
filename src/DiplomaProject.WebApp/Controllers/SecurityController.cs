@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
-namespace DiplomaProject.WebApp
+namespace DiplomaProject.WebApp.Controllers
 {
     [ApiController]
     [Route("api/[controller]/{action}")]
@@ -32,6 +32,13 @@ namespace DiplomaProject.WebApp
             }
 
             return BadRequest();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return LocalRedirect("/");
         }
     }
 }

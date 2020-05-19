@@ -3,10 +3,9 @@
 <AuthorizeView>
     <Authorized>
         <MatButton Unelevated Icon="@MatIconNames.Settings">Настройки</MatButton>
-        @* <a href="Identity/Account/Manage">Hello, @context.User.Identity.Name!</a> *@
-        @* <form method="post" action="Identity/Account/LogOut"> *@
-        @*     <button type="submit" class="nav-link btn btn-link">Log out</button> *@
-        @* </form> *@
+        <form method="post" action="api/Security/Logout">
+            <MatButton Unelevated type="submit">Выйти</MatButton>
+        </form>
     </Authorized>
     <NotAuthorized>
         <MatButton Unelevated Icon="@MatIconNames.Account_circle" OnClick="OnClick">Вход</MatButton>

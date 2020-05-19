@@ -1,4 +1,5 @@
-﻿using DiplomaProject.Domain.Entities;
+﻿using DiplomaProject.DataAccess.Configurations;
+using DiplomaProject.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,7 @@ namespace DiplomaProject.DataAccess
         public DbSet<Expedition> Expeditions { get; set; }
         public DbSet<Litoral> Litorals { get; set; }
         public DbSet<Sector> Sectors { get; set; }
-        
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
                 : base(options)
         {
@@ -21,7 +22,13 @@ namespace DiplomaProject.DataAccess
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.ApplyConfigurationsFromAssembly(typeof(Bioresource).Assembly);
+            builder.ApplyConfiguration(new BioresourceConfiguration());
+            builder.ApplyConfiguration(new EmployeeExpeditionConfiguration());
+            builder.ApplyConfiguration(new EmployeePositionConfiguration());
+            builder.ApplyConfiguration(new ExpeditionConfiguration());
+            builder.ApplyConfiguration(new ExpeditionSectorConfiguration());
+            builder.ApplyConfiguration(new LitoralConfiguration());
+            builder.ApplyConfiguration(new SectorConfiguration());
         }
     }
 }

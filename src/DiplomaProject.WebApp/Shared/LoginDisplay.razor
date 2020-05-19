@@ -1,4 +1,6 @@
-﻿<AuthorizeView>
+﻿@inject NavigationManager navigationManager
+
+<AuthorizeView>
     <Authorized>
         <a href="Identity/Account/Manage">Hello, @context.User.Identity.Name!</a>
         <form method="post" action="Identity/Account/LogOut">
@@ -6,6 +8,15 @@
         </form>
     </Authorized>
     <NotAuthorized>
-        <MatButton Raised Outlined Icon="@MatIconNames.Account_circle" Link="/Identity/Account/Login">Вход</MatButton>
+        <MatButton Raised Outlined Icon="@MatIconNames.Account_circle" OnClick="OnClick">Вход</MatButton>
     </NotAuthorized>
 </AuthorizeView>
+
+@code {
+
+    public void OnClick()
+    {
+        navigationManager.NavigateTo("Identity/Account/Login", true);
+    }
+
+}

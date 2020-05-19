@@ -2,20 +2,21 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <AssemblyName>DiplomaProject.WebApp</AssemblyName>
-        <RootNamespace>DiplomaProject.WebApp</RootNamespace>
+        <UserSecretsId>aspnet-DiplomaProject.WebApp-5509DC8D-9691-4A6A-98A5-F388118278C6</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="MatBlazor" Version="2.3.0" />
-        <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
-        <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.4"/>
+        <PackageReference Include="MatBlazor" Version="2.4.3"/>
+        <PackageReference Include="Serilog.AspNetCore" Version="3.2.0"/>
+        <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.4"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DiplomaProject.Application\DiplomaProject.Application.csproj" />
-      <ProjectReference Include="..\DiplomaProject.DataAccess\DiplomaProject.DataAccess.csproj" />
-      <ProjectReference Include="..\DiplomaProject.Domain\DiplomaProject.Domain.csproj" />
+        <ProjectReference Include="..\DiplomaProject.Application\DiplomaProject.Application.csproj"/>
+        <ProjectReference Include="..\DiplomaProject.DataAccess\DiplomaProject.DataAccess.csproj"/>
+        <ProjectReference Include="..\DiplomaProject.Domain\DiplomaProject.Domain.csproj"/>
     </ItemGroup>
 
 </Project>

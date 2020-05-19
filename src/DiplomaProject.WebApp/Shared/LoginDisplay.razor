@@ -1,0 +1,11 @@
+﻿<AuthorizeView>
+    <Authorized>
+        <a href="Identity/Account/Manage">Hello, @context.User.Identity.Name!</a>
+        <form method="post" action="Identity/Account/LogOut">
+            <button type="submit" class="nav-link btn btn-link">Log out</button>
+        </form>
+    </Authorized>
+    <NotAuthorized>
+        <MatButton Raised Outlined Icon="@MatIconNames.Account_circle" Link="/Identity/Account/Login">Вход</MatButton>
+    </NotAuthorized>
+</AuthorizeView>

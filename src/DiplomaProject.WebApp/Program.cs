@@ -23,7 +23,7 @@ namespace DiplomaProject.WebApp
             CultureInfo.DefaultThreadCurrentUICulture = culture;
         }
 
-        private static IHostBuilder CreateHostBuilder(string[] args)
+        public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args)
                        .ConfigureLogging(config => { config.ClearProviders(); })

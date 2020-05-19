@@ -1,4 +1,4 @@
-﻿@inherits Microsoft.AspNetCore.Components.LayoutComponentBase
+﻿@inherits LayoutComponentBase
 
 <MatDrawerContainer>
     <MatDrawer @bind-Opened="@_opened" Mode="@MatDrawerMode.Modal">
@@ -12,20 +12,23 @@
                         <MatIconButton Icon="menu" OnClick="ButtonClicked"></MatIconButton>
                         <MatAppBarTitle>Project</MatAppBarTitle>
                     </MatAppBarSection>
+                    <MatAppBarSection Align="@MatAppBarSectionAlign.End">
+                        <LoginDisplay/>
+                    </MatAppBarSection>
                 </MatAppBarRow>
             </MatAppBar>
-         
+
             <MatAppBarContent>
                 @Body
             </MatAppBarContent>
         </MatAppBarContainer>
     </MatDrawerContent>
 </MatDrawerContainer>
- 
- 
+
+
 @code
 {
-    bool _opened = false;
+    bool _opened;
 
     void ButtonClicked()
     {

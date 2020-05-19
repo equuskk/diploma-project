@@ -1,7 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiplomaProject.WebApp", "DiplomaProject.WebApp\DiplomaProject.WebApp.csproj", "{6CA46EED-2994-49E5-9C60-D3881B678886}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiplomaProject.Domain", "DiplomaProject.Domain\DiplomaProject.Domain.csproj", "{6340A8D3-AB9A-44CC-A27F-C9C9443385D1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiplomaProject.DataAccess", "DiplomaProject.DataAccess\DiplomaProject.DataAccess.csproj", "{E1ED094A-B685-4DBC-A912-E8C6FE1A1824}"
@@ -10,16 +8,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiplomaProject.Application"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "..\tests", "{CA37F736-0046-48E1-90CF-15415A58046C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiplomaProject.WebApp", "DiplomaProject.WebApp\DiplomaProject.WebApp.csproj", "{DA235B6C-03F4-4A13-9F0C-344B5563D32E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6CA46EED-2994-49E5-9C60-D3881B678886}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CA46EED-2994-49E5-9C60-D3881B678886}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6CA46EED-2994-49E5-9C60-D3881B678886}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6CA46EED-2994-49E5-9C60-D3881B678886}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6340A8D3-AB9A-44CC-A27F-C9C9443385D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6340A8D3-AB9A-44CC-A27F-C9C9443385D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6340A8D3-AB9A-44CC-A27F-C9C9443385D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -32,5 +28,9 @@ Global
 		{FF640FAB-16D1-4A2E-AFF1-1BD45F01EE5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF640FAB-16D1-4A2E-AFF1-1BD45F01EE5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF640FAB-16D1-4A2E-AFF1-1BD45F01EE5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA235B6C-03F4-4A13-9F0C-344B5563D32E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA235B6C-03F4-4A13-9F0C-344B5563D32E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA235B6C-03F4-4A13-9F0C-344B5563D32E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA235B6C-03F4-4A13-9F0C-344B5563D32E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

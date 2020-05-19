@@ -1,0 +1,23 @@
+﻿@inject NavigationManager navigationManager
+
+<AuthorizeView>
+    <Authorized>
+        <MatButton Unelevated Icon="@MatIconNames.Settings">Настройки</MatButton>
+        @* <a href="Identity/Account/Manage">Hello, @context.User.Identity.Name!</a> *@
+        @* <form method="post" action="Identity/Account/LogOut"> *@
+        @*     <button type="submit" class="nav-link btn btn-link">Log out</button> *@
+        @* </form> *@
+    </Authorized>
+    <NotAuthorized>
+        <MatButton Unelevated Icon="@MatIconNames.Account_circle" OnClick="OnClick">Вход</MatButton>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+    public void OnClick()
+    {
+        navigationManager.NavigateTo("Identity/Account/Login", true);
+    }
+
+}

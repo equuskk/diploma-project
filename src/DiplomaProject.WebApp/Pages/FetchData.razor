@@ -1,16 +1,15 @@
 ﻿@page "/fetchdata"
-@using DiplomaProject.WebApp.Data
-@inject WeatherForecastService ForecastService
+@using Microsoft.EntityFrameworkCore
+@using DiplomaProject.DataAccess
+@using DiplomaProject.Domain.Entities
+@inject ApplicationDbContext DbContext
 
-<h1>Погода</h1>
+<MatH5>Данные</MatH5>
 
-<p>This component demonstrates fetching data from a service.</p>
 
 @if(_forecasts == null)
 {
-    <p>
-        <em>Загрузка...</em>
-    </p>
+    <MatProgressBar Indeterminate="true"></MatProgressBar>
 }
 else
 {
@@ -18,24 +17,20 @@ else
         <MatTableHeader>
             <th>Дата</th>
             <th>Температура (C)</th>
-            <th>Температура (F)</th>
-            <th>Описание</th>
         </MatTableHeader>
         <MatTableRow>
-            <td>@context.Date.ToShortDateString()</td>
-            <td>@context.TemperatureC</td>
-            <td>@context.TemperatureF</td>
-            <td>@context.Summary</td>
+            <td>@context.Id</td>
+            <td>@context.Title</td>
         </MatTableRow>
     </MatTable>
 }
 
 @code {
-    private WeatherForecast[] _forecasts;
+    private Litoral[] _forecasts;
 
     protected override async Task OnInitializedAsync()
     {
-        _forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        _forecasts = await DbContext.Litorals.AsNoTracking().ToArrayAsync();
     }
 
 }

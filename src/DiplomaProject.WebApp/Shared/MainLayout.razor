@@ -8,14 +8,14 @@
                 <MatAppBarTitle>Project</MatAppBarTitle>
             </MatAppBarSection>
             <MatAppBarSection Align="@MatAppBarSectionAlign.End">
-                <LoginDisplay/>
+                <NavLoginComponent/>
             </MatAppBarSection>
         </MatAppBarRow>
     </MatAppBar>
     <MatAppBarContent>
         <MatDrawerContainer>
             <MatDrawer @bind-Opened="@_opened" Mode="@MatDrawerMode.Modal">
-                <NavMenu/>
+                <NavMenuComponent/>
             </MatDrawer>
             <MatDrawerContent>
                 <div class="main">

@@ -2,7 +2,7 @@ using System.Net.Http;
 using DiplomaProject.DataAccess;
 using DiplomaProject.Domain.Entities;
 using DiplomaProject.WebApp.Areas.Identity;
-using DiplomaProject.WebApp.Data;
+using DiplomaProject.WebApp.HostedServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -22,8 +22,6 @@ namespace DiplomaProject.WebApp
             _configuration = configuration;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
@@ -31,6 +29,7 @@ namespace DiplomaProject.WebApp
 
             services.AddDefaultIdentity<Employee>(options =>
                     {
+#if DEBUG
                         options.User.RequireUniqueEmail = true;
                         options.Password.RequireDigit = false;
                         options.Password.RequiredLength = 6;
@@ -38,18 +37,20 @@ namespace DiplomaProject.WebApp
                         options.Password.RequireLowercase = false;
                         options.Password.RequireNonAlphanumeric = false;
                         options.Password.RequiredUniqueChars = 0;
+#endif
                     })
                     .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<Employee>>();
 
             services.AddRazorPages();
+
             services.AddServerSideBlazor();
 
-            services.AddSingleton<WeatherForecastService>();
             services.AddScoped<HttpClient>();
+
+            services.AddHostedService<SeedDatabaseHostedService>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if(env.IsDevelopment())
@@ -60,8 +61,6 @@ namespace DiplomaProject.WebApp
             else
             {
                 app.UseExceptionHandler("/Error");
-
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 

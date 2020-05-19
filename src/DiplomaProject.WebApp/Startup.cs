@@ -1,4 +1,3 @@
-using System;
 using System.Net.Http;
 using DiplomaProject.WebApp.Data;
 using Microsoft.AspNetCore.Builder;
@@ -11,20 +10,19 @@ namespace DiplomaProject.WebApp
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
-
-
+            
             services.AddScoped<HttpClient>();
         }
 

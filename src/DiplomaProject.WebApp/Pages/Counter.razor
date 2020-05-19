@@ -2,16 +2,16 @@
 
 <h1>Счётчик</h1>
 
-<p>Текущее число: @currentCount</p>
+<p>Текущее число: @_currentCount</p>
 
 <MatButton Raised="true" OnClick="IncrementCount">Raised</MatButton>
 
 @code {
-    private int currentCount;
+    private int _currentCount;
 
     private void IncrementCount()
     {
-        currentCount++;
+        _currentCount++;
     }
 
 }

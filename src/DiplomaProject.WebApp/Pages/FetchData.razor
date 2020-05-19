@@ -6,7 +6,7 @@
 
 <p>This component demonstrates fetching data from a service.</p>
 
-@if(forecasts == null)
+@if(_forecasts == null)
 {
     <p>
         <em>Загрузка...</em>
@@ -14,7 +14,7 @@
 }
 else
 {
-    <MatTable Items="@forecasts" class="mat-elevation-z5" ShowFooter="false" ShowPaging="false">
+    <MatTable Items="@_forecasts" class="mat-elevation-z5" ShowFooter="false" ShowPaging="false">
         <MatTableHeader>
             <th>Дата</th>
             <th>Температура (C)</th>
@@ -31,10 +31,10 @@ else
 }
 
 @code {
-    private WeatherForecast[] forecasts;
+    private WeatherForecast[] _forecasts;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        _forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
     }
 }

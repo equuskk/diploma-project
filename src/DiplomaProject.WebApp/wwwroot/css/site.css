@@ -7,6 +7,10 @@ body {
     padding: 0px;
 }
 
+.main {
+    padding: 0 0.5rem 0 0.5rem;
+}
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;

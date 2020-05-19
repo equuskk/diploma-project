@@ -1,29 +1,28 @@
 ﻿@inherits LayoutComponentBase
 
-<MatDrawerContainer>
-    <MatDrawer @bind-Opened="@_opened" Mode="@MatDrawerMode.Modal">
-        <NavMenu/>
-    </MatDrawer>
-    <MatDrawerContent>
-        <MatAppBarContainer>
-            <MatAppBar Fixed="true">
-                <MatAppBarRow>
-                    <MatAppBarSection>
-                        <MatIconButton Icon="menu" OnClick="ButtonClicked"></MatIconButton>
-                        <MatAppBarTitle>Project</MatAppBarTitle>
-                    </MatAppBarSection>
-                    <MatAppBarSection Align="@MatAppBarSectionAlign.End">
-                        <LoginDisplay/>
-                    </MatAppBarSection>
-                </MatAppBarRow>
-            </MatAppBar>
-
-            <MatAppBarContent>
+<MatAppBarContainer>
+    <MatAppBar Fixed="true">
+        <MatAppBarRow>
+            <MatAppBarSection>
+                <MatIconButton Icon="menu" OnClick="ButtonClicked"></MatIconButton>
+                <MatAppBarTitle>Project</MatAppBarTitle>
+            </MatAppBarSection>
+            <MatAppBarSection Align="@MatAppBarSectionAlign.End">
+                <LoginDisplay/>
+            </MatAppBarSection>
+        </MatAppBarRow>
+    </MatAppBar>
+    <MatAppBarContent>
+        <MatDrawerContainer>
+            <MatDrawer @bind-Opened="@_opened" Mode="@MatDrawerMode.Modal">
+                <NavMenu/>
+            </MatDrawer>
+            <MatDrawerContent>
                 @Body
-            </MatAppBarContent>
-        </MatAppBarContainer>
-    </MatDrawerContent>
-</MatDrawerContainer>
+            </MatDrawerContent>
+        </MatDrawerContainer>
+    </MatAppBarContent>
+</MatAppBarContainer>
 
 
 @code

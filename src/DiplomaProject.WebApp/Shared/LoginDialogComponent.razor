@@ -4,13 +4,11 @@
     <MatDialogTitle>Пожалуйста, авторизуйтесь</MatDialogTitle>
     <MatDialogContent>
         <form method="post" action="/api/Security/Login">
-            <input type="hidden" name="userName" @bind="UserName"/>
-            <input type="hidden" name="password" @bind="Password"/>
             <p>
-                <MatStringField @bind-Value="@UserName" Label="Электронная почта" Icon="mail_outline"></MatStringField>
+                <MatStringField name="userName" @bind-Value="@UserName" Label="Электронная почта" Icon="mail_outline"></MatStringField>
             </p>
             <p>
-                <MatStringField @bind-Value="@Password" Label="Пароль" Icon="lock_outline"></MatStringField>
+                <MatStringField name="password" @bind-Value="@Password" Label="Пароль" Icon="lock_outline"></MatStringField>
             </p>
             <MatButton type="submit">Войти</MatButton>
         </form>

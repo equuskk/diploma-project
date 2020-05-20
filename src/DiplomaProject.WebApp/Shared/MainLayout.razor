@@ -4,7 +4,7 @@
     <MatAppBar Fixed="true">
         <MatAppBarRow>
             <MatAppBarSection>
-                <MatIconButton Icon="menu" OnClick="ButtonClicked"></MatIconButton>
+                <MatIconButton Icon="menu" OnClick="OpenMenuClicked"></MatIconButton>
                 <MatAppBarTitle>Project</MatAppBarTitle>
             </MatAppBarSection>
             <MatAppBarSection Align="@MatAppBarSectionAlign.End">
@@ -31,7 +31,7 @@
 {
     bool _opened;
 
-    void ButtonClicked()
+    void OpenMenuClicked()
     {
         _opened = !_opened;
     }

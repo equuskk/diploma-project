@@ -5,10 +5,10 @@
     <MatDialogContent>
         <form method="post" action="/api/Security/Login">
             <p>
-                <MatStringField name="userName" @bind-Value="@UserName" Label="Электронная почта" Icon="mail_outline"></MatStringField>
+                <MatStringField Required name="userName" Value="@string.Empty" Label="Электронная почта" Icon="mail_outline"></MatStringField>
             </p>
             <p>
-                <MatStringField name="password" @bind-Value="@Password" Label="Пароль" Icon="lock_outline"></MatStringField>
+                <MatStringField Required name="password" Value="@string.Empty" Label="Пароль" Icon="lock_outline"></MatStringField>
             </p>
             <MatButton type="submit">Войти</MatButton>
         </form>
@@ -19,8 +19,5 @@
 
     [Parameter]
     public bool IsOpen { get; set; }
-
-    public string UserName { get; set; }
-    public string Password { get; set; }
 
 }

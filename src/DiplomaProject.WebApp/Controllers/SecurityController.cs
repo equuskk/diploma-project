@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using DiplomaProject.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,7 @@ namespace DiplomaProject.WebApp.Controllers
 
         public SecurityController(SignInManager<Employee> signInManager)
         {
-            _signInManager = signInManager;
+            _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
             _logger = Log.ForContext<SecurityController>();
         }
 
@@ -27,7 +28,7 @@ namespace DiplomaProject.WebApp.Controllers
 
             if(result.Succeeded)
             {
-                _logger.Debug("Пользователь {0} вошёл в аккаунт", userName);
+                _logger.Information("Пользователь {0} вошёл в аккаунт", userName);
                 return LocalRedirect("/");
             }
 

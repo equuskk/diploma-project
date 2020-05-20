@@ -1,10 +1,7 @@
-﻿@* @inject NavigationManager navigationManager *@
-
-<AuthorizeView>
+﻿<AuthorizeView>
     <Authorized>
-        <MatButton Unelevated Icon="@MatIconNames.Settings">Настройки</MatButton>
         <form method="post" action="api/Security/Logout">
-            <MatButton Unelevated type="submit">Выйти</MatButton>
+            <MatButton Unelevated type="submit" Icon="@MatIconNames.Account_circle">Выход</MatButton>
         </form>
     </Authorized>
     <NotAuthorized>
@@ -19,7 +16,6 @@
 
     public void OnClick()
     {
-    // navigationManager.NavigateTo("Identity/Account/Login", true);
         IsLoginDialogOpened = !IsLoginDialogOpened;
     }
 

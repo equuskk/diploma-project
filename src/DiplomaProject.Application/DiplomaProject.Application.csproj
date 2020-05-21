@@ -5,8 +5,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DiplomaProject.DataAccess\DiplomaProject.DataAccess.csproj" />
-      <ProjectReference Include="..\DiplomaProject.Domain\DiplomaProject.Domain.csproj" />
+        <ProjectReference Include="..\DiplomaProject.DataAccess\DiplomaProject.DataAccess.csproj"/>
+        <ProjectReference Include="..\DiplomaProject.Domain\DiplomaProject.Domain.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MediatR" Version="8.0.1"/>
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0"/>
+        <PackageReference Include="Serilog" Version="2.9.0"/>
     </ItemGroup>
 
 </Project>

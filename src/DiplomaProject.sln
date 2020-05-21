@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "..\tests", "{CA37F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiplomaProject.WebApp", "DiplomaProject.WebApp\DiplomaProject.WebApp.csproj", "{DA235B6C-03F4-4A13-9F0C-344B5563D32E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiplomaProject.Application.UnitTests", "..\tests\DiplomaProject.Application.UnitTests\DiplomaProject.Application.UnitTests.csproj", "{60945C0B-0FCB-41B4-B792-7E12F03F57B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,5 +34,12 @@ Global
 		{DA235B6C-03F4-4A13-9F0C-344B5563D32E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA235B6C-03F4-4A13-9F0C-344B5563D32E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA235B6C-03F4-4A13-9F0C-344B5563D32E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60945C0B-0FCB-41B4-B792-7E12F03F57B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60945C0B-0FCB-41B4-B792-7E12F03F57B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60945C0B-0FCB-41B4-B792-7E12F03F57B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60945C0B-0FCB-41B4-B792-7E12F03F57B1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{60945C0B-0FCB-41B4-B792-7E12F03F57B1} = {CA37F736-0046-48E1-90CF-15415A58046C}
 	EndGlobalSection
 EndGlobal

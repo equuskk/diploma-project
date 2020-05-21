@@ -16,7 +16,7 @@ namespace DiplomaProject.DataAccess.Configurations
             builder.HasMany(x => x.Bioresources)
                    .WithOne(x => x.Sector);
             builder.HasOne(x => x.Litoral)
-                   .WithOne();
+                   .WithMany();
         }
     }
 }

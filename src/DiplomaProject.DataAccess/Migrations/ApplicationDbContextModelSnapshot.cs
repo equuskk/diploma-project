@@ -229,8 +229,7 @@ namespace DiplomaProject.DataAccess.Migrations
 
                 b.HasKey("Id");
 
-                b.HasIndex("LitoralId")
-                 .IsUnique();
+                b.HasIndex("LitoralId");
 
                 b.ToTable("Sectors");
             });
@@ -416,8 +415,8 @@ namespace DiplomaProject.DataAccess.Migrations
             modelBuilder.Entity("DiplomaProject.Domain.Entities.Sector", b =>
             {
                 b.HasOne("DiplomaProject.Domain.Entities.Litoral", "Litoral")
-                 .WithOne()
-                 .HasForeignKey("DiplomaProject.Domain.Entities.Sector", "LitoralId")
+                 .WithMany()
+                 .HasForeignKey("LitoralId")
                  .OnDelete(DeleteBehavior.Cascade)
                  .IsRequired();
             });

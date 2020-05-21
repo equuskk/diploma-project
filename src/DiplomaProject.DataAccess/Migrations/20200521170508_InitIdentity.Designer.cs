@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DiplomaProject.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200521161204_FixSectorRelations")]
-    partial class FixSectorRelations
+    [Migration("20200521170508_InitIdentity")]
+    partial class InitIdentity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,33 +20,6 @@ namespace DiplomaProject.DataAccess.Migrations
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "3.1.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
-
-            modelBuilder.Entity("DiplomaProject.Domain.Entities.Bioresource", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("SectorId")
-                        .HasColumnType("integer");
-
-                    b.Property<float>("Square")
-                        .HasColumnType("real");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<float>("Weight")
-                        .HasColumnType("real");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SectorId");
-
-                    b.ToTable("Bioresources");
-                });
 
             modelBuilder.Entity("DiplomaProject.Domain.Entities.Employee", b =>
                 {
@@ -69,9 +42,6 @@ namespace DiplomaProject.DataAccess.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
-
-                    b.Property<int>("EmployeePositionId")
-                        .HasColumnType("integer");
 
                     b.Property<DateTime>("EmploymentDate")
                         .HasColumnType("timestamp without time zone");
@@ -123,8 +93,6 @@ namespace DiplomaProject.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeePositionId");
-
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
 
@@ -133,108 +101,6 @@ namespace DiplomaProject.DataAccess.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("DiplomaProject.Domain.Entities.EmployeeExpedition", b =>
-                {
-                    b.Property<string>("EmployeeId")
-                        .HasColumnType("text");
-
-                    b.Property<int>("ExpeditionId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("EmployeeId", "ExpeditionId");
-
-                    b.HasIndex("ExpeditionId");
-
-                    b.ToTable("EmployeeExpedition");
-                });
-
-            modelBuilder.Entity("DiplomaProject.Domain.Entities.EmployeePosition", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("character varying(100)")
-                        .HasMaxLength(100);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EmployeePositions");
-                });
-
-            modelBuilder.Entity("DiplomaProject.Domain.Entities.Expedition", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<DateTime>("FromDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("ToDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Expeditions");
-                });
-
-            modelBuilder.Entity("DiplomaProject.Domain.Entities.ExpeditionSector", b =>
-                {
-                    b.Property<int>("ExpeditionId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("SectorId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ExpeditionId", "SectorId");
-
-                    b.HasIndex("SectorId");
-
-                    b.ToTable("ExpeditionSector");
-                });
-
-            modelBuilder.Entity("DiplomaProject.Domain.Entities.Litoral", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("character varying(100)")
-                        .HasMaxLength(100);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Litorals");
-                });
-
-            modelBuilder.Entity("DiplomaProject.Domain.Entities.Sector", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("LitoralId")
-                        .HasColumnType("integer");
-
-                    b.Property<float>("Square")
-                        .HasColumnType("real");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LitoralId");
-
-                    b.ToTable("Sectors");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -365,63 +231,6 @@ namespace DiplomaProject.DataAccess.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("DiplomaProject.Domain.Entities.Bioresource", b =>
-                {
-                    b.HasOne("DiplomaProject.Domain.Entities.Sector", "Sector")
-                        .WithMany("Bioresources")
-                        .HasForeignKey("SectorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DiplomaProject.Domain.Entities.Employee", b =>
-                {
-                    b.HasOne("DiplomaProject.Domain.Entities.EmployeePosition", "EmployeePosition")
-                        .WithMany("Employees")
-                        .HasForeignKey("EmployeePositionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DiplomaProject.Domain.Entities.EmployeeExpedition", b =>
-                {
-                    b.HasOne("DiplomaProject.Domain.Entities.Employee", "Employee")
-                        .WithMany("Expeditions")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DiplomaProject.Domain.Entities.Expedition", "Expedition")
-                        .WithMany("Employees")
-                        .HasForeignKey("ExpeditionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DiplomaProject.Domain.Entities.ExpeditionSector", b =>
-                {
-                    b.HasOne("DiplomaProject.Domain.Entities.Expedition", "Expedition")
-                        .WithMany("Sectors")
-                        .HasForeignKey("ExpeditionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DiplomaProject.Domain.Entities.Sector", "Sector")
-                        .WithMany("Expeditions")
-                        .HasForeignKey("SectorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DiplomaProject.Domain.Entities.Sector", b =>
-                {
-                    b.HasOne("DiplomaProject.Domain.Entities.Litoral", "Litoral")
-                        .WithMany()
-                        .HasForeignKey("LitoralId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

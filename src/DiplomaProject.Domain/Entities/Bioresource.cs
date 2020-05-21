@@ -2,7 +2,7 @@
 {
     public class Bioresource
     {
-        public int Id { get; set; }
+        public int Id { get; private set; }
         public string Type { get; set; } // TODO:
         public float Square { get; set; }
         public float Weight { get; set; }

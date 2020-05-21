@@ -2,7 +2,7 @@
 {
     public class EmployeeExpedition
     {
-        public string EmployeeId { get; set; }
+        public string EmployeeId { get; private set; }
         public virtual Employee Employee { get; set; }
 
         public int ExpeditionId { get; set; }

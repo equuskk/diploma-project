@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DiplomaProject.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200519114122_Init")]
-    partial class Init
+    [Migration("20200521204905_AddBaseEntities")]
+    partial class AddBaseEntities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -56,8 +56,8 @@ namespace DiplomaProject.DataAccess.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("BirthDay")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<DateTimeOffset>("BirthDay")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -73,8 +73,8 @@ namespace DiplomaProject.DataAccess.Migrations
                     b.Property<int>("EmployeePositionId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("EmploymentDate")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<DateTimeOffset>("EmploymentDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("text");
@@ -174,11 +174,11 @@ namespace DiplomaProject.DataAccess.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTime>("FromDate")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<DateTimeOffset>("FromDate")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("ToDate")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<DateTimeOffset>("ToDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -232,8 +232,7 @@ namespace DiplomaProject.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LitoralId")
-                        .IsUnique();
+                    b.HasIndex("LitoralId");
 
                     b.ToTable("Sectors");
                 });
@@ -379,7 +378,7 @@ namespace DiplomaProject.DataAccess.Migrations
 
             modelBuilder.Entity("DiplomaProject.Domain.Entities.Employee", b =>
                 {
-                    b.HasOne("DiplomaProject.Domain.Entities.EmployeePosition", "EmployeePosition")
+                    b.HasOne("DiplomaProject.Domain.Entities.EmployeePosition", "Position")
                         .WithMany("Employees")
                         .HasForeignKey("EmployeePositionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -419,8 +418,8 @@ namespace DiplomaProject.DataAccess.Migrations
             modelBuilder.Entity("DiplomaProject.Domain.Entities.Sector", b =>
                 {
                     b.HasOne("DiplomaProject.Domain.Entities.Litoral", "Litoral")
-                        .WithOne()
-                        .HasForeignKey("DiplomaProject.Domain.Entities.Sector", "LitoralId")
+                        .WithMany("Sectors")
+                        .HasForeignKey("LitoralId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

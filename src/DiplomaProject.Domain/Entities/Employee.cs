@@ -10,12 +10,12 @@ namespace DiplomaProject.Domain.Entities
         public string LastName { get; set; }
         public string MidName { get; set; }
         public Sex Sex { get; set; }
-        public DateTime BirthDay { get; set; }
+        public DateTimeOffset BirthDay { get; set; }
+        public DateTimeOffset EmploymentDate { get; set; }
 
         public int EmployeePositionId { get; set; } = 1; //TODO:
-        public DateTime EmploymentDate { get; set; }
 
         public virtual ICollection<EmployeeExpedition> Expeditions { get; set; }
-        public virtual EmployeePosition EmployeePosition { get; set; }
+        public virtual EmployeePosition Position { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DiplomaProject.DataAccess.Migrations
 {
-    public partial class Init : Migration
+    public partial class InitIdentity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,62 +18,6 @@ namespace DiplomaProject.DataAccess.Migrations
                                              ConcurrencyStamp = table.Column<string>(nullable: true)
                                          },
                                          constraints: table => { table.PrimaryKey("PK_AspNetRoles", x => x.Id); });
-
-            migrationBuilder.CreateTable(
-                                         "EmployeePositions",
-                                         table => new
-                                         {
-                                             Id = table.Column<int>(nullable: false)
-                                                       .Annotation("Npgsql:ValueGenerationStrategy",
-                                                                   NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                                             Title = table.Column<string>(maxLength: 100, nullable: false)
-                                         },
-                                         constraints: table => { table.PrimaryKey("PK_EmployeePositions", x => x.Id); });
-
-            migrationBuilder.CreateTable(
-                                         "Expeditions",
-                                         table => new
-                                         {
-                                             Id = table.Column<int>(nullable: false)
-                                                       .Annotation("Npgsql:ValueGenerationStrategy",
-                                                                   NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                                             FromDate = table.Column<DateTime>(nullable: false),
-                                             ToDate = table.Column<DateTime>(nullable: false)
-                                         },
-                                         constraints: table => { table.PrimaryKey("PK_Expeditions", x => x.Id); });
-
-            migrationBuilder.CreateTable(
-                                         "Litorals",
-                                         table => new
-                                         {
-                                             Id = table.Column<int>(nullable: false)
-                                                       .Annotation("Npgsql:ValueGenerationStrategy",
-                                                                   NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                                             Title = table.Column<string>(maxLength: 100, nullable: false)
-                                         },
-                                         constraints: table => { table.PrimaryKey("PK_Litorals", x => x.Id); });
-
-            migrationBuilder.CreateTable(
-                                         "AspNetRoleClaims",
-                                         table => new
-                                         {
-                                             Id = table.Column<int>(nullable: false)
-                                                       .Annotation("Npgsql:ValueGenerationStrategy",
-                                                                   NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                                             RoleId = table.Column<string>(nullable: false),
-                                             ClaimType = table.Column<string>(nullable: true),
-                                             ClaimValue = table.Column<string>(nullable: true)
-                                         },
-                                         constraints: table =>
-                                         {
-                                             table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
-                                             table.ForeignKey(
-                                                              "FK_AspNetRoleClaims_AspNetRoles_RoleId",
-                                                              x => x.RoleId,
-                                                              "AspNetRoles",
-                                                              "Id",
-                                                              onDelete: ReferentialAction.Cascade);
-                                         });
 
             migrationBuilder.CreateTable(
                                          "AspNetUsers",
@@ -99,37 +43,28 @@ namespace DiplomaProject.DataAccess.Migrations
                                              MidName = table.Column<string>(nullable: true),
                                              Sex = table.Column<int>(nullable: false),
                                              BirthDay = table.Column<DateTime>(nullable: false),
-                                             EmployeePositionId = table.Column<int>(nullable: false),
                                              EmploymentDate = table.Column<DateTime>(nullable: false)
                                          },
-                                         constraints: table =>
-                                         {
-                                             table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                                             table.ForeignKey(
-                                                              "FK_AspNetUsers_EmployeePositions_EmployeePositionId",
-                                                              x => x.EmployeePositionId,
-                                                              "EmployeePositions",
-                                                              "Id",
-                                                              onDelete: ReferentialAction.Cascade);
-                                         });
+                                         constraints: table => { table.PrimaryKey("PK_AspNetUsers", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                                         "Sectors",
+                                         "AspNetRoleClaims",
                                          table => new
                                          {
                                              Id = table.Column<int>(nullable: false)
                                                        .Annotation("Npgsql:ValueGenerationStrategy",
                                                                    NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                                             Square = table.Column<float>(nullable: false),
-                                             LitoralId = table.Column<int>(nullable: false)
+                                             RoleId = table.Column<string>(nullable: false),
+                                             ClaimType = table.Column<string>(nullable: true),
+                                             ClaimValue = table.Column<string>(nullable: true)
                                          },
                                          constraints: table =>
                                          {
-                                             table.PrimaryKey("PK_Sectors", x => x.Id);
+                                             table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
                                              table.ForeignKey(
-                                                              "FK_Sectors_Litorals_LitoralId",
-                                                              x => x.LitoralId,
-                                                              "Litorals",
+                                                              "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                                                              x => x.RoleId,
+                                                              "AspNetRoles",
                                                               "Id",
                                                               onDelete: ReferentialAction.Cascade);
                                          });
@@ -220,77 +155,6 @@ namespace DiplomaProject.DataAccess.Migrations
                                                               onDelete: ReferentialAction.Cascade);
                                          });
 
-            migrationBuilder.CreateTable(
-                                         "EmployeeExpedition",
-                                         table => new
-                                         {
-                                             EmployeeId = table.Column<string>(nullable: false),
-                                             ExpeditionId = table.Column<int>(nullable: false)
-                                         },
-                                         constraints: table =>
-                                         {
-                                             table.PrimaryKey("PK_EmployeeExpedition", x => new { x.EmployeeId, x.ExpeditionId });
-                                             table.ForeignKey(
-                                                              "FK_EmployeeExpedition_AspNetUsers_EmployeeId",
-                                                              x => x.EmployeeId,
-                                                              "AspNetUsers",
-                                                              "Id",
-                                                              onDelete: ReferentialAction.Cascade);
-                                             table.ForeignKey(
-                                                              "FK_EmployeeExpedition_Expeditions_ExpeditionId",
-                                                              x => x.ExpeditionId,
-                                                              "Expeditions",
-                                                              "Id",
-                                                              onDelete: ReferentialAction.Cascade);
-                                         });
-
-            migrationBuilder.CreateTable(
-                                         "Bioresources",
-                                         table => new
-                                         {
-                                             Id = table.Column<int>(nullable: false)
-                                                       .Annotation("Npgsql:ValueGenerationStrategy",
-                                                                   NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                                             Type = table.Column<string>(nullable: false),
-                                             Square = table.Column<float>(nullable: false),
-                                             Weight = table.Column<float>(nullable: false),
-                                             SectorId = table.Column<int>(nullable: false)
-                                         },
-                                         constraints: table =>
-                                         {
-                                             table.PrimaryKey("PK_Bioresources", x => x.Id);
-                                             table.ForeignKey(
-                                                              "FK_Bioresources_Sectors_SectorId",
-                                                              x => x.SectorId,
-                                                              "Sectors",
-                                                              "Id",
-                                                              onDelete: ReferentialAction.Cascade);
-                                         });
-
-            migrationBuilder.CreateTable(
-                                         "ExpeditionSector",
-                                         table => new
-                                         {
-                                             ExpeditionId = table.Column<int>(nullable: false),
-                                             SectorId = table.Column<int>(nullable: false)
-                                         },
-                                         constraints: table =>
-                                         {
-                                             table.PrimaryKey("PK_ExpeditionSector", x => new { x.ExpeditionId, x.SectorId });
-                                             table.ForeignKey(
-                                                              "FK_ExpeditionSector_Expeditions_ExpeditionId",
-                                                              x => x.ExpeditionId,
-                                                              "Expeditions",
-                                                              "Id",
-                                                              onDelete: ReferentialAction.Cascade);
-                                             table.ForeignKey(
-                                                              "FK_ExpeditionSector_Sectors_SectorId",
-                                                              x => x.SectorId,
-                                                              "Sectors",
-                                                              "Id",
-                                                              onDelete: ReferentialAction.Cascade);
-                                         });
-
             migrationBuilder.CreateIndex(
                                          "IX_AspNetRoleClaims_RoleId",
                                          "AspNetRoleClaims",
@@ -318,11 +182,6 @@ namespace DiplomaProject.DataAccess.Migrations
                                          "RoleId");
 
             migrationBuilder.CreateIndex(
-                                         "IX_AspNetUsers_EmployeePositionId",
-                                         "AspNetUsers",
-                                         "EmployeePositionId");
-
-            migrationBuilder.CreateIndex(
                                          "EmailIndex",
                                          "AspNetUsers",
                                          "NormalizedEmail");
@@ -331,27 +190,6 @@ namespace DiplomaProject.DataAccess.Migrations
                                          "UserNameIndex",
                                          "AspNetUsers",
                                          "NormalizedUserName",
-                                         unique: true);
-
-            migrationBuilder.CreateIndex(
-                                         "IX_Bioresources_SectorId",
-                                         "Bioresources",
-                                         "SectorId");
-
-            migrationBuilder.CreateIndex(
-                                         "IX_EmployeeExpedition_ExpeditionId",
-                                         "EmployeeExpedition",
-                                         "ExpeditionId");
-
-            migrationBuilder.CreateIndex(
-                                         "IX_ExpeditionSector_SectorId",
-                                         "ExpeditionSector",
-                                         "SectorId");
-
-            migrationBuilder.CreateIndex(
-                                         "IX_Sectors_LitoralId",
-                                         "Sectors",
-                                         "LitoralId",
                                          unique: true);
         }
 
@@ -373,31 +211,10 @@ namespace DiplomaProject.DataAccess.Migrations
                                        "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                                       "Bioresources");
-
-            migrationBuilder.DropTable(
-                                       "EmployeeExpedition");
-
-            migrationBuilder.DropTable(
-                                       "ExpeditionSector");
-
-            migrationBuilder.DropTable(
                                        "AspNetRoles");
 
             migrationBuilder.DropTable(
                                        "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                                       "Expeditions");
-
-            migrationBuilder.DropTable(
-                                       "Sectors");
-
-            migrationBuilder.DropTable(
-                                       "EmployeePositions");
-
-            migrationBuilder.DropTable(
-                                       "Litorals");
         }
     }
 }

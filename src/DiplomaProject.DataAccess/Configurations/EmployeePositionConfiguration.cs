@@ -15,7 +15,7 @@ namespace DiplomaProject.DataAccess.Configurations
                    .HasMaxLength(100);
 
             builder.HasMany(x => x.Employees)
-                   .WithOne(x => x.EmployeePosition);
+                   .WithOne(x => x.Position);
         }
     }
 }

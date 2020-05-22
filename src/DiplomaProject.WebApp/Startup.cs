@@ -5,6 +5,7 @@ using DiplomaProject.DataAccess;
 using DiplomaProject.Domain.Entities;
 using DiplomaProject.WebApp.Areas.Identity;
 using DiplomaProject.WebApp.HostedServices;
+using MatBlazor;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -54,6 +55,16 @@ namespace DiplomaProject.WebApp
             services.AddHostedService<SeedDatabaseHostedService>();
 
             services.AddMediatR(typeof(GetAllSectorsQuery).GetTypeInfo().Assembly);
+            services.AddMatToaster(config =>
+            {
+                config.Position = MatToastPosition.BottomCenter;
+                config.PreventDuplicates = true;
+                config.NewestOnTop = true;
+                config.ShowCloseButton = false;
+                config.ShowProgressBar = false;
+                config.MaximumOpacity = 100;
+                config.VisibleStateDuration = 4000;
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

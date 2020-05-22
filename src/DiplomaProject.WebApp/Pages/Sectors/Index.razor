@@ -1,6 +1,8 @@
 ﻿@page "/sectors/index"
 @using DiplomaProject.Application.Sectors.Queries
+@using DiplomaProject.Application.Sectors.Commands
 @inject IMediator Mediator
+@inject IMatToaster Toaster
 
 <MatH5>Секторы</MatH5>
 
@@ -9,16 +11,26 @@
 {
     <MatProgressBar Indeterminate="true"/>
 }
+else if(_sectors.Length == 0)
+{
+    <MatH3>Список пуст.</MatH3>
+}
 else
 {
     <MatTable Items="@_sectors" class="mat-elevation-z5" PageRecordCountLabel="Кол-во секторов на страницу" Striped="true">
         <MatTableHeader>
             <th>Id</th>
-            <th>Температура (C)</th>
+            <th>Площадь (кв. м.)</th>
+            <th>Литораль</th>
+            <th>Действия</th>
         </MatTableHeader>
         <MatTableRow>
             <td>@context.Id</td>
+            <td>@context.Square</td>
             <td>@context.LitoralId</td>
+            <td>
+                <MatButton Style="background-color: #B00020" Unelevated="true" OnClick="() => DeleteSector(context.Id)">Удалить сектор</MatButton>
+            </td>
         </MatTableRow>
     </MatTable>
 }
@@ -29,6 +41,26 @@ else
     protected override async Task OnInitializedAsync()
     {
         _sectors = await Mediator.Send(new GetAllSectorsQuery());
+    }
+
+    public async Task DeleteSector(int id)
+    {
+        const string message = "Сектор успешно удалён!";
+        const string title = "Удаление сектора";
+
+        try
+        {
+            await Mediator.Send(new DeleteSectorCommand
+            {
+                SectorId = id
+            });
+            Toaster.Add(message, MatToastType.Success, title);
+            _sectors = await Mediator.Send(new GetAllSectorsQuery());
+        }
+        catch(Exception e)
+        {
+            Toaster.Add(e.Message, MatToastType.Danger, title);
+        }
     }
 
 }

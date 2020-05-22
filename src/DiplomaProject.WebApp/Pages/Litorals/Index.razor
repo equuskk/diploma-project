@@ -1,2 +1,34 @@
 ﻿@page "/litorals/index"
-Литорали
+@using DiplomaProject.Application.Litorals.Queries
+@inject IMediator Mediator
+
+<MatH5>Литорали</MatH5>
+
+
+@if(_litorals == null)
+{
+    <MatProgressBar Indeterminate="true"/>
+}
+else
+{
+    <MatTable Items="@_litorals" class="mat-elevation-z5" ShowFooter="false" ShowPaging="false">
+        <MatTableHeader>
+            <th>#</th>
+            <th>Название</th>
+        </MatTableHeader>
+        <MatTableRow>
+            <td>@context.Id</td>
+            <td>@context.Title</td>
+        </MatTableRow>
+    </MatTable>
+}
+
+@code {
+    private Litoral[] _litorals;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _litorals = await Mediator.Send(new GetAllLitorals());
+    }
+
+}

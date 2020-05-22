@@ -1,2 +1,34 @@
 ﻿@page "/sectors/index"
-Секторы
+@using DiplomaProject.Application.Sectors.Queries
+@inject IMediator Mediator
+
+<MatH5>Секторы</MatH5>
+
+
+@if(_sectors == null)
+{
+    <MatProgressBar Indeterminate="true"/>
+}
+else
+{
+    <MatTable Items="@_sectors" class="mat-elevation-z5" PageRecordCountLabel="Кол-во секторов на страницу">
+        <MatTableHeader>
+            <th></th>
+            <th>Температура (C)</th>
+        </MatTableHeader>
+        <MatTableRow>
+            <td>@context.Id</td>
+            <td>@context.LitoralId</td>
+        </MatTableRow>
+    </MatTable>
+}
+
+@code {
+    private Sector[] _sectors;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _sectors = await Mediator.Send(new GetAllSectorsQuery());
+    }
+
+}

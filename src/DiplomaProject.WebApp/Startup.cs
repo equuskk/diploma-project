@@ -1,8 +1,11 @@
 using System.Net.Http;
+using System.Reflection;
+using DiplomaProject.Application.Sectors.Queries;
 using DiplomaProject.DataAccess;
 using DiplomaProject.Domain.Entities;
 using DiplomaProject.WebApp.Areas.Identity;
 using DiplomaProject.WebApp.HostedServices;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -49,6 +52,8 @@ namespace DiplomaProject.WebApp
             services.AddScoped<HttpClient>();
 
             services.AddHostedService<SeedDatabaseHostedService>();
+
+            services.AddMediatR(typeof(GetAllSectorsQuery).GetTypeInfo().Assembly);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -5,18 +5,25 @@
         </form>
     </Authorized>
     <NotAuthorized>
-        <MatButton Unelevated Icon="@MatIconNames.Account_circle" OnClick="OnClick">Вход</MatButton>
+        <MatButton Unelevated Icon="@MatIconNames.Account_circle" OnClick="OnLoginClick">Вход</MatButton>
+        <LoginDialogComponent IsOpen="@IsLoginDialogOpened"/>
+        <MatButton Unelevated Icon="@MatIconNames.Account_circle" OnClick="OnRegisterClick">Регистрация</MatButton>
+        <RegisterDialogComponent IsOpen="@IsRegisterDialogOpened"/>
     </NotAuthorized>
 </AuthorizeView>
 
-<LoginDialogComponent IsOpen="@IsLoginDialogOpened"/>
-
 @code {
     public bool IsLoginDialogOpened { get; set; }
+    public bool IsRegisterDialogOpened { get; set; }
 
-    public void OnClick()
+    public void OnLoginClick()
     {
         IsLoginDialogOpened = !IsLoginDialogOpened;
+    }
+
+    public void OnRegisterClick()
+    {
+        IsRegisterDialogOpened = !IsRegisterDialogOpened;
     }
 
 }

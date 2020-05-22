@@ -5,10 +5,10 @@
     <MatDialogContent>
         <form method="post" action="/api/Security/Login">
             <p>
-                <MatStringField Required name="userName" Value="@string.Empty" Label="Электронная почта" Icon="mail_outline"></MatStringField>
+                <MatStringField Required name="userName" Value="@string.Empty" Label="Электронная почта" Icon="mail_outline"/>
             </p>
             <p>
-                <MatStringField Required name="password" Value="@string.Empty" Label="Пароль" Icon="lock_outline"></MatStringField>
+                <MatStringField Required name="password" Type="password" Value="@string.Empty" Label="Пароль" Icon="lock_outline"/>
             </p>
             <MatButton type="submit">Войти</MatButton>
         </form>

@@ -1,0 +1,48 @@
+﻿@using DiplomaProject.Domain
+@inherits LayoutComponentBase
+
+<MatDialog @bind-IsOpen="@IsOpen">
+    <MatDialogTitle>Регистрация</MatDialogTitle>
+    <MatDialogContent>
+        <form method="post" action="/api/Security/Register">
+            <p>
+                <MatStringField Required name="FirstName" Value="@string.Empty" Label="Имя"/>
+            </p>
+            <p>
+                <MatStringField Required name="LastName" Value="@string.Empty" Label="Фамилия"/>
+            </p>
+            <p>
+                <MatStringField Required name="MidName" Value="@string.Empty" Label="Отчество"/>
+            </p>
+            <p>
+                <MatSelectItem name="Sex" Items="@sexItems" Label="Пол"/>
+            </p>
+            <p>
+                <input type="hidden" name="BirthDay" @bind="BirthDay"/>
+                <MatDatePicker @bind-Value="BirthDay" Format="MMMM dd, yyyy" Label="Дата рождения"/>
+            </p>
+            <p>
+                <input type="hidden" name="EmploymentDate" @bind="EmploymentDate"/>
+                <MatDatePicker @bind-Value="EmploymentDate" Format="MMMM dd, yyyy" Label="Дата приёма на работу"/>
+            </p>
+            <p>
+                <MatStringField Required name="Email" Value="@string.Empty" Label="Электронная почта" Icon="mail_outline"/>
+            </p>
+            <p>
+                <MatStringField Required name="Password" Type="password" Value="@string.Empty" Label="Пароль" Icon="lock_outline"/>
+            </p>
+            <MatButton type="submit">Войти</MatButton>
+        </form>
+    </MatDialogContent>
+</MatDialog>
+
+@code {
+    readonly Sex[] sexItems = Enum.GetValues(typeof(Sex)).Cast<Sex>().ToArray();
+
+    [Parameter]
+    public bool IsOpen { get; set; }
+
+    public DateTime BirthDay { get; set; } = DateTime.Today;
+    public DateTime EmploymentDate { get; set; } = DateTime.Today;
+
+}

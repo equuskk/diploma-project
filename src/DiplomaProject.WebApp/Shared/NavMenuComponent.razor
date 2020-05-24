@@ -2,9 +2,20 @@
     <MatNavItem Href="/">Главная</MatNavItem>
     <MatNavItem Href="/expeditions/index">Экспедиции</MatNavItem>
     <MatNavItem Href="/sectors/index">Секторы</MatNavItem>
+    <MatNavItem Href="#">Cтанции</MatNavItem>
+    <MatNavItem Href="#">Данные со станций</MatNavItem>
     <MatNavItem Href="/resources/index">Ресурсы</MatNavItem>
-    <MatNavItem Href="/litorals/index">Литорали</MatNavItem>
-    <MatNavItem Href="/employees/index">Сотрудники</MatNavItem>
-    <MatNavItem Href="/positions/index">Должности</MatNavItem>
+    <MatNavSubMenu>
+        <MatNavSubMenuHeader>
+            <MatNavItem AllowSelection="false">
+                <MatIcon Icon="explore"></MatIcon>&nbsp; Справочник
+            </MatNavItem>
+        </MatNavSubMenuHeader>
+        <MatNavSubMenuList>
+            <MatNavItem Href="/litorals/index">Литорали</MatNavItem>
+            <MatNavItem Href="#">Типы грунтов</MatNavItem>
+            <MatNavItem Href="#">Типы зарослей</MatNavItem>
+        </MatNavSubMenuList>
+    </MatNavSubMenu>
     <MatButton Unelevated Icon="@MatIconNames.Settings">Настройки</MatButton>
 </MatNavMenu>

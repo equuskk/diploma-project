@@ -21,7 +21,11 @@ namespace DiplomaProject.Application.Sectors.Commands
         public async Task<Sector> Handle(CreateSectorCommand request, CancellationToken cancellationToken)
         {
             _logger.Debug("Создание нового сектора");
-            var sector = new Sector(request.Square, request.LitoralId);
+            var sector = new Sector
+            {
+                Title = request.Title,
+                Description = request.Description
+            };
             await _context.Sectors.AddAsync(sector, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
             _logger.Debug("Создан сектор с ID {SectorId}", sector.Id);
@@ -32,7 +36,7 @@ namespace DiplomaProject.Application.Sectors.Commands
 
     public class CreateSectorCommand : IRequest<Sector>
     {
-        public float Square { get; set; }
-        public int LitoralId { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
     }
 }

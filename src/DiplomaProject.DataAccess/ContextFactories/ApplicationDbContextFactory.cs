@@ -20,7 +20,7 @@ namespace DiplomaProject.DataAccess.ContextFactories
 
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
             var connectionString = configuration.GetConnectionString("DefaultConnection");
-            builder.UseNpgsql(connectionString);
+            builder.UseNpgsql(connectionString, x => x.UseNetTopologySuite().EnableRetryOnFailure());
             return new ApplicationDbContext(builder.Options);
         }
     }

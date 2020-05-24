@@ -57,8 +57,7 @@ namespace DiplomaProject.WebApp.Controllers
                 EmploymentDate = model.EmploymentDate,
                 Email = model.Email,
                 UserName = model.Email,
-                Sex = model.Sex,
-                EmployeePositionId = 1
+                Sex = model.Sex
             };
 
             var result = await _userManager.CreateAsync(employee, model.Password);

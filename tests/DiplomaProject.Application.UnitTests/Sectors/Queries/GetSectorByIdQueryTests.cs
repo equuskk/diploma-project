@@ -22,10 +22,9 @@ namespace DiplomaProject.Application.UnitTests.Sectors.Queries
             var result = await handler.Handle(command, CancellationToken.None);
 
             result.Id.Should().Be(1);
-            result.LitoralId.Should().Be(1);
-            result.Square.Should().Be(111);
-            result.Litoral.Should().NotBeNull();
-            result.Bioresources.Should().NotBeNull();
+            result.Title.Should().Be("Title");
+            result.Expeditions.Should().NotBeNull();
+            result.Thickets.Should().NotBeNull();
             result.Expeditions.Should().NotBeNull();
         }
 

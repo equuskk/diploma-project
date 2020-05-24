@@ -2,7 +2,6 @@ using System;
 using DiplomaProject.DataAccess;
 using DiplomaProject.Domain;
 using DiplomaProject.Domain.Entities;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 namespace DiplomaProject.Application.UnitTests
@@ -24,11 +23,8 @@ namespace DiplomaProject.Application.UnitTests
                 return ApplicationContext;
             }
 
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
-
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                          .UseSqlite(connection)
+                          .UseInMemoryDatabase(Guid.NewGuid().ToString())
                           .Options;
 
             var context = new ApplicationDbContext(options);
@@ -42,7 +38,6 @@ namespace DiplomaProject.Application.UnitTests
 
         private void InitDbContext(ApplicationDbContext context)
         {
-            InitEmployeesPosition(context);
             InitEmployees(context);
             InitLitorals(context);
             InitSectors(context);
@@ -52,19 +47,11 @@ namespace DiplomaProject.Application.UnitTests
 
         private void InitSectors(ApplicationDbContext context)
         {
-            context.Sectors.AddRange(new Sector(333, 3),
-                                     new Sector(222, 2),
-                                     new Sector(111, 1));
-            context.SaveChanges();
-        }
-
-        private void InitEmployeesPosition(ApplicationDbContext context)
-        {
-            var position = new EmployeePosition
+            context.Sectors.Add(new Sector
             {
-                Title = "Сотрудник"
-            };
-            context.EmployeePositions.Add(position);
+                Title = "Title",
+                Description = "Description"
+            });
             context.SaveChanges();
         }
 
@@ -77,7 +64,6 @@ namespace DiplomaProject.Application.UnitTests
                 MidName = "Иванович",
                 BirthDay = new DateTime(1980, 01, 01),
                 Email = "ivan@company.com",
-                EmployeePositionId = 1,
                 Sex = Sex.Male,
                 EmploymentDate = new DateTime(2019, 01, 01)
             };

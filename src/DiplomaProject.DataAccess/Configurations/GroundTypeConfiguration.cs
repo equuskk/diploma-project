@@ -4,19 +4,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DiplomaProject.DataAccess.Configurations
 {
-    public class SectorConfiguration : IEntityTypeConfiguration<Sector>
+    public class GroundTypeConfiguration : IEntityTypeConfiguration<GroundType>
     {
-        public void Configure(EntityTypeBuilder<Sector> builder)
+        public void Configure(EntityTypeBuilder<GroundType> builder)
         {
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Title)
                    .IsRequired()
                    .HasMaxLength(100);
-
-            builder.Property(x => x.Description)
-                   .IsRequired()
-                   .HasMaxLength(500);
         }
     }
 }

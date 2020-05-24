@@ -13,9 +13,6 @@ namespace DiplomaProject.Domain.Entities
         public DateTimeOffset BirthDay { get; set; }
         public DateTimeOffset EmploymentDate { get; set; }
 
-        public int EmployeePositionId { get; set; } = 1; //TODO:
-
         public virtual ICollection<EmployeeExpedition> Expeditions { get; set; }
-        public virtual EmployeePosition Position { get; set; }
     }
 }

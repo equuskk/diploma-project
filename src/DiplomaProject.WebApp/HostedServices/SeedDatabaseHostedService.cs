@@ -29,15 +29,31 @@ namespace DiplomaProject.WebApp.HostedServices
             using var scope = _serviceProvider.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-            var isLitoralsEmpty = !await dbContext.Litorals.AnyAsync();
-            if(isLitoralsEmpty)
+            await SeedLitorals();
+            await SeedGroundTypes();
+
+            async Task SeedGroundTypes()
             {
-                await dbContext.Litorals.AddRangeAsync(new Litoral("Скальная литораль"), new Litoral("Каменистая литораль"),
-                                                       new Litoral("Песчаная литораль"), new Litoral("Илистая литораль"));
-                await dbContext.SaveChangesAsync();
+                var isGroundTypesEmpty = !await dbContext.GroundTypes.AnyAsync();
+                if(isGroundTypesEmpty)
+                {
+                    await dbContext.GroundTypes.AddRangeAsync(new GroundType("Мелкий песок"), new GroundType("Крупный песок"),
+                                                              new GroundType("Песок"), new GroundType("Дерновина"),
+                                                              new GroundType("Камни"), new GroundType("Ил"));
+                    await dbContext.SaveChangesAsync();
+                }
             }
 
-            //TODO: должности
+            async Task SeedLitorals()
+            {
+                var isLitoralsEmpty = !await dbContext.Litorals.AnyAsync();
+                if(isLitoralsEmpty)
+                {
+                    await dbContext.Litorals.AddRangeAsync(new Litoral("Скальная литораль"), new Litoral("Каменистая литораль"),
+                                                           new Litoral("Песчаная литораль"), new Litoral("Илистая литораль"));
+                    await dbContext.SaveChangesAsync();
+                }
+            }
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

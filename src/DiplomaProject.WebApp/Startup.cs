@@ -29,7 +29,8 @@ namespace DiplomaProject.WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString,
+                                                                                     x => x.UseNetTopologySuite()));
 
             services.AddDefaultIdentity<Employee>(options =>
                     {

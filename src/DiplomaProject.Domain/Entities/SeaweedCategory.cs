@@ -1,16 +1,16 @@
 ﻿namespace DiplomaProject.Domain.Entities
 {
-    public class Litoral
+    public class SeaweedCategory
     {
         public int Id { get; private set; }
         public string Title { get; set; }
 
-        public Litoral(string title)
+        public SeaweedCategory(string title)
         {
             Title = title;
         }
 
-        private Litoral()
+        private SeaweedCategory()
         {
         }
     }

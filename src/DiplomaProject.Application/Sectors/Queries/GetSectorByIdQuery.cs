@@ -23,7 +23,7 @@ namespace DiplomaProject.Application.Sectors.Queries
         public async Task<Sector> Handle(GetSectorByIdQuery request, CancellationToken cancellationToken)
         {
             _logger.Debug("Получение сектора по Id {SectorId}", request.SectorId);
-            var sector = await _context.Sectors.Include(x => x.Bioresources)
+            var sector = await _context.Sectors.Include(x => x.Thickets)
                                        .Include(x => x.Expeditions)
                                        .SingleOrDefaultAsync(x => x.Id == request.SectorId, cancellationToken);
             if(sector is null)

@@ -41,17 +41,8 @@ namespace DiplomaProject.Application.UnitTests
             InitEmployees(context);
             InitLitorals(context);
             InitSectors(context);
+            InitExpeditions(context);
 
-            context.SaveChanges();
-        }
-
-        private void InitSectors(ApplicationDbContext context)
-        {
-            context.Sectors.Add(new Sector
-            {
-                Title = "Title",
-                Description = "Description"
-            });
             context.SaveChanges();
         }
 
@@ -77,6 +68,27 @@ namespace DiplomaProject.Application.UnitTests
         {
             context.Litorals.AddRange(new Litoral("Скальная литораль"), new Litoral("Каменистая литораль"),
                                       new Litoral("Песчаная литораль"), new Litoral("Илистая литораль"));
+            context.SaveChanges();
+        }
+
+        private void InitSectors(ApplicationDbContext context)
+        {
+            context.Sectors.Add(new Sector
+            {
+                Title = "Title",
+                Description = "Description"
+            });
+            context.SaveChanges();
+        }
+
+        private void InitExpeditions(ApplicationDbContext context)
+        {
+            var date = new DateTimeOffset(2019, 01, 01, 0, 0, 0, TimeSpan.Zero);
+            context.Expeditions.Add(new Domain.Entities.Expedition
+            {
+                FromDate = date,
+                ToDate = date.AddMonths(1)
+            });
             context.SaveChanges();
         }
     }

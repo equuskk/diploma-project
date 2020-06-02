@@ -22,7 +22,7 @@ namespace DiplomaProject.Application.UnitTests.Expedition.Commands
             var handler = new CreateExpeditionCommandHandler(ApplicationContext);
 
             var result = await handler.Handle(command, CancellationToken.None);
-            result.Id.Should().Be(1);
+            result.Id.Should().Be(2);
             result.FromDate.Should().Be(fromDate);
             result.ToDate.Should().Be(toDate);
         }

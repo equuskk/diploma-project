@@ -1,13 +1,13 @@
-﻿@page "/litorals/index"
+﻿@page "/help/litorals/index"
 @using DiplomaProject.Application.Litorals.Queries
 @inject IMediator Mediator
 
 <MatH5>Литорали</MatH5>
-<p>
+<MatBody1>
     Литораль - участок берега, который затопляется морской водой во время прилива и осушается во время отлива.
     Располагается между самым высоким уровнем воды в прилив и самым низким в отлив.
     Зону, расположенную ниже литорали, называют сублитора́льной зоной (сублитора́лью); зону, расположенную над литоральной — супралитора́льной зоной (супралитора́лью).
-</p>
+</MatBody1>
 
 
 @if(_litorals == null)
@@ -33,7 +33,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _litorals = await Mediator.Send(new GetAllLitorals());
+        _litorals = await Mediator.Send(new GetAllLitoralsQuery());
     }
 
 }

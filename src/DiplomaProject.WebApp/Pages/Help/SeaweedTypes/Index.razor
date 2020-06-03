@@ -1,0 +1,34 @@
+﻿@page "/help/seaweedTypes/index"
+@using DiplomaProject.Application.SeaweedTypes.Queries
+@inject IMediator Mediator
+
+<MatH5>Типы водорослей</MatH5>
+
+
+@if(_seaweedTypes == null)
+{
+    <MatProgressBar Indeterminate="true"/>
+}
+else
+{
+    <MatTable Items="@_seaweedTypes" class="mat-elevation-z5" ShowFooter="false" ShowPaging="false">
+        <MatTableHeader>
+            <th>#</th>
+            <th>Название</th>
+        </MatTableHeader>
+        <MatTableRow>
+            <td>@context.Id</td>
+            <td>@context.Title</td>
+        </MatTableRow>
+    </MatTable>
+}
+
+@code {
+    private SeaweedType[] _seaweedTypes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _seaweedTypes = await Mediator.Send(new GetAllSeaweedTypesQuery());
+    }
+
+}

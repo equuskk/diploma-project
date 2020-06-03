@@ -6,7 +6,7 @@
 
 <MatH5>Экспедиции</MatH5>
 
-<MatButton Raised Link="/expeditions/create">Добавить экспедицию</MatButton>
+<MatButton Raised OnClick="() => IsCreateDialogOpened = true">Добавить экспедицию</MatButton>
 
 @if(_expeditions == null)
 {
@@ -37,15 +37,34 @@ else
 }
 
 <MatDialog @bind-IsOpen="@IsDeleteDialogOpened">
-    <MatDialogTitle>Удаление сектора</MatDialogTitle>
+    <MatDialogTitle>Удаление экспедиции</MatDialogTitle>
     <MatDialogContent>
-        <p>Вы действительно хотите удалить данный сектор?</p>
+        <p>Вы действительно хотите удалить данную экспедицию?</p>
         <p>С даты: @SelectedExpedition?.FromDate.ToString(DateTimeFormat)</p>
         <p>По дату: @SelectedExpedition?.ToDate.ToString(DateTimeFormat)</p>        
     </MatDialogContent>
     <MatDialogActions>
         <MatButton OnClick="() => IsDeleteDialogOpened = false">Нет</MatButton>
-        <MatButton OnClick="DeleteExpedition">Да, удалить</MatButton>
+        <MatButton Style="background-color: #B00020" Unelevated="true" OnClick="DeleteExpedition">Да, удалить</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
+<MatDialog @bind-IsOpen="@IsCreateDialogOpened">
+    <MatDialogTitle>Добавление экспедиции</MatDialogTitle>
+    <MatDialogContent>
+        <p>
+            <MatBody1>С даты</MatBody1>
+            <MatDatePicker @bind-Value="@FromDate" Required="true"></MatDatePicker>
+        </p>
+        
+        <p>
+            <MatBody1>По дату</MatBody1>
+            <MatDatePicker @bind-Value="@ToDate" Required="true"></MatDatePicker>
+        </p>        
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="() => IsCreateDialogOpened = false">Отменить</MatButton>
+        <MatButton Unelevated="true" OnClick="CreateExpedition">Добавить</MatButton>
     </MatDialogActions>
 </MatDialog>
 
@@ -54,9 +73,11 @@ else
         const string DateTimeFormat = "d MMMM yyyy года, dddd\n(Часовой пояс: K)";
 
     public bool IsDeleteDialogOpened { get; set; }
-    public bool IsCreateDialogOpened { get; set; }
-
     public Expedition SelectedExpedition { get; set; }
+    
+    public bool IsCreateDialogOpened { get; set; }
+    public DateTime FromDate { get; set; } = DateTime.Today;
+    public DateTime ToDate { get; set; } = DateTime.Today;
 
     protected override async Task OnInitializedAsync()
     {
@@ -70,7 +91,7 @@ else
         IsCreateDialogOpened = false;
     }
 
-    private async Task DeleteExpedition()
+    private async Task DeleteExpedition() 
     {
         const string message = "Экспедиция успешно удалена!";
         const string title = "Удаление экспедиции";
@@ -89,6 +110,27 @@ else
             Toaster.Add(e.Message, MatToastType.Danger, title);
         }
         IsDeleteDialogOpened = false;
+    }
+    
+    public async Task CreateExpedition()
+    {
+        try
+        {
+            var command = new CreateExpeditionCommand
+            {
+                FromDate = new DateTimeOffset(FromDate),
+                ToDate = new DateTimeOffset(ToDate)
+            };
+
+            await Mediator.Send(command);
+            Toaster.Add("Экспедиция успешно добавлена !", MatToastType.Success, "Добавление");
+            _expeditions = await Mediator.Send(new GetAllExpeditionsQuery());
+            IsCreateDialogOpened = false;
+        }
+        catch(Exception e)
+        {
+            Toaster.Add(e.Message, MatToastType.Danger, "Ошибка");
+        }
     }
 
 }

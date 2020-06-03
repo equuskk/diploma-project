@@ -1,0 +1,38 @@
+﻿@page "/help/seaweeds/index"
+@using DiplomaProject.Application.Seaweeds.Queries
+@inject IMediator Mediator
+
+<MatH5>Водоросли</MatH5>
+
+
+@if(_seaweeds == null)
+{
+    <MatProgressBar Indeterminate="true"/>
+}
+else
+{
+    <MatTable Items="@_seaweeds" class="mat-elevation-z5" ShowFooter="false" ShowPaging="false">
+        <MatTableHeader>
+            <th>#</th>
+            <th>Название</th>
+            <th>Тип</th>
+            <th>Категория</th>
+        </MatTableHeader>
+        <MatTableRow>
+            <td>@context.Id</td>
+            <td>@context.Title</td>
+            <td>@context.Type.Title</td>
+            <td>@context.Category.Title</td>
+        </MatTableRow>
+    </MatTable>
+}
+
+@code {
+    private Seaweed[] _seaweeds;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _seaweeds = await Mediator.Send(new GetAllSeaweedsQuery());
+    }
+
+}

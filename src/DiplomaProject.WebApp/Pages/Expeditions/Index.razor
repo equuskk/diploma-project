@@ -39,13 +39,16 @@ else
 <MatDialog @bind-IsOpen="@IsDeleteDialogOpened">
     <MatDialogTitle>Удаление экспедиции</MatDialogTitle>
     <MatDialogContent>
-        <p>Вы действительно хотите удалить данную экспедицию?</p>
-        <p>С даты: @SelectedExpedition?.FromDate.ToString(DateTimeFormat)</p>
-        <p>По дату: @SelectedExpedition?.ToDate.ToString(DateTimeFormat)</p>        
+        <MatBody1>Вы действительно хотите удалить данную экспедицию?</MatBody1>
+        <MatBody2>С даты: @SelectedExpedition?.FromDate.ToString(DateTimeFormat)</MatBody2>
+        <MatBody2>По дату: @SelectedExpedition?.ToDate.ToString(DateTimeFormat)</MatBody2>
+        <MatBody1 Class="text-danger">
+            ВНИМАНИЕ! Данное действие приведёт к удалению всех связанных с экспедицией данных!
+        </MatBody1>
     </MatDialogContent>
     <MatDialogActions>
         <MatButton OnClick="() => IsDeleteDialogOpened = false">Нет</MatButton>
-        <MatButton Style="background-color: #B00020" Unelevated="true" OnClick="DeleteExpedition">Да, удалить</MatButton>
+        <MatButton Class="button-danger" Unelevated="true" OnClick="DeleteExpedition">Да, удалить</MatButton>
     </MatDialogActions>
 </MatDialog>
 
@@ -123,7 +126,7 @@ else
             };
 
             await Mediator.Send(command);
-            Toaster.Add("Экспедиция успешно добавлена !", MatToastType.Success, "Добавление");
+            Toaster.Add("Экспедиция успешно добавлена!", MatToastType.Success, "Добавление");
             _expeditions = await Mediator.Send(new GetAllExpeditionsQuery());
             IsCreateDialogOpened = false;
         }

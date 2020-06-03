@@ -19,4 +19,10 @@
         <ProjectReference Include="..\DiplomaProject.Domain\DiplomaProject.Domain.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <Content Update="Pages\Help\SeaweedCategories\Index.razor">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        </Content>
+    </ItemGroup>
+
 </Project>

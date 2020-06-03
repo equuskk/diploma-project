@@ -32,7 +32,7 @@ namespace DiplomaProject.WebApp.HostedServices
             await SeedLitorals();
             await SeedGroundTypes();
             await SeedSeaweedTypes();
-
+            await SeedSeaweedCategories();
 
             async Task SeedGroundTypes()
             {
@@ -71,6 +71,18 @@ namespace DiplomaProject.WebApp.HostedServices
                                                                new SeaweedType("Fucus serratus"),
                                                                new SeaweedType("Laminaria digitata"),
                                                                new SeaweedType("Laminaria sacharina"));
+                    await dbContext.SaveChangesAsync();
+                }
+            }
+
+            async Task SeedSeaweedCategories()
+            {
+                var isSeaweedCategoriesEmpty = !await dbContext.SeaweedCategories.AnyAsync();
+                if(isSeaweedCategoriesEmpty)
+                {
+                    await dbContext.SeaweedCategories.AddRangeAsync(new SeaweedCategory("I"),
+                                                                    new SeaweedCategory("II"),
+                                                                    new SeaweedCategory("III"));
                     await dbContext.SaveChangesAsync();
                 }
             }

@@ -1,0 +1,34 @@
+﻿@page "/help/seaweedCategories/index"
+@using DiplomaProject.Application.SeaweedCategories.Queries
+@inject IMediator Mediator
+
+<MatH5>Категории водорослей</MatH5>
+
+
+@if(_seaweedCategories == null)
+{
+    <MatProgressBar Indeterminate="true"/>
+}
+else
+{
+    <MatTable Items="@_seaweedCategories" class="mat-elevation-z5" ShowFooter="false" ShowPaging="false">
+        <MatTableHeader>
+            <th>#</th>
+            <th>Название</th>
+        </MatTableHeader>
+        <MatTableRow>
+            <td>@context.Id</td>
+            <td>@context.Title</td>
+        </MatTableRow>
+    </MatTable>
+}
+
+@code {
+    private SeaweedCategory[] _seaweedCategories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _seaweedCategories = await Mediator.Send(new GetAllSeaweedCategoriesQuery());
+    }
+
+}

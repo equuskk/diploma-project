@@ -44,6 +44,7 @@ namespace DiplomaProject.Application.UnitTests
             InitExpeditions(context);
             InitSeaweedTypes(context);
             InitSeaweedCategories(context);
+            InitGroundTypes(context);
 
             context.SaveChanges();
         }
@@ -105,6 +106,13 @@ namespace DiplomaProject.Application.UnitTests
         {
             context.SeaweedCategories.AddRange(new SeaweedCategory("I"),
                                                new SeaweedCategory("II"));
+            context.SaveChanges();
+        }
+        
+        private void InitGroundTypes(ApplicationDbContext context)
+        {
+            context.GroundTypes.AddRange(new GroundType("Песок"),
+                                         new GroundType("Ил"));
             context.SaveChanges();
         }
     }

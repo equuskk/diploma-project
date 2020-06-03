@@ -30,22 +30,47 @@ else
                 <MatButton Outlined>Подробнее</MatButton>
             </td>
             <td>
-                <MatButton Style="background-color: #B00020" Unelevated="true" OnClick="() => DeleteExpedition(context.Id)">Удалить</MatButton>
+                <MatButton Style="background-color: #B00020" Unelevated="true" OnClick="() => OpenDeleteDialog(context)">Удалить</MatButton>
             </td>
         </MatTableRow>
     </MatTable>
 }
 
+<MatDialog @bind-IsOpen="@IsDeleteDialogOpened">
+    <MatDialogTitle>Удаление сектора</MatDialogTitle>
+    <MatDialogContent>
+        <p>Вы действительно хотите удалить данный сектор?</p>
+        <p>С даты: @SelectedExpedition?.FromDate.ToString(DateTimeFormat)</p>
+        <p>По дату: @SelectedExpedition?.ToDate.ToString(DateTimeFormat)</p>        
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="() => IsDeleteDialogOpened = false">Нет</MatButton>
+        <MatButton OnClick="DeleteExpedition">Да, удалить</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
 @code {
     private Expedition[] _expeditions;
         const string DateTimeFormat = "d MMMM yyyy года, dddd\n(Часовой пояс: K)";
+
+    public bool IsDeleteDialogOpened { get; set; }
+    public bool IsCreateDialogOpened { get; set; }
+
+    public Expedition SelectedExpedition { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         _expeditions = await Mediator.Send(new GetAllExpeditionsQuery());
     }
 
-    private async Task DeleteExpedition(int id)
+    private async Task OpenDeleteDialog(Expedition item)
+    {
+        SelectedExpedition = item;
+        IsDeleteDialogOpened = true;
+        IsCreateDialogOpened = false;
+    }
+
+    private async Task DeleteExpedition()
     {
         const string message = "Экспедиция успешно удалена!";
         const string title = "Удаление экспедиции";
@@ -54,7 +79,7 @@ else
         {
             await Mediator.Send(new DeleteExpeditionCommand
             {
-                Id = id
+                Id = SelectedExpedition.Id
             });
             Toaster.Add(message, MatToastType.Success, title);
             _expeditions = await Mediator.Send(new GetAllExpeditionsQuery());
@@ -63,6 +88,7 @@ else
         {
             Toaster.Add(e.Message, MatToastType.Danger, title);
         }
+        IsDeleteDialogOpened = false;
     }
 
 }

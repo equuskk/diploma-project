@@ -1,2 +1,68 @@
 ﻿@page "/expeditions/index"
-Экспедиции
+@using DiplomaProject.Application.Expeditions.Queries
+@using DiplomaProject.Application.Expeditions.Commands
+@inject IMediator Mediator
+@inject IMatToaster Toaster
+
+<MatH5>Экспедиции</MatH5>
+
+<MatButton Raised Link="/expeditions/create">Добавить экспедицию</MatButton>
+
+@if(_expeditions == null)
+{
+    <MatProgressBar Indeterminate="true"/>
+}
+else
+{
+    <MatTable Items="@_expeditions" class="mat-elevation-z5" ShowFooter="false" ShowPaging="false" UseSortHeaderRow="true">
+        <MatTableHeader>
+            <th>#</th>
+            <th>С даты</th>
+            <th>По дату</th>
+            <th></th>
+            <th></th>
+        </MatTableHeader>
+        <MatTableRow>
+            <td>@context.Id</td>
+            <td>@context.FromDate.ToString(DateTimeFormat)</td>
+            <td>@context.ToDate.ToString(DateTimeFormat)</td>
+            <td>
+                <MatButton Outlined>Подробнее</MatButton>
+            </td>
+            <td>
+                <MatButton Style="background-color: #B00020" Unelevated="true" OnClick="() => DeleteExpedition(context.Id)">Удалить</MatButton>
+            </td>
+        </MatTableRow>
+    </MatTable>
+}
+
+@code {
+    private Expedition[] _expeditions;
+        const string DateTimeFormat = "d MMMM yyyy года, dddd\n(Часовой пояс: K)";
+
+    protected override async Task OnInitializedAsync()
+    {
+        _expeditions = await Mediator.Send(new GetAllExpeditionsQuery());
+    }
+
+    private async Task DeleteExpedition(int id)
+    {
+        const string message = "Экспедиция успешно удалена!";
+        const string title = "Удаление экспедиции";
+
+        try
+        {
+            await Mediator.Send(new DeleteExpeditionCommand
+            {
+                Id = id
+            });
+            Toaster.Add(message, MatToastType.Success, title);
+            _expeditions = await Mediator.Send(new GetAllExpeditionsQuery());
+        }
+        catch(Exception e)
+        {
+            Toaster.Add(e.Message, MatToastType.Danger, title);
+        }
+    }
+
+}

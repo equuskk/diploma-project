@@ -200,6 +200,11 @@ namespace DiplomaProject.DataAccess.Migrations
                 b.Property<int>("SeaweedTypeId")
                  .HasColumnType("integer");
 
+                b.Property<string>("Title")
+                 .IsRequired()
+                 .HasColumnType("character varying(100)")
+                 .HasMaxLength(100);
+
                 b.HasKey("Id");
 
                 b.HasIndex("SeaweedCategoryId");

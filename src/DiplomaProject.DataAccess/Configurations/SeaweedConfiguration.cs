@@ -13,6 +13,10 @@ namespace DiplomaProject.DataAccess.Configurations
             builder.Property(x => x.AvgWeight)
                    .IsRequired();
 
+            builder.Property(x => x.Title)
+                   .IsRequired()
+                   .HasMaxLength(100);
+
             builder.HasOne(x => x.Type)
                    .WithMany()
                    .HasForeignKey(x => x.SeaweedTypeId);

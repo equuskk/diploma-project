@@ -21,11 +21,13 @@ else
         <MatTableHeader>
             <th>Id</th>
             <th>Название</th>
+            <th>Описание</th>
             <th>Действия</th>
         </MatTableHeader>
         <MatTableRow>
             <td>@context.Id</td>
             <td>@context.Title</td>
+            <td>@context.Description</td>
             <td>
                 <MatButton Style="background-color: #B00020" Unelevated="true" OnClick="() => DeleteSector(context.Id)">Удалить сектор</MatButton>
             </td>

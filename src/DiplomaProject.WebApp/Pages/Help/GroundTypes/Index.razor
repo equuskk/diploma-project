@@ -1,0 +1,34 @@
+﻿@page "/help/groundTypes/index"
+@using DiplomaProject.Application.GroundTypes.Queries
+@inject IMediator Mediator
+
+<MatH5>Типы грунта</MatH5>
+
+
+@if(_groundTypes == null)
+{
+    <MatProgressBar Indeterminate="true"/>
+}
+else
+{
+    <MatTable Items="@_groundTypes" class="mat-elevation-z5" ShowFooter="false" ShowPaging="false">
+        <MatTableHeader>
+            <th>#</th>
+            <th>Название</th>
+        </MatTableHeader>
+        <MatTableRow>
+            <td>@context.Id</td>
+            <td>@context.Title</td>
+        </MatTableRow>
+    </MatTable>
+}
+
+@code {
+    private GroundType[] _groundTypes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _groundTypes = await Mediator.Send(new GetAllGroundTypesQuery());
+    }
+
+}

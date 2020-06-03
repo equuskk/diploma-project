@@ -6,22 +6,25 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.4"/>
-        <PackageReference Include="MatBlazor" Version="2.6.0"/>
-        <PackageReference Include="Serilog.AspNetCore" Version="3.2.0"/>
-        <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1"/>
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.4"/>
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.4" />
+        <PackageReference Include="MatBlazor" Version="2.6.0" />
+        <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.4" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\DiplomaProject.Application\DiplomaProject.Application.csproj"/>
-        <ProjectReference Include="..\DiplomaProject.DataAccess\DiplomaProject.DataAccess.csproj"/>
-        <ProjectReference Include="..\DiplomaProject.Domain\DiplomaProject.Domain.csproj"/>
+        <ProjectReference Include="..\DiplomaProject.Application\DiplomaProject.Application.csproj" />
+        <ProjectReference Include="..\DiplomaProject.DataAccess\DiplomaProject.DataAccess.csproj" />
+        <ProjectReference Include="..\DiplomaProject.Domain\DiplomaProject.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
         <Content Update="Pages\Help\SeaweedCategories\Index.razor">
             <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        </Content>
+        <Content Update="Pages\Help\GrountTypes\Index.razor">
+          <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         </Content>
     </ItemGroup>
 

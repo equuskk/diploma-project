@@ -7,7 +7,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.4"/>
-        <PackageReference Include="MatBlazor" Version="2.4.3"/>
+        <PackageReference Include="MatBlazor" Version="2.6.0"/>
         <PackageReference Include="Serilog.AspNetCore" Version="3.2.0"/>
         <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1"/>
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.4"/>

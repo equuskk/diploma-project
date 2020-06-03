@@ -42,7 +42,15 @@ namespace DiplomaProject.Application.UnitTests
             InitLitorals(context);
             InitSectors(context);
             InitExpeditions(context);
+            InitSeaweedTypes(context);
 
+            context.SaveChanges();
+        }
+
+        private void InitSeaweedTypes(ApplicationDbContext context)
+        {
+            context.AddRange(new SeaweedType("Тип1"),
+                             new SeaweedType("Тип2"));
             context.SaveChanges();
         }
 

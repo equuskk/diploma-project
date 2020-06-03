@@ -8,25 +8,25 @@ using Serilog;
 
 namespace DiplomaProject.Application.Litorals.Queries
 {
-    public class GetAllLitoralsHandler : IRequestHandler<GetAllLitorals, Litoral[]>
+    public class GetAllLitoralsQueryHandler : IRequestHandler<GetAllLitoralsQuery, Litoral[]>
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger _logger;
 
-        public GetAllLitoralsHandler(ApplicationDbContext context)
+        public GetAllLitoralsQueryHandler(ApplicationDbContext context)
         {
             _context = context;
-            _logger = Log.ForContext<GetAllLitorals>();
+            _logger = Log.ForContext<GetAllLitoralsQuery>();
         }
 
-        public Task<Litoral[]> Handle(GetAllLitorals request, CancellationToken cancellationToken)
+        public Task<Litoral[]> Handle(GetAllLitoralsQuery request, CancellationToken cancellationToken)
         {
             _logger.Debug("Получение списка всех литоралей");
             return _context.Litorals.ToArrayAsync(cancellationToken);
         }
     }
 
-    public class GetAllLitorals : IRequest<Litoral[]>
+    public class GetAllLitoralsQuery : IRequest<Litoral[]>
     {
     }
 }

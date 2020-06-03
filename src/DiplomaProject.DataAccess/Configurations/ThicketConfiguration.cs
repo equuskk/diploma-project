@@ -15,6 +15,8 @@ namespace DiplomaProject.DataAccess.Configurations
                    .HasColumnType("geography");
             builder.Property(x => x.Date)
                    .IsRequired();
+            builder.Property(x => x.WeightPerMeter)
+                   .IsRequired();
             builder.Property(x => x.Length)
                    .IsRequired();
             builder.Property(x => x.Width)

@@ -5,7 +5,6 @@
         public int Id { get; private set; }
 
         public string Title { get; set; }
-        public float AvgWeight { get; set; }
 
         public int SeaweedTypeId { get; set; }
         public int SeaweedCategoryId { get; set; }

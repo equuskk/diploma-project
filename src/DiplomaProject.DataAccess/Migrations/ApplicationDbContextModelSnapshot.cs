@@ -191,9 +191,6 @@ namespace DiplomaProject.DataAccess.Migrations
                  .HasColumnType("integer")
                  .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                b.Property<float>("AvgWeight")
-                 .HasColumnType("real");
-
                 b.Property<int>("SeaweedCategoryId")
                  .HasColumnType("integer");
 
@@ -349,6 +346,9 @@ namespace DiplomaProject.DataAccess.Migrations
                  .HasColumnType("integer");
 
                 b.Property<float>("Stock")
+                 .HasColumnType("real");
+
+                b.Property<float>("WeightPerMeter")
                  .HasColumnType("real");
 
                 b.Property<float>("Width")

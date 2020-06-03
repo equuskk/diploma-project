@@ -10,9 +10,10 @@ namespace DiplomaProject.Domain.Entities
 
         public Point Location { get; set; }
         public DateTimeOffset Date { get; set; }
+        public float WeightPerMeter { get; set; } // кг * м^2
         public float Length { get; set; }
         public float Width { get; set; }
-        public float Stock { get; set; } // итоговый параметр
+        public float Stock { get; set; } // итоговый параметр (кг) = Length * Width * WeightPerMeter (сумма в секторе?)
 
         public int LitoralId { get; set; }
         public int GroundTypeId { get; set; }

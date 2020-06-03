@@ -10,9 +10,6 @@ namespace DiplomaProject.DataAccess.Configurations
         {
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.AvgWeight)
-                   .IsRequired();
-
             builder.Property(x => x.Title)
                    .IsRequired()
                    .HasMaxLength(100);

@@ -24,7 +24,10 @@
             <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         </Content>
         <Content Update="Pages\Help\GrountTypes\Index.razor">
-          <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        </Content>
+        <Content Update="Pages\Help\Seaweeds\Index.razor">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         </Content>
     </ItemGroup>
 

@@ -30,7 +30,7 @@ namespace DiplomaProject.Application.UnitTests.Thickets.Commands
 
             var result = await handler.Handle(command, CancellationToken.None);
 
-            result.Id.Should().Be(1);
+            result.Id.Should().Be(2);
             result.Stock.Should().Be(500);
         }
 

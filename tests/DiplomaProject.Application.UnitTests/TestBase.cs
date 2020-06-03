@@ -4,6 +4,7 @@ using DiplomaProject.Domain;
 using DiplomaProject.Domain.Entities;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite.Geometries;
 
 namespace DiplomaProject.Application.UnitTests
 {
@@ -50,6 +51,7 @@ namespace DiplomaProject.Application.UnitTests
             InitSeaweedCategories(context);
             InitSeaweeds(context);
             InitGroundTypes(context);
+            InitThickets(context);
 
             context.SaveChanges();
         }
@@ -135,6 +137,24 @@ namespace DiplomaProject.Application.UnitTests
         {
             context.GroundTypes.AddRange(new GroundType("Песок"),
                                          new GroundType("Ил"));
+            context.SaveChanges();
+        }
+
+        private void InitThickets(ApplicationDbContext context)
+        {
+            context.Add(new Thicket
+            {
+                Date = new DateTimeOffset(2019, 01, 01, 0, 0, 0, TimeSpan.Zero),
+                GroundTypeId = 1,
+                LitoralId = 1,
+                SeaweedId = 1,
+                SectorId = 1,
+                Length = 10,
+                Width = 10,
+                Location = new Point(1.1, 1.1),
+                WeightPerMeter = 1,
+                Stock = 10 * 10 * 1
+            });
             context.SaveChanges();
         }
     }

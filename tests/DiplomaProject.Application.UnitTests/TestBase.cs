@@ -2,6 +2,7 @@ using System;
 using DiplomaProject.DataAccess;
 using DiplomaProject.Domain;
 using DiplomaProject.Domain.Entities;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 namespace DiplomaProject.Application.UnitTests
@@ -23,8 +24,11 @@ namespace DiplomaProject.Application.UnitTests
                 return ApplicationContext;
             }
 
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                          .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                          .UseSqlite(connection, x => x.UseNetTopologySuite())
                           .Options;
 
             var context = new ApplicationDbContext(options);
@@ -124,6 +128,7 @@ namespace DiplomaProject.Application.UnitTests
                                           SeaweedTypeId = 2,
                                           Title = "Seaweed #2"
                                       });
+            context.SaveChanges();
         }
 
         private void InitGroundTypes(ApplicationDbContext context)

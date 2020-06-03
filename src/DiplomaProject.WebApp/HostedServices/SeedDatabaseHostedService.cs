@@ -31,6 +31,8 @@ namespace DiplomaProject.WebApp.HostedServices
 
             await SeedLitorals();
             await SeedGroundTypes();
+            await SeedSeaweedTypes();
+
 
             async Task SeedGroundTypes()
             {
@@ -51,6 +53,24 @@ namespace DiplomaProject.WebApp.HostedServices
                 {
                     await dbContext.Litorals.AddRangeAsync(new Litoral("Скальная литораль"), new Litoral("Каменистая литораль"),
                                                            new Litoral("Песчаная литораль"), new Litoral("Илистая литораль"));
+                    await dbContext.SaveChangesAsync();
+                }
+            }
+
+            async Task SeedSeaweedTypes()
+            {
+                var isSeaweedTypesEmpty = !await dbContext.SeaweedTypes.AnyAsync();
+                if(isSeaweedTypesEmpty)
+                {
+                    await dbContext.SeaweedTypes.AddRangeAsync(new SeaweedType("Ahnfelia plicafa"),
+                                                               new SeaweedType("Alaria esculenta"),
+                                                               new SeaweedType("Asciphylum nodosum"),
+                                                               new SeaweedType("Chondrus crispus"),
+                                                               new SeaweedType("Fucus Infi"),
+                                                               new SeaweedType("Fucus distichus"),
+                                                               new SeaweedType("Fucus serratus"),
+                                                               new SeaweedType("Laminaria digitata"),
+                                                               new SeaweedType("Laminaria sacharina"));
                     await dbContext.SaveChangesAsync();
                 }
             }

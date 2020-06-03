@@ -43,14 +43,8 @@ namespace DiplomaProject.Application.UnitTests
             InitSectors(context);
             InitExpeditions(context);
             InitSeaweedTypes(context);
+            InitSeaweedCategories(context);
 
-            context.SaveChanges();
-        }
-
-        private void InitSeaweedTypes(ApplicationDbContext context)
-        {
-            context.AddRange(new SeaweedType("Тип1"),
-                             new SeaweedType("Тип2"));
             context.SaveChanges();
         }
 
@@ -97,6 +91,20 @@ namespace DiplomaProject.Application.UnitTests
                 FromDate = date,
                 ToDate = date.AddMonths(1)
             });
+            context.SaveChanges();
+        }
+
+        private void InitSeaweedTypes(ApplicationDbContext context)
+        {
+            context.SeaweedTypes.AddRange(new SeaweedType("Тип1"),
+                                          new SeaweedType("Тип2"));
+            context.SaveChanges();
+        }
+
+        private void InitSeaweedCategories(ApplicationDbContext context)
+        {
+            context.SeaweedCategories.AddRange(new SeaweedCategory("I"),
+                                               new SeaweedCategory("II"));
             context.SaveChanges();
         }
     }

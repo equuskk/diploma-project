@@ -52,5 +52,10 @@ namespace DiplomaProject.Application.Thickets.Commands
         public int GroundTypeId { get; set; }
         public int SeaweedId { get; set; }
         public int SectorId { get; set; }
+
+        public CreateThicketCommand()
+        {
+            Location = new Point(0, 0);
+        }
     }
 }

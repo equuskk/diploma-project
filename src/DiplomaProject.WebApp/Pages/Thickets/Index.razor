@@ -1,2 +1,239 @@
 ﻿@page "/thickets/index"
-Заросли
+@using DiplomaProject.Application.Thickets.Commands
+@using DiplomaProject.Application.Thickets.Queries
+@using DiplomaProject.Application.Litorals.Queries
+@using DiplomaProject.Application.Seaweeds.Queries
+@using DiplomaProject.Application.Sectors.Queries
+@using DiplomaProject.Application.GroundTypes.Queries
+@inject IMediator Mediator
+@inject IMatToaster Toaster
+
+<MatH5>Заросли</MatH5>
+
+<MatButton Raised OnClick="() => IsCreateDialogOpened = true">Добавить заросль</MatButton>
+
+
+@if(_thickets == null)
+{
+    <MatProgressBar Indeterminate="true"/>
+}
+else if(_thickets.Length == 0)
+{
+    <MatH3>Список пуст.</MatH3>
+}
+else
+{
+    <MatTable Items="@_thickets" class="mat-elevation-z5" PageRecordCountLabel="Кол-во секторов на страницу" Striped="true">
+        <MatTableHeader>
+            <th>Id</th>
+            <th>Местоположение</th>
+            <th>Дата</th>
+            <th>Масса на м^2 (в кг)</th>
+            <th>Длина</th>
+            <th>Ширина</th>
+            <th>Запас</th>
+            <th>Литораль</th>
+            <th>Тип грунта</th>
+            <th>Вид водоросли</th>
+            <th>Сектор</th>
+            <th></th>
+        </MatTableHeader>
+        <MatTableRow>
+            <td>@context.Id</td>
+            <td>@context.Location</td>
+            <td>@context.Date.ToString()</td>
+            <td>@context.WeightPerMeter</td>
+            <td>@context.Length м.</td>
+            <td>@context.Width м.</td>
+            <td>@context.Stock</td>
+            <td>@context.Litoral.Title</td>
+            <td>@context.GroundType.Title</td>
+            <td>@context.Seaweed.Title</td>
+            <td>@context.Sector.Title</td>
+            <td>
+                <MatButton Class="button-danger" Unelevated="true" OnClick="() => OpenDeleteDialog(context)">Удалить заросль</MatButton>
+            </td>
+        </MatTableRow>
+    </MatTable>
+}
+
+<MatDialog @bind-IsOpen="@IsDeleteDialogOpened">
+    <MatDialogTitle>Удаление заросли</MatDialogTitle>
+    <MatDialogContent>
+        <MatBody1>Вы действительно хотите удалить данную заросль?</MatBody1>
+        @* <MatBody2>Название: @SelectedItem?.Title</MatBody2> *@
+        @* <MatBody2>Описание: @SelectedItem?.Description</MatBody2> *@
+        <MatBody1 Class="text-danger">
+            ВНИМАНИЕ! Данное действие приведёт к удалению всех связанных с зарослью данных!
+        </MatBody1>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="() => IsDeleteDialogOpened = false">Нет</MatButton>
+        <MatButton Class="button-danger" Unelevated="true" OnClick="DeleteThicket">Да, удалить</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
+<MatDialog @bind-IsOpen="@IsCreateDialogOpened">
+    <MatDialogTitle>Добавление заросли</MatDialogTitle>
+    <MatDialogContent>
+        <p>
+            <MatNumericUpDownField Label="Широта"
+                                   @bind-Value="@Command.Location.Y"
+                                   DecimalPlaces="8"
+                                   Maximum="90"
+                                   Minimum="-90"/>
+        </p>
+        <p>
+            <MatNumericUpDownField Label="Долгота"
+                                   @bind-Value="@Command.Location.X"
+                                   DecimalPlaces="8"
+                                   Maximum="180"
+                                   Minimum="-180"/>
+        </p>
+        <p>
+            <MatDatePicker Label="Дата сбора" @bind-Value="@SelectedDate" Required="true" EnableTime="true" Enable24hours="true"></MatDatePicker>
+        </p>
+        <p>
+            <MatNumericUpDownField Label="Масса на метр квадратный (в кг)"
+                                   @bind-Value="@Command.WeightPerMeter"
+                                   DecimalPlaces="3"
+                                   Minimum="0"/>
+        </p>
+        <p>
+            <MatNumericUpDownField Label="Длина"
+                                   @bind-Value="@Command.Length"
+                                   DecimalPlaces="3"
+                                   Minimum="0"/>
+        </p>
+        <p>
+            <MatNumericUpDownField Label="Ширина"
+                                   @bind-Value="@Command.Width"
+                                   DecimalPlaces="3"
+                                   Minimum="0"/>
+        </p>
+        <p>
+            <MatSelectItem Label="Литораль" @bind-Value="SelectedLitoral" Items="@_litorals">
+                <ItemTemplate>
+                    <span>@context.Title</span>
+                </ItemTemplate>
+            </MatSelectItem>
+        </p>
+        <p>
+            <MatSelectItem Label="Тип грунта" @bind-Value="SelectedGroundType" Items="@_groundTypes">
+                <ItemTemplate>
+                    <span>@context.Title</span>
+                </ItemTemplate>
+            </MatSelectItem>
+        </p>
+        <p>
+            <MatSelectItem Label="Вид водорослей" @bind-Value="SelectedSeaweed" Items="@_seaweeds">
+                <ItemTemplate>
+                    <span>@context.Title</span>
+                </ItemTemplate>
+            </MatSelectItem>
+        </p>
+        <p>
+            <MatSelectItem Label="Сектор" @bind-Value="SelectedSector" Items="@_sectors">
+                <ItemTemplate>
+                    <span>@context.Title</span>
+                </ItemTemplate>
+            </MatSelectItem>
+        </p>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="() => IsCreateDialogOpened = false">Отменить</MatButton>
+        <MatButton Unelevated="true" OnClick="CreateThicket">Добавить</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
+@code {
+
+    private Thicket[] _thickets =
+    {
+    };
+
+    private Litoral[] _litorals =
+    {
+    };
+
+    private GroundType[] _groundTypes =
+    {
+    };
+
+    private Seaweed[] _seaweeds =
+    {
+    };
+
+    private Sector[] _sectors =
+    {
+    };
+
+    public bool IsDeleteDialogOpened { get; set; }
+    public Thicket SelectedItem { get; set; }
+
+    public bool IsCreateDialogOpened { get; set; }
+    public DateTime SelectedDate { get; set; }
+    public CreateThicketCommand Command { get; set; } = new CreateThicketCommand();
+    public Litoral SelectedLitoral { get; set; }
+    public GroundType SelectedGroundType { get; set; }
+    public Seaweed SelectedSeaweed { get; set; }
+    public Sector SelectedSector { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _thickets = await Mediator.Send(new GetAllThicketsQuery());
+        _litorals = await Mediator.Send(new GetAllLitoralsQuery());
+        _groundTypes = await Mediator.Send(new GetAllGroundTypesQuery());
+        _seaweeds = await Mediator.Send(new GetAllSeaweedsQuery());
+        _sectors = await Mediator.Send(new GetAllSectorsQuery());
+    }
+
+    public void OpenDeleteDialog(Thicket sector)
+    {
+        IsDeleteDialogOpened = true;
+        SelectedItem = sector;
+    }
+
+    public async Task DeleteThicket()
+    {
+        const string message = "Сектор успешно удалён!";
+        const string title = "Удаление сектора";
+
+        try
+        {
+            await Mediator.Send(new DeleteThicketCommand
+            {
+                Id = SelectedItem.Id
+            });
+            Toaster.Add(message, MatToastType.Success, title);
+            _thickets = await Mediator.Send(new GetAllThicketsQuery());
+            IsDeleteDialogOpened = false;
+        }
+        catch(Exception e)
+        {
+            Toaster.Add(e.Message, MatToastType.Danger, title);
+        }
+    }
+
+    public async Task CreateThicket()
+    {
+        try
+        {
+            Command.LitoralId = SelectedLitoral.Id;
+            Command.GroundTypeId = SelectedGroundType.Id;
+            Command.SeaweedId = SelectedSeaweed.Id;
+            Command.SectorId = SelectedSector.Id;
+            Command.Date = new DateTimeOffset(SelectedDate);
+
+            await Mediator.Send(Command);
+            Toaster.Add("Заросль успешно добавлена!", MatToastType.Success, "Добавление");
+            _thickets = await Mediator.Send(new GetAllThicketsQuery());
+            IsCreateDialogOpened = false;
+        }
+        catch(Exception e)
+        {
+            Toaster.Add(e.Message, MatToastType.Danger, "Ошибка");
+        }
+    }
+
+}

@@ -1,2 +1,33 @@
 ﻿@page "/employees/index"
-Сотрудники
+@using DiplomaProject.Domain.DTOs
+@using DiplomaProject.Application.Employees.Queries
+@inject IMediator Mediator
+<MatH5>Список сотрудников</MatH5>
+
+<MatTable Items="@_employees" Striped="true" ShowFooter="false" ShowPaging="false">
+    <MatTableHeader>
+        <th>ФИО</th>
+        <th>Пол</th>
+        <th>Дата рождения</th>
+        <th>Стаж</th>
+    </MatTableHeader>
+    <MatTableRow>
+        <td>@context.Fio</td>
+        <td>@context.Sex</td>
+        <td>@context.BirthDay.DateTime</td>
+        <td>@context.EmploymentDate.DateTime</td>
+    </MatTableRow>
+</MatTable>
+
+@code {
+
+    private EmployeeDto[] _employees;
+
+    public List<EmployeeDto> SelectedEmployees { get; set; } = new List<EmployeeDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _employees = await Mediator.Send(new GetAllEmployeesQuery());
+    }
+
+}

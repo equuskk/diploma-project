@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Identity;
 
-namespace DiplomaProject.Domain.Entities
+namespace DiplomaProject.Domain.DTOs
 {
-    public class Employee : IdentityUser
+    public class EmployeeDto
     {
+        public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string MidName { get; set; }
@@ -14,9 +12,6 @@ namespace DiplomaProject.Domain.Entities
         public DateTimeOffset BirthDay { get; set; }
         public DateTimeOffset EmploymentDate { get; set; }
 
-        public virtual ICollection<EmployeeExpedition> Expeditions { get; set; }
-
-        [NotMapped]
         public string Fio => $"{LastName} {FirstName} {MidName}";
     }
 }

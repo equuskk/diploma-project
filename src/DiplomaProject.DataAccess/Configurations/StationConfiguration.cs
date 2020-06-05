@@ -13,9 +13,9 @@ namespace DiplomaProject.DataAccess.Configurations
             builder.Property(x => x.Location)
                    .HasColumnType("geography");
 
-            builder.HasOne(x => x.Thicket)
+            builder.HasOne(x => x.Sector)
                    .WithMany()
-                   .HasForeignKey(x => x.ThicketId);
+                   .HasForeignKey(x => x.SectorId);
         }
     }
 }

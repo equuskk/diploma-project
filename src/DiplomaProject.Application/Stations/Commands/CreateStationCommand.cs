@@ -21,7 +21,7 @@ namespace DiplomaProject.Application.Stations.Commands
             var item = new Station
             {
                 Location = request.Location,
-                ThicketId = request.ThicketId
+                SectorId = request.SectorId
             };
             await _context.Stations.AddAsync(item, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
@@ -33,6 +33,11 @@ namespace DiplomaProject.Application.Stations.Commands
     public class CreateStationCommand : IRequest<Station>
     {
         public Point Location { get; set; }
-        public int ThicketId { get; set; }
+        public int SectorId { get; set; }
+
+        public CreateStationCommand()
+        {
+            Location = new Point(0, 0);
+        }
     }
 }

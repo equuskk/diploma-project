@@ -18,7 +18,9 @@ namespace DiplomaProject.Application.Stations.Queries
 
         public Task<Station[]> Handle(GetAllStationsQuery request, CancellationToken cancellationToken)
         {
-            return _context.Stations.ToArrayAsync(cancellationToken);
+            return _context.Stations
+                           .Include(x => x.Sector)
+                           .ToArrayAsync(cancellationToken);
         }
     }
 

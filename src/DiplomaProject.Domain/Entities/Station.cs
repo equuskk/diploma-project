@@ -8,9 +8,9 @@ namespace DiplomaProject.Domain.Entities
         public int Id { get; private set; }
         public Point Location { get; set; }
 
-        public int ThicketId { get; set; }
+        public int SectorId { get; set; }
 
-        public virtual Thicket Thicket { get; set; }
+        public virtual Sector Sector { get; set; }
 
         public virtual ICollection<StationData> StationData { get; set; }
     }

@@ -277,12 +277,12 @@ namespace DiplomaProject.DataAccess.Migrations
                 b.Property<Point>("Location")
                  .HasColumnType("geography");
 
-                b.Property<int>("ThicketId")
+                b.Property<int>("SectorId")
                  .HasColumnType("integer");
 
                 b.HasKey("Id");
 
-                b.HasIndex("ThicketId");
+                b.HasIndex("SectorId");
 
                 b.ToTable("Stations");
             });
@@ -544,9 +544,9 @@ namespace DiplomaProject.DataAccess.Migrations
 
             modelBuilder.Entity("DiplomaProject.Domain.Entities.Station", b =>
             {
-                b.HasOne("DiplomaProject.Domain.Entities.Thicket", "Thicket")
+                b.HasOne("DiplomaProject.Domain.Entities.Sector", "Sector")
                  .WithMany()
-                 .HasForeignKey("ThicketId")
+                 .HasForeignKey("SectorId")
                  .OnDelete(DeleteBehavior.Cascade)
                  .IsRequired();
             });

@@ -1,0 +1,156 @@
+﻿@page "/stations/index"
+@using DiplomaProject.Application.Stations.Commands
+@using DiplomaProject.Application.Stations.Queries
+@using DiplomaProject.Application.Sectors.Queries
+@inject IMediator Mediator
+@inject IMatToaster Toaster
+
+<MatH5>Станции</MatH5>
+
+<MatButton Raised OnClick="() => IsCreateDialogOpened = true">Добавить станцию</MatButton>
+
+
+@if(_stations == null)
+{
+    <MatProgressBar Indeterminate="true"/>
+}
+else if(_stations.Length == 0)
+{
+    <MatH3>Список пуст.</MatH3>
+}
+else
+{
+    <MatTable Items="@_stations" class="mat-elevation-z5" ShowFooter="false" ShowPaging="false" Striped="true">
+        <MatTableHeader>
+            <th>Id</th>
+            <th>Местоположение</th>
+            <th>Привязана к сектору</th>
+            <th></th>
+        </MatTableHeader>
+        <MatTableRow>
+            <td>@context.Id</td>
+            <td>@context.Location</td>
+            <td>@context.Sector.Title</td>
+            <td>
+                <MatButton Class="button-danger" Unelevated="true" OnClick="() => OpenDeleteDialog(context)">Удалить станцию</MatButton>
+            </td>
+        </MatTableRow>
+    </MatTable>
+}
+
+<MatDialog @bind-IsOpen="@IsDeleteDialogOpened">
+    <MatDialogTitle>Удаление станции</MatDialogTitle>
+    <MatDialogContent>
+        <MatBody1>Вы действительно хотите удалить данную станцию?</MatBody1>
+        <MatBody2>Местоположение: @SelectedItem?.Location</MatBody2>
+        <MatBody2>Связана с зарослью: @SelectedItem?.SectorId</MatBody2>
+        <MatBody1 Class="text-danger">
+            ВНИМАНИЕ! Данное действие приведёт к удалению всех связанных с сектором данных!
+        </MatBody1>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="() => IsDeleteDialogOpened = false">Нет</MatButton>
+        <MatButton Class="button-danger" Unelevated="true" OnClick="DeleteStation">Да, удалить</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
+<MatDialog @bind-IsOpen="@IsCreateDialogOpened">
+    <MatDialogTitle>Добавление станции</MatDialogTitle>
+    <MatDialogContent>
+        <p>
+            <MatNumericUpDownField Label="Широта"
+                                   @bind-Value="@Command.Location.Y"
+                                   DecimalPlaces="8"
+                                   Maximum="90"
+                                   Minimum="-90"/>
+        </p>
+        <p>
+            <MatNumericUpDownField Label="Долгота"
+                                   @bind-Value="@Command.Location.X"
+                                   DecimalPlaces="8"
+                                   Maximum="180"
+                                   Minimum="-180"/>
+        </p>
+        <p>
+            <MatSelectItem Label="Сектор" @bind-Value="SelectedSector" Items="@_sectors">
+                <ItemTemplate>
+                    <span>@context.Title</span>
+                </ItemTemplate>
+            </MatSelectItem>
+        </p>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="() => IsCreateDialogOpened = false">Отменить</MatButton>
+        <MatButton Unelevated="true" OnClick="CreateStation">Добавить</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
+@code {
+    private Station[] _stations;
+
+    public CreateStationCommand Command { get; set; } = new CreateStationCommand();
+
+    public bool IsDeleteDialogOpened { get; set; }
+    public Station SelectedItem { get; set; }
+
+    public bool IsCreateDialogOpened { get; set; }
+
+    private Sector[] _sectors =
+    {
+    };
+
+    public Sector SelectedSector { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _stations = await Mediator.Send(new GetAllStationsQuery());
+        _sectors = await Mediator.Send(new GetAllSectorsQuery());
+    }
+
+    public void OpenDeleteDialog(Station sector)
+    {
+        IsDeleteDialogOpened = true;
+        SelectedItem = sector;
+    }
+
+    public async Task DeleteStation()
+    {
+        const string message = "Станция успешно удалена!";
+        const string title = "Удаление станции";
+
+    //TODO:
+    // try
+    // {
+    //     await Mediator.Send(new DeleteSectorCommand
+    //     {
+    //         SectorId = SelectedItem.Id
+    //     });
+    //     Toaster.Add(message, MatToastType.Success, title);
+    //     _stations = await Mediator.Send(new GetAllSectorsQuery());
+    //     IsDeleteDialogOpened = false;
+    // }
+    // catch(Exception e)
+    // {
+    //     Toaster.Add(e.Message, MatToastType.Danger, title);
+    // }
+    }
+
+    public async Task CreateStation()
+    {
+        try
+        {
+            Command.SectorId = SelectedSector.Id;
+
+            await Mediator.Send(Command);
+            Toaster.Add("Станция успешно добавлена!", MatToastType.Success, "Добавление");
+
+            _stations = await Mediator.Send(new GetAllStationsQuery());
+            IsCreateDialogOpened = false;
+        }
+        catch(Exception e)
+        {
+            Toaster.Add(e.Message, MatToastType.Danger, "Ошибка");
+        }
+    }
+
+}

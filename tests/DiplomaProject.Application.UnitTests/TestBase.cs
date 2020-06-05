@@ -169,7 +169,7 @@ namespace DiplomaProject.Application.UnitTests
             context.Stations.Add(new Station
             {
                 Location = new Point(1.1, 1.1),
-                ThicketId = 1
+                SectorId = 1
             });
             context.SaveChanges();
         }

@@ -17,7 +17,7 @@ namespace DiplomaProject.Application.UnitTests.Stations.Commands
             var command = new CreateStationCommand
             {
                 Location = new Point(1.1, 1.1),
-                ThicketId = 1
+                SectorId = 1
             };
             var handler = new CreateStationCommandHandler(ApplicationContext);
 
@@ -32,7 +32,7 @@ namespace DiplomaProject.Application.UnitTests.Stations.Commands
             var command = new CreateStationCommand
             {
                 Location = new Point(1.1, 1.1),
-                ThicketId = -1
+                SectorId = -1
             };
             var handler = new CreateStationCommandHandler(ApplicationContext);
 

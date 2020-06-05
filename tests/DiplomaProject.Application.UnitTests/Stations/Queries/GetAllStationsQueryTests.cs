@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using DiplomaProject.Application.Stations.Queries;
 using FluentAssertions;
@@ -15,8 +16,10 @@ namespace DiplomaProject.Application.UnitTests.Stations.Queries
             var handler = new GetAllStationsQueryHandler(ApplicationContext);
 
             var result = await handler.Handle(command, CancellationToken.None);
+            var first = result.First();
 
             result.Should().HaveCount(1);
+            first.Sector.Should().NotBeNull();
         }
     }
 }

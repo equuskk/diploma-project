@@ -1,0 +1,91 @@
+﻿@page "/expeditionMaster/addEmployees/{Id:int}"
+@using DiplomaProject.Domain.DTOs
+@using DiplomaProject.Application.Employees.Queries
+@using DiplomaProject.Application.Expeditions.Commands
+@inject IMatToaster Toaster
+@inject IMediator Mediator
+@inject NavigationManager NavigationManager
+<MatH5>Добавление сотрудников к эспедиции</MatH5>
+<MatBody1>Для добавления сотрудинков к экспедиции просто нажмите на нужную строчку</MatBody1>
+
+<MatTable Items="@_employees" Striped="true" AllowSelection="true" ShowFooter="false" ShowPaging="false" SelectionChanged="SelectionChangedEvent">
+    <MatTableHeader>
+        <th>ФИО</th>
+        <th>Пол</th>
+        <th>Дата рождения</th>
+        <th>Стаж</th>
+    </MatTableHeader>
+    <MatTableRow>
+        <td>@context.Fio</td>
+        <td>@context.Sex</td>
+        <td>@context.BirthDay</td>
+        <td>@context.EmploymentDate</td>
+    </MatTableRow>
+</MatTable>
+
+<MatBody1>Выбранные сотрудники:</MatBody1>
+<MatList>
+    @foreach(var employee in SelectedEmployees)
+    {
+        <MatListItem>
+            @employee.Fio
+        </MatListItem>
+    }
+</MatList>
+
+<MatButton Raised="true" OnClick="AddEmployeesToExpedition">Сохранить</MatButton>
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private EmployeeDto[] _employees;
+
+    public List<EmployeeDto> SelectedEmployees { get; set; } = new List<EmployeeDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _employees = await Mediator.Send(new GetAllEmployeesQuery());
+    }
+
+    public void SelectionChangedEvent(object row)
+    {
+        var employee = row as EmployeeDto;
+        if(employee is null)
+        {
+            return;
+        }
+
+        if(SelectedEmployees.Any(x => x.Id == employee.Id))
+        {
+            SelectedEmployees.Remove(employee);
+            StateHasChanged();
+            return;
+        }
+
+        SelectedEmployees.Add(employee);
+        StateHasChanged();
+    }
+
+    public async Task AddEmployeesToExpedition()
+    {
+        try
+        {
+            var command = new AddEmployeesToExpeditionCommand
+            {
+                ExpeditionId = Id,
+                UserIds = SelectedEmployees.Select(x => x.Id).ToArray()
+            };
+
+            await Mediator.Send(command);
+            Toaster.Add("Сотрудники успешно добавлены к экспедиции!", MatToastType.Success, "Добавление");
+            NavigationManager.NavigateTo("/"); //TODO:
+        }
+        catch(Exception e)
+        {
+            Toaster.Add(e.Message, MatToastType.Danger, "Ошибка");
+        }
+    }
+
+}

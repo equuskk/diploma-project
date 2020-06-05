@@ -52,6 +52,7 @@ namespace DiplomaProject.Application.UnitTests
             InitSeaweeds(context);
             InitGroundTypes(context);
             InitThickets(context);
+            InitStations(context);
 
             context.SaveChanges();
         }
@@ -159,6 +160,16 @@ namespace DiplomaProject.Application.UnitTests
                 Location = new Point(1.1, 1.1),
                 WeightPerMeter = 1,
                 Stock = 10 * 10 * 1
+            });
+            context.SaveChanges();
+        }
+
+        private void InitStations(ApplicationDbContext context)
+        {
+            context.Stations.Add(new Station
+            {
+                Location = new Point(1.1, 1.1),
+                ThicketId = 1
             });
             context.SaveChanges();
         }

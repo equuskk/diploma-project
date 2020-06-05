@@ -22,7 +22,7 @@ namespace DiplomaProject.Application.UnitTests.Sectors.Commands
 
             var result = await handler.Handle(command, CancellationToken.None);
 
-            result.Id.Should().Be(2);
+            result.Id.Should().Be(3);
             result.Title.Should().Be(title);
             result.Description.Should().Be(description);
         }

@@ -83,11 +83,16 @@ namespace DiplomaProject.Application.UnitTests
 
         private void InitSectors(ApplicationDbContext context)
         {
-            context.Sectors.Add(new Sector
-            {
-                Title = "Title",
-                Description = "Description"
-            });
+            context.Sectors.AddRange(new Sector
+                                     {
+                                         Title = "Title #1",
+                                         Description = "Description #1"
+                                     },
+                                     new Sector
+                                     {
+                                         Title = "Title #2",
+                                         Description = "Description #2"
+                                     });
             context.SaveChanges();
         }
 

@@ -18,9 +18,9 @@ namespace DiplomaProject.Application.UnitTests.Sectors.Queries
             var result = await handler.Handle(command, CancellationToken.None);
             var first = result.First();
 
-            result.Should().HaveCount(1);
+            result.Should().HaveCount(2);
             first.Id.Should().Be(1);
-            first.Title.Should().Be("Title");
+            first.Title.Should().Be("Title #2");
         }
     }
 }

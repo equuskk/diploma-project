@@ -3,6 +3,7 @@
 @using DiplomaProject.Application.Expeditions.Commands
 @inject IMediator Mediator
 @inject IMatToaster Toaster
+@inject NavigationManager NavigationManager
 
 <MatH5>Экспедиции</MatH5>
 
@@ -27,7 +28,7 @@ else
             <td>@context.FromDate.ToString(DateTimeFormat)</td>
             <td>@context.ToDate.ToString(DateTimeFormat)</td>
             <td>
-                <MatButton Outlined>Подробнее</MatButton>
+                <MatButton Outlined OnClick="() => DetailsClick(context)">Подробнее</MatButton>
             </td>
             <td>
                 <MatButton Style="background-color: #B00020" Unelevated="true" OnClick="() => OpenDeleteDialog(context)">Удалить</MatButton>
@@ -62,6 +63,11 @@ else
     protected override async Task OnInitializedAsync()
     {
         _expeditions = await Mediator.Send(new GetAllExpeditionsQuery());
+    }
+
+    private void DetailsClick(Expedition item)
+    {
+        NavigationManager.NavigateTo($"/expeditions/details/{item.Id}");
     }
 
     private void OpenDeleteDialog(Expedition item)

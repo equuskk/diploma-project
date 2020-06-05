@@ -1,0 +1,137 @@
+﻿@page "/expeditions/details/{ExpeditionId:int}"
+@using DiplomaProject.Domain.DTOs
+@using DiplomaProject.Application.Expeditions.Queries
+@inject IMediator Mediator
+@inject IMatToaster Toaster
+
+<MatH5>Подробности об экспедиции #@ExpeditionId</MatH5>
+
+<MatTabGroup>
+    <MatTab Label="Сотрудники">
+        <MatBody1>В экспедиции участвовали следующие сотрудники:</MatBody1>
+        <MatTable Items="@_expedition?.Employees" Striped="true" ShowFooter="false" ShowPaging="false">
+            <MatTableHeader>
+                <th>ФИО</th>
+                <th>Пол</th>
+                <th>Дата рождения</th>
+                <th>Стаж</th>
+            </MatTableHeader>
+            <MatTableRow>
+                <td>@context.Fio</td>
+                <td>@context.Sex</td>
+                <td>@context.BirthDay</td>
+                <td>@context.EmploymentDate</td>
+            </MatTableRow>
+        </MatTable>
+    </MatTab>
+    <MatTab Label="Секторы">
+        <MatBody1>В экспедиции были посещены следующие сектора:</MatBody1>
+        <MatTable Items="@_expedition?.Sectors" Striped="true" ShowFooter="false" ShowPaging="false">
+            <MatTableHeader>
+                <th>Название</th>
+                <th>Описание</th>
+            </MatTableHeader>
+            <MatTableRow>
+                <td>@context.Title</td>
+                <td>@context.Description</td>
+            </MatTableRow>
+        </MatTable>
+    </MatTab>
+    <MatTab Label="Заросли">
+        <MatBody1>В результате экспедиции были добавлены следующие заросли:</MatBody1>
+        <MatTable Items="@_expedition?.Thickets" Striped="true">
+            <MatTableHeader>
+                <th>Местоположение</th>
+                <th>Дата</th>
+                <th>Масса на м^2 (в кг)</th>
+                <th>Длина</th>
+                <th>Ширина</th>
+                <th>Запас</th>
+                <th>Литораль</th>
+                <th>Тип грунта</th>
+                <th>Вид водоросли</th>
+                <th>Сектор</th>
+            </MatTableHeader>
+            <MatTableRow>
+                <td>@context.Location</td>
+                <td>@context.Date.ToString()</td>
+                <td>@context.WeightPerMeter</td>
+                <td>@context.Length м.</td>
+                <td>@context.Width м.</td>
+                <td>@context.Stock</td>
+                <td>@context.Litoral.Title</td>
+                <td>@context.GroundType.Title</td>
+                <td>@context.Seaweed.Title</td>
+                <td>@context.Sector.Title</td>
+            </MatTableRow>
+        </MatTable>
+    </MatTab>
+    <MatTab Label="Итоги">
+        <MatBody1>В экспедиции участвовало @_expedition?.Employees.Length человек, а именно:</MatBody1>
+        <MatList TwoLine="true">
+            @foreach(var employee in _expedition?.Employees)
+            {
+                <MatListItem>
+                    <MatListItemText>
+                        <MatListItemPrimaryText>@employee.Fio</MatListItemPrimaryText>
+                        <MatListItemSecondaryText>Должность</MatListItemSecondaryText>
+                    </MatListItemText>
+                </MatListItem>
+            }
+        </MatList>
+
+        <MatBody1>В ходе экспедиции было посещено @_expedition?.Sectors.Length секторов, а именно:</MatBody1>
+        <MatList TwoLine="true">
+            @foreach(var sector in _expedition?.Sectors)
+            {
+                <MatListItem>
+                    <MatListItemText>
+                        <MatListItemPrimaryText>@sector.Title</MatListItemPrimaryText>
+                        <MatListItemSecondaryText>@sector.Description</MatListItemSecondaryText>
+                    </MatListItemText>
+                </MatListItem>
+            }
+        </MatList>
+
+        <MatBody1>Были обнаружены следующие заросли:</MatBody1>
+        <MatList TwoLine="true">
+            @foreach(var thicket in _expedition?.Thickets)
+            {
+                <MatListItem>
+                    <MatListItemText>
+                        <MatListItemPrimaryText>@thicket.Seaweed.Title</MatListItemPrimaryText>
+                        <MatListItemSecondaryText>Запас: @thicket.Stock кг</MatListItemSecondaryText>
+                    </MatListItemText>
+                </MatListItem>
+            }
+        </MatList>
+
+        <MatBody1>Суммарный запас по всем видам водорослей в результате экспедиции равен: @_expedition?.Thickets.Sum(x => x.Stock) кг</MatBody1>
+        <MatButton Raised="true">Экспортировать данные в csv</MatButton>
+    </MatTab>
+</MatTabGroup>
+
+
+@code {
+
+    [Parameter]
+    public int ExpeditionId { get; set; }
+
+    private ExpeditionDto _expedition;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _expedition = await Mediator.Send(new GetExpeditionByIdQuery
+            {
+                Id = ExpeditionId
+            });
+        }
+        catch(Exception e)
+        {
+            Toaster.Add(e.Message, MatToastType.Danger, "Ошибка");
+        }
+    }
+
+}

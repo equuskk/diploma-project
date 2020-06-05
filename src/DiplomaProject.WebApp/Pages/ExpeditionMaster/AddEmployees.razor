@@ -80,7 +80,7 @@
 
             await Mediator.Send(command);
             Toaster.Add("Сотрудники успешно добавлены к экспедиции!", MatToastType.Success, "Добавление");
-            NavigationManager.NavigateTo("/"); //TODO:
+            NavigationManager.NavigateTo($"/expeditions/details/{Id}");
         }
         catch(Exception e)
         {

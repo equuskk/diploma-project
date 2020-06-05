@@ -118,21 +118,20 @@ else
         const string message = "Станция успешно удалена!";
         const string title = "Удаление станции";
 
-    //TODO:
-    // try
-    // {
-    //     await Mediator.Send(new DeleteSectorCommand
-    //     {
-    //         SectorId = SelectedItem.Id
-    //     });
-    //     Toaster.Add(message, MatToastType.Success, title);
-    //     _stations = await Mediator.Send(new GetAllSectorsQuery());
-    //     IsDeleteDialogOpened = false;
-    // }
-    // catch(Exception e)
-    // {
-    //     Toaster.Add(e.Message, MatToastType.Danger, title);
-    // }
+        try
+        {
+            await Mediator.Send(new DeleteStationCommand
+            {
+                Id = SelectedItem.Id
+            });
+            Toaster.Add(message, MatToastType.Success, title);
+            _stations = await Mediator.Send(new GetAllStationsQuery());
+            IsDeleteDialogOpened = false;
+        }
+        catch(Exception e)
+        {
+            Toaster.Add(e.Message, MatToastType.Danger, title);
+        }
     }
 
     public async Task CreateStation()

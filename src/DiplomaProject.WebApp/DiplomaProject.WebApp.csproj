@@ -19,16 +19,4 @@
         <ProjectReference Include="..\DiplomaProject.Domain\DiplomaProject.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-        <Content Update="Pages\Help\SeaweedCategories\Index.razor">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        </Content>
-        <Content Update="Pages\Help\GrountTypes\Index.razor">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        </Content>
-        <Content Update="Pages\Help\Seaweeds\Index.razor">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        </Content>
-    </ItemGroup>
-
 </Project>

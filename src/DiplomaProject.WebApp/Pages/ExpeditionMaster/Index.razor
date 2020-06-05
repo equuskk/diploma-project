@@ -1,0 +1,46 @@
+﻿@page "/expeditionMaster/index"
+@using DiplomaProject.Application.Expeditions.Commands
+@inject IMatToaster Toaster
+@inject IMediator Mediator
+@inject NavigationManager NavigationManager
+<MatH5>Добавление экспедиции</MatH5>
+
+<MatBody1>Экспедиция совершалась...</MatBody1>
+<p>
+    <MatBody1>С даты</MatBody1>
+    <MatDatePicker @bind-Value="@FromDate" Required="true"></MatDatePicker>
+</p>
+
+<p>
+    <MatBody1>По дату</MatBody1>
+    <MatDatePicker @bind-Value="@ToDate" Required="true"></MatDatePicker>
+</p>
+
+<MatButton Raised="true" OnClick="AddExpedition">Продолжить</MatButton>
+
+@code {
+
+    public DateTime FromDate { get; set; }
+    public DateTime ToDate { get; set; }
+
+    public async Task AddExpedition()
+    {
+        try
+        {
+            var command = new CreateExpeditionCommand
+            {
+                FromDate = new DateTimeOffset(FromDate),
+                ToDate = new DateTimeOffset(ToDate)
+            };
+
+            var result = await Mediator.Send(command);
+            Toaster.Add("Экспедиция успешно добавлена!", MatToastType.Success, "Добавление");
+            NavigationManager.NavigateTo($"/expeditionMaster/addSectors/{result.Id}");
+        }
+        catch(Exception e)
+        {
+            Toaster.Add(e.Message, MatToastType.Danger, "Ошибка");
+        }
+    }
+
+}

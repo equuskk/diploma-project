@@ -21,7 +21,8 @@ namespace DiplomaProject.Application.Stations.Commands
             var item = new Station
             {
                 Location = request.Location,
-                SectorId = request.SectorId
+                SectorId = request.SectorId,
+                Title = request.Title
             };
             await _context.Stations.AddAsync(item, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
@@ -32,6 +33,7 @@ namespace DiplomaProject.Application.Stations.Commands
 
     public class CreateStationCommand : IRequest<Station>
     {
+        public string Title { get; set; }
         public Point Location { get; set; }
         public int SectorId { get; set; }
 

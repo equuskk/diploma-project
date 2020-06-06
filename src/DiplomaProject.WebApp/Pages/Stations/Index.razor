@@ -23,12 +23,14 @@ else
     <MatTable Items="@_stations" class="mat-elevation-z5" ShowFooter="false" ShowPaging="false" Striped="true">
         <MatTableHeader>
             <th>Id</th>
+            <th>Название</th>
             <th>Местоположение</th>
             <th>Привязана к сектору</th>
             <th></th>
         </MatTableHeader>
         <MatTableRow>
             <td>@context.Id</td>
+            <td>@context.Title</td>
             <td>@context.Location</td>
             <td>@context.Sector.Title</td>
             <td>
@@ -42,6 +44,7 @@ else
     <MatDialogTitle>Удаление станции</MatDialogTitle>
     <MatDialogContent>
         <MatBody1>Вы действительно хотите удалить данную станцию?</MatBody1>
+        <MatBody2>Название: @SelectedItem?.Title</MatBody2>
         <MatBody2>Местоположение: @SelectedItem?.Location</MatBody2>
         <MatBody2>Связана с зарослью: @SelectedItem?.SectorId</MatBody2>
         <MatBody1 Class="text-danger">
@@ -58,21 +61,24 @@ else
     <MatDialogTitle>Добавление станции</MatDialogTitle>
     <MatDialogContent>
         <p>
+            <MatTextField Label="Название" @bind-Value="@Command.Title" Required="true"/>
+        </p>
+        <p>
             <MatNumericUpDownField Label="Широта"
                                    @bind-Value="@Command.Location.Y"
                                    DecimalPlaces="8"
                                    Maximum="90"
-                                   Minimum="-90"/>
+                                   Minimum="-90" Required="true"/>
         </p>
         <p>
             <MatNumericUpDownField Label="Долгота"
                                    @bind-Value="@Command.Location.X"
                                    DecimalPlaces="8"
                                    Maximum="180"
-                                   Minimum="-180"/>
+                                   Minimum="-180" Required="true"/>
         </p>
         <p>
-            <MatSelectItem Label="Сектор" @bind-Value="SelectedSector" Items="@_sectors">
+            <MatSelectItem Label="Сектор" @bind-Value="SelectedSector" Items="@_sectors" Required="true">
                 <ItemTemplate>
                     <span>@context.Title</span>
                 </ItemTemplate>

@@ -280,6 +280,10 @@ namespace DiplomaProject.DataAccess.Migrations
                 b.Property<int>("SectorId")
                  .HasColumnType("integer");
 
+                b.Property<string>("Title")
+                 .IsRequired()
+                 .HasColumnType("text");
+
                 b.HasKey("Id");
 
                 b.HasIndex("SectorId");

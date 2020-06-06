@@ -7,6 +7,7 @@ namespace DiplomaProject.Domain.Entities
     {
         public int Id { get; private set; }
         public Point Location { get; set; }
+        public string Title { get; set; }
 
         public int SectorId { get; set; }
 

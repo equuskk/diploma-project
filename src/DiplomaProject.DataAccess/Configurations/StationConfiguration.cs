@@ -13,6 +13,9 @@ namespace DiplomaProject.DataAccess.Configurations
             builder.Property(x => x.Location)
                    .HasColumnType("geography");
 
+            builder.Property(x => x.Title)
+                   .IsRequired();
+
             builder.HasOne(x => x.Sector)
                    .WithMany()
                    .HasForeignKey(x => x.SectorId);

@@ -53,6 +53,7 @@ namespace DiplomaProject.Application.UnitTests
             InitGroundTypes(context);
             InitThickets(context);
             InitStations(context);
+            InitStationsData(context);
 
             context.SaveChanges();
         }
@@ -171,6 +172,19 @@ namespace DiplomaProject.Application.UnitTests
                 Location = new Point(1.1, 1.1),
                 SectorId = 1,
                 Title = "Title"
+            });
+            context.SaveChanges();
+        }
+
+        private void InitStationsData(ApplicationDbContext context)
+        {
+            context.StationsData.Add(new StationData
+            {
+                Date = new DateTimeOffset(2019, 01, 01, 01, 01, 01, TimeSpan.Zero),
+                Density = 10,
+                Depth = 0.2f,
+                StationId = 1,
+                Temperature = -7.3f
             });
             context.SaveChanges();
         }

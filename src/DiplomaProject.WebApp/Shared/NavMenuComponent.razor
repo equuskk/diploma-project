@@ -1,22 +1,27 @@
 ﻿<MatNavMenu>
-    <MatNavItem Href="/">Главная</MatNavItem>
-    <MatNavItem Href="/expeditions/index">Экспедиции</MatNavItem>
-    <MatNavItem Href="/sectors/index">Секторы</MatNavItem>
-    <MatNavItem Href="/thickets/index">Заросли</MatNavItem>
-    <MatNavItem Href="/stations/index">Cтанции</MatNavItem>
-    <MatNavItem Href="/employees/index">Сотрудники</MatNavItem>
-    <MatNavSubMenu>
-        <MatNavSubMenuHeader>
-            <MatNavItem AllowSelection="false">
-                <MatIcon Icon="explore"></MatIcon>&nbsp; Справочник
-            </MatNavItem>
-        </MatNavSubMenuHeader>
-        <MatNavSubMenuList>
-            <MatNavItem Href="/help/litorals/index">Литорали</MatNavItem>
-            <MatNavItem Href="/help/groundTypes/index">Типы грунтов</MatNavItem>
-            <MatNavItem Href="/help/seaweedTypes/index">Типы водорослей</MatNavItem>
-            <MatNavItem Href="/help/seaweedCategories/index">Категории водорослей</MatNavItem>
-            <MatNavItem Href="/help/seaweeds/index">Водоросли</MatNavItem>
-        </MatNavSubMenuList>
-    </MatNavSubMenu>
+    <AuthorizeView Policy="@nameof(RoleNames.JuniorEmployee)">
+        <MatNavItem Href="/expeditions/index">Экспедиции</MatNavItem>
+        <MatNavItem Href="/sectors/index">Секторы</MatNavItem>
+        <MatNavItem Href="/thickets/index">Заросли</MatNavItem>
+        <MatNavItem Href="/stations/index">Cтанции</MatNavItem>
+        <MatNavItem Href="/employees/index">Сотрудники</MatNavItem>
+        <MatNavSubMenu>
+            <MatNavSubMenuHeader>
+                <MatNavItem AllowSelection="false">
+                    <MatIcon Icon="explore"></MatIcon>&nbsp; Справочник
+                </MatNavItem>
+            </MatNavSubMenuHeader>
+            <MatNavSubMenuList>
+                <MatNavItem Href="/help/litorals/index">Литорали</MatNavItem>
+                <MatNavItem Href="/help/groundTypes/index">Типы грунтов</MatNavItem>
+                <MatNavItem Href="/help/seaweedTypes/index">Типы водорослей</MatNavItem>
+                <MatNavItem Href="/help/seaweedCategories/index">Категории водорослей</MatNavItem>
+                <MatNavItem Href="/help/seaweeds/index">Водоросли</MatNavItem>
+            </MatNavSubMenuList>
+        </MatNavSubMenu>
+    </AuthorizeView>
+    <AuthorizeView Policy="@nameof(RoleNames.Administrator)">
+        <MatNavItem Href="#">Изменение ролей</MatNavItem>
+        <MatNavItem Href="#">Изменение пользователей</MatNavItem>
+    </AuthorizeView>
 </MatNavMenu>

@@ -5,7 +5,7 @@
 @inject IMatToaster Toaster
 @inject IMediator Mediator
 @inject NavigationManager NavigationManager
-@attribute [Authorize]
+@attribute [Authorize(Policy = nameof(RoleNames.SeniorEmployee))]
 
 <MatH5>Добавление сотрудников к эспедиции</MatH5>
 <MatBody1>Для добавления сотрудинков к экспедиции просто нажмите на нужную строчку</MatBody1>

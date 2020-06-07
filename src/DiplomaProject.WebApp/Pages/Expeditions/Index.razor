@@ -8,7 +8,9 @@
 
 <MatH5>Экспедиции</MatH5>
 
-<MatButton Raised Link="/expeditionMaster/index">Добавить экспедицию</MatButton>
+<AuthorizeView Policy="@nameof(RoleNames.SeniorEmployee)">
+    <MatButton Raised Link="/expeditionMaster/index">Добавить экспедицию</MatButton>
+</AuthorizeView>
 
 @if(_expeditions == null)
 {
@@ -32,7 +34,9 @@ else
                 <MatButton Outlined OnClick="() => DetailsClick(context)">Подробнее</MatButton>
             </td>
             <td>
-                <MatButton Style="background-color: #B00020" Unelevated="true" OnClick="() => OpenDeleteDialog(context)">Удалить</MatButton>
+                <AuthorizeView Policy="@nameof(RoleNames.SeniorEmployee)" Context="Auth">
+                    <MatButton Style="background-color: #B00020" Unelevated="true" OnClick="() => OpenDeleteDialog(context)">Удалить</MatButton>
+                </AuthorizeView>
             </td>
         </MatTableRow>
     </MatTable>

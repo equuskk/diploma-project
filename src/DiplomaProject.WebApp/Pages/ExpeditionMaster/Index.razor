@@ -3,7 +3,7 @@
 @inject IMatToaster Toaster
 @inject IMediator Mediator
 @inject NavigationManager NavigationManager
-@attribute [Authorize]
+@attribute [Authorize(Policy = nameof(RoleNames.SeniorEmployee))]
 
 <MatH5>Добавление экспедиции</MatH5>
 

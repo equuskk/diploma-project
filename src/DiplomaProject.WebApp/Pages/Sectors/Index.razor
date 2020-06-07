@@ -7,7 +7,9 @@
 
 <MatH5>Секторы</MatH5>
 
-<MatButton Raised OnClick="() => IsCreateDialogOpened = true">Добавить сектор</MatButton>
+<AuthorizeView Policy="@nameof(RoleNames.SeniorEmployee)">
+    <MatButton Raised OnClick="() => IsCreateDialogOpened = true">Добавить сектор</MatButton>
+</AuthorizeView>
 
 
 @if(_sectors == null)
@@ -32,7 +34,9 @@ else
             <td>@context.Title</td>
             <td>@context.Description</td>
             <td>
-                <MatButton Class="button-danger" Unelevated="true" OnClick="() => OpenDeleteDialog(context)">Удалить сектор</MatButton>
+                <AuthorizeView Policy="@nameof(RoleNames.SeniorEmployee)" Context="Auth">
+                    <MatButton Class="button-danger" Unelevated="true" OnClick="() => OpenDeleteDialog(context)">Удалить сектор</MatButton>
+                </AuthorizeView>
             </td>
         </MatTableRow>
     </MatTable>

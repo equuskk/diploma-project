@@ -9,7 +9,9 @@
 
 <MatH5>Станции</MatH5>
 
-<MatButton Raised OnClick="() => IsCreateDialogOpened = true">Добавить станцию</MatButton>
+<AuthorizeView Policy="@nameof(RoleNames.SeniorEmployee)">
+    <MatButton Raised OnClick="() => IsCreateDialogOpened = true">Добавить станцию</MatButton>
+</AuthorizeView>
 
 
 @if(_stations == null)
@@ -36,7 +38,9 @@ else
             <td>@context.Location</td>
             <td>@context.Sector.Title</td>
             <td>
-                <MatButton Class="button-danger" Unelevated="true" OnClick="() => OpenDeleteDialog(context)">Удалить станцию</MatButton>
+                <AuthorizeView Policy="@nameof(RoleNames.SeniorEmployee)" Context="Auth">
+                    <MatButton Class="button-danger" Unelevated="true" OnClick="() => OpenDeleteDialog(context)">Удалить станцию</MatButton>
+                </AuthorizeView>
             </td>
             <td>
                 <MatButton OnClick="() => NavigateToDetails(context.Id)">Данные со станции</MatButton>

@@ -1,6 +1,6 @@
 ﻿@page "/sectors/index"
-@using DiplomaProject.Application.Sectors.Queries
 @using DiplomaProject.Application.Sectors.Commands
+@using DiplomaProject.Application.Sectors.Queries
 @inject IMediator Mediator
 @inject IMatToaster Toaster
 
@@ -45,7 +45,7 @@ else
         <MatBody2>Описание: @SelectedItem?.Description</MatBody2>
         <MatBody1 Class="text-danger">
             ВНИМАНИЕ! Данное действие приведёт к удалению всех связанных с сектором данных!
-        </MatBody1>    
+        </MatBody1>
     </MatDialogContent>
     <MatDialogActions>
         <MatButton OnClick="() => IsDeleteDialogOpened = false">Нет</MatButton>
@@ -57,10 +57,10 @@ else
     <MatDialogTitle>Добавление сектора</MatDialogTitle>
     <MatDialogContent>
         <p>
-            <MatTextField @bind-Value="@SectorTitle" Label="Название"></MatTextField>
+            <MatTextField @bind-Value="@Command.Title" Label="Название"></MatTextField>
         </p>
         <p>
-            <MatTextField @bind-Value="@SectorDescription" Label="Описание" TextArea="true" FullWidth="true" rows="6"></MatTextField>
+            <MatTextField @bind-Value="@Command.Description" Label="Описание" TextArea="true" FullWidth="true" rows="6"></MatTextField>
         </p>
     </MatDialogContent>
     <MatDialogActions>
@@ -76,8 +76,7 @@ else
     public Sector SelectedItem { get; set; }
 
     public bool IsCreateDialogOpened { get; set; }
-    public string SectorTitle { get; set; }
-    public string SectorDescription { get; set; }
+    public CreateSectorCommand Command { get; set; } = new CreateSectorCommand();
 
     protected override async Task OnInitializedAsync()
     {
@@ -104,27 +103,24 @@ else
             Toaster.Add(message, MatToastType.Success, title);
             _sectors = await Mediator.Send(new GetAllSectorsQuery());
             IsDeleteDialogOpened = false;
+            SelectedItem = null;
         }
         catch(Exception e)
         {
             Toaster.Add(e.Message, MatToastType.Danger, title);
         }
     }
-    
+
     public async Task CreateSector()
     {
         try
         {
-            var command = new CreateSectorCommand()
-            {
-                Title = SectorTitle,
-                Description = SectorDescription
-            };
-
-            await Mediator.Send(command);
+            await Mediator.Send(Command);
             Toaster.Add("Сектор успешно добавлен!", MatToastType.Success, "Добавление");
             _sectors = await Mediator.Send(new GetAllSectorsQuery());
             IsCreateDialogOpened = false;
+
+            Command = new CreateSectorCommand();
         }
         catch(Exception e)
         {

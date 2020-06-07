@@ -89,6 +89,7 @@ else
             });
             Toaster.Add(message, MatToastType.Success, title);
             _expeditions = await Mediator.Send(new GetAllExpeditionsQuery());
+            SelectedExpedition = null;
         }
         catch(Exception e)
         {

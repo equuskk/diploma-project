@@ -208,6 +208,7 @@ else
             Toaster.Add(message, MatToastType.Success, title);
             _thickets = await Mediator.Send(new GetAllThicketsQuery());
             IsDeleteDialogOpened = false;
+            SelectedItem = null;
         }
         catch(Exception e)
         {
@@ -229,6 +230,12 @@ else
             Toaster.Add("Заросль успешно добавлена!", MatToastType.Success, "Добавление");
             _thickets = await Mediator.Send(new GetAllThicketsQuery());
             IsCreateDialogOpened = false;
+
+            Command = new CreateThicketCommand();
+            SelectedLitoral = null;
+            SelectedGroundType = null;
+            SelectedSeaweed = null;
+            SelectedSector = null;
         }
         catch(Exception e)
         {

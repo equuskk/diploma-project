@@ -98,12 +98,11 @@ else
 @code {
     private Station[] _stations;
 
-    public CreateStationCommand Command { get; set; } = new CreateStationCommand();
-
     public bool IsDeleteDialogOpened { get; set; }
     public Station SelectedItem { get; set; }
 
     public bool IsCreateDialogOpened { get; set; }
+    public CreateStationCommand Command { get; set; } = new CreateStationCommand();
 
     private Sector[] _sectors =
     {
@@ -137,6 +136,7 @@ else
             Toaster.Add(message, MatToastType.Success, title);
             _stations = await Mediator.Send(new GetAllStationsQuery());
             IsDeleteDialogOpened = false;
+            SelectedItem = null;
         }
         catch(Exception e)
         {
@@ -155,6 +155,9 @@ else
 
             _stations = await Mediator.Send(new GetAllStationsQuery());
             IsCreateDialogOpened = false;
+
+            Command = new CreateStationCommand();
+            SelectedSector = null;
         }
         catch(Exception e)
         {

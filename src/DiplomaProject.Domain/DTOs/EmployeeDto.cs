@@ -11,6 +11,7 @@ namespace DiplomaProject.Domain.DTOs
         public Sex Sex { get; set; }
         public DateTimeOffset BirthDay { get; set; }
         public DateTimeOffset EmploymentDate { get; set; }
+        public string Role { get; set; }
 
         public string Fio => $"{LastName} {FirstName} {MidName}";
     }

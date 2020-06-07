@@ -16,12 +16,14 @@
                 <th>Пол</th>
                 <th>Дата рождения</th>
                 <th>Стаж</th>
+                <th>Должность</th>
             </MatTableHeader>
             <MatTableRow>
                 <td>@context.Fio</td>
                 <td>@context.Sex</td>
                 <td>@context.BirthDay</td>
                 <td>@context.EmploymentDate</td>
+                <td>@context.Role</td>
             </MatTableRow>
         </MatTable>
     </MatTab>
@@ -68,6 +70,13 @@
         </MatTable>
     </MatTab>
     <MatTab Label="Итоги">
+        <MatBody1>
+            Экспедиция проводилась
+            с <b>@_expedition.FromDate.ToString(DateTimeFormats.DateFormatWithTimeZone)</b>
+            по <b>@_expedition.ToDate.ToString(DateTimeFormats.DateFormatWithTimeZone)</b>
+            (всего @((_expedition.ToDate - _expedition.FromDate).Days) дней)
+        </MatBody1>
+        <hr/>
         <MatBody1>В экспедиции участвовало @_expedition?.Employees.Length человек, а именно:</MatBody1>
         <MatList TwoLine="true">
             @foreach(var employee in _expedition?.Employees)
@@ -75,11 +84,12 @@
                 <MatListItem>
                     <MatListItemText>
                         <MatListItemPrimaryText>@employee.Fio</MatListItemPrimaryText>
-                        <MatListItemSecondaryText>Должность</MatListItemSecondaryText>
+                        <MatListItemSecondaryText>@employee.Role</MatListItemSecondaryText>
                     </MatListItemText>
                 </MatListItem>
             }
         </MatList>
+        <hr/>
 
         <MatBody1>В ходе экспедиции было посещено @_expedition?.Sectors.Length секторов, а именно:</MatBody1>
         <MatList TwoLine="true">
@@ -93,6 +103,7 @@
                 </MatListItem>
             }
         </MatList>
+        <hr/>
 
         <MatBody1>Были обнаружены следующие заросли:</MatBody1>
         <MatList TwoLine="true">
@@ -106,11 +117,13 @@
                 </MatListItem>
             }
         </MatList>
+        <hr/>
 
         <MatBody1>Суммарный запас по всем видам водорослей в результате экспедиции равен: @_expedition?.Thickets.Sum(x => x.Stock) кг</MatBody1>
         <MatButton Raised="true">Экспортировать данные в csv</MatButton>
     </MatTab>
 </MatTabGroup>
+<br/>
 
 
 @code {

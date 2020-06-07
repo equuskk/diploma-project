@@ -28,8 +28,8 @@ else
         </MatTableHeader>
         <MatTableRow>
             <td>@context.Id</td>
-            <td>@context.FromDate.ToString(DateTimeFormat)</td>
-            <td>@context.ToDate.ToString(DateTimeFormat)</td>
+            <td>@context.FromDate.ToString(DateTimeFormats.DateFormatWithTimeZone)</td>
+            <td>@context.ToDate.ToString(DateTimeFormats.DateFormatWithTimeZone)</td>
             <td>
                 <MatButton Outlined OnClick="() => DetailsClick(context)">Подробнее</MatButton>
             </td>
@@ -46,8 +46,8 @@ else
     <MatDialogTitle>Удаление экспедиции</MatDialogTitle>
     <MatDialogContent>
         <MatBody1>Вы действительно хотите удалить данную экспедицию?</MatBody1>
-        <MatBody2>С даты: @SelectedExpedition?.FromDate.ToString(DateTimeFormat)</MatBody2>
-        <MatBody2>По дату: @SelectedExpedition?.ToDate.ToString(DateTimeFormat)</MatBody2>
+        <MatBody2>С даты: @SelectedExpedition?.FromDate.ToString(DateTimeFormats.DateFormatWithTimeZone)</MatBody2>
+        <MatBody2>По дату: @SelectedExpedition?.ToDate.ToString(DateTimeFormats.DateFormatWithTimeZone)</MatBody2>
         <MatBody1 Class="text-danger">
             ВНИМАНИЕ! Данное действие приведёт к удалению всех связанных с экспедицией данных!
         </MatBody1>
@@ -60,7 +60,6 @@ else
 
 @code {
     private Expedition[] _expeditions;
-        const string DateTimeFormat = "d MMMM yyyy года, dddd\n(Часовой пояс: K)";
 
     public bool IsDeleteDialogOpened { get; set; }
     public Expedition SelectedExpedition { get; set; }

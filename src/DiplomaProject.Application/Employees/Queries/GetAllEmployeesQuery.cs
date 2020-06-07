@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using DiplomaProject.DataAccess;
 using DiplomaProject.Domain.DTOs;
+using DiplomaProject.Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace DiplomaProject.Application.Employees.Queries
@@ -11,24 +13,37 @@ namespace DiplomaProject.Application.Employees.Queries
     public class GetAllEmployeesQueryHandler : IRequestHandler<GetAllEmployeesQuery, EmployeeDto[]>
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<Employee> _userManager;
 
-        public GetAllEmployeesQueryHandler(ApplicationDbContext context)
+        public GetAllEmployeesQueryHandler(ApplicationDbContext context, UserManager<Employee> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        public Task<EmployeeDto[]> Handle(GetAllEmployeesQuery request, CancellationToken cancellationToken)
+        public async Task<EmployeeDto[]> Handle(GetAllEmployeesQuery request, CancellationToken cancellationToken)
         {
-            return _context.Users.Select(x => new EmployeeDto
+            var employeesDtoList = new List<EmployeeDto>();
+
+            var employees = await _context.Users.ToArrayAsync(cancellationToken);
+
+            foreach(var employee in employees)
             {
-                Id = x.Id,
-                FirstName = x.FirstName,
-                LastName = x.LastName,
-                MidName = x.MidName,
-                Sex = x.Sex,
-                BirthDay = x.BirthDay,
-                EmploymentDate = x.EmploymentDate
-            }).ToArrayAsync(cancellationToken);
+                var role = await _userManager.GetRolesAsync(employee);
+                employeesDtoList.Add(new EmployeeDto
+                {
+                    Id = employee.Id,
+                    FirstName = employee.FirstName,
+                    LastName = employee.LastName,
+                    MidName = employee.MidName,
+                    Sex = employee.Sex,
+                    BirthDay = employee.BirthDay,
+                    EmploymentDate = employee.EmploymentDate,
+                    Role = string.Join(",", role ?? new string[] { })
+                });
+            }
+
+            return employeesDtoList.ToArray();
         }
     }
 

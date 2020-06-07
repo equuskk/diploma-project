@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DiplomaProject.DataAccess;
@@ -6,6 +7,7 @@ using DiplomaProject.Domain.DTOs;
 using DiplomaProject.Domain.Entities;
 using DiplomaProject.Domain.Exceptions;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace DiplomaProject.Application.Expeditions.Queries
@@ -13,10 +15,12 @@ namespace DiplomaProject.Application.Expeditions.Queries
     public class GetExpeditionByIdQueryHandler : IRequestHandler<GetExpeditionByIdQuery, ExpeditionDto>
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<Employee> _userManager;
 
-        public GetExpeditionByIdQueryHandler(ApplicationDbContext context)
+        public GetExpeditionByIdQueryHandler(ApplicationDbContext context, UserManager<Employee> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task<ExpeditionDto> Handle(GetExpeditionByIdQuery request, CancellationToken cancellationToken)
@@ -30,17 +34,25 @@ namespace DiplomaProject.Application.Expeditions.Queries
             var employees = await _context.EmployeeExpeditions
                                           .Where(x => x.ExpeditionId == request.Id)
                                           .Include(x => x.Employee)
-                                          .Select(x => new EmployeeDto
-                                          {
-                                              Id = x.Employee.Id,
-                                              FirstName = x.Employee.FirstName,
-                                              LastName = x.Employee.LastName,
-                                              MidName = x.Employee.MidName,
-                                              Sex = x.Employee.Sex,
-                                              BirthDay = x.Employee.BirthDay,
-                                              EmploymentDate = x.Employee.EmploymentDate
-                                          })
+                                          .Select(x => x.Employee)
                                           .ToArrayAsync(cancellationToken);
+
+            var employeesDto = new List<EmployeeDto>();
+            foreach(var employee in employees)
+            {
+                var roles = await _userManager.GetRolesAsync(employee);
+                employeesDto.Add(new EmployeeDto
+                {
+                    Id = employee.Id,
+                    FirstName = employee.FirstName,
+                    LastName = employee.LastName,
+                    MidName = employee.MidName,
+                    Sex = employee.Sex,
+                    BirthDay = employee.BirthDay,
+                    EmploymentDate = employee.EmploymentDate,
+                    Role = string.Join(',', roles)
+                });
+            }
 
             var sectors = await _context.ExpeditionSectors
                                         .Where(x => x.ExpeditionId == request.Id)
@@ -64,7 +76,7 @@ namespace DiplomaProject.Application.Expeditions.Queries
             {
                 FromDate = expedition.FromDate,
                 ToDate = expedition.ToDate,
-                Employees = employees,
+                Employees = employeesDto.ToArray(),
                 Sectors = sectors,
                 Thickets = thickets
             };

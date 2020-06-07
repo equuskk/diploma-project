@@ -11,21 +11,23 @@
         <th>ФИО</th>
         <th>Пол</th>
         <th>Дата рождения</th>
+        <th>Дата трудоустройства</th>
         <th>Стаж</th>
+        <th>Должность</th>
     </MatTableHeader>
     <MatTableRow>
         <td>@context.Fio</td>
         <td>@context.Sex</td>
-        <td>@context.BirthDay.DateTime</td>
-        <td>@context.EmploymentDate.DateTime</td>
+        <td>@context.BirthDay.LocalDateTime.ToString(DateTimeFormats.DefaultDateFormat)</td>
+        <td>@context.EmploymentDate.LocalDateTime.ToString(DateTimeFormats.DefaultDateFormat)</td>
+        <td>@((DateTime.Today - context.EmploymentDate.LocalDateTime).Days / 365) лет</td>
+        <td>@context.Role</td>
     </MatTableRow>
 </MatTable>
 
 @code {
 
     private EmployeeDto[] _employees;
-
-    public List<EmployeeDto> SelectedEmployees { get; set; } = new List<EmployeeDto>();
 
     protected override async Task OnInitializedAsync()
     {

@@ -21,19 +21,19 @@ namespace DiplomaProject.WebApp.HostedServices
             using var scope = _serviceProvider.CreateScope();
             var manager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var isAdminRoleExists = await manager.RoleExistsAsync(RoleNames.Administrator);
-            var isJuniorRoleExists = await manager.RoleExistsAsync(RoleNames.JuniorEmployee);
-            var isSeniorRoleExists = await manager.RoleExistsAsync(RoleNames.SeniorEmployee);
 
             if(!isAdminRoleExists)
             {
                 await manager.CreateAsync(new IdentityRole(RoleNames.Administrator));
             }
 
+            var isJuniorRoleExists = await manager.RoleExistsAsync(RoleNames.JuniorEmployee);
             if(!isJuniorRoleExists)
             {
                 await manager.CreateAsync(new IdentityRole(RoleNames.JuniorEmployee));
             }
 
+            var isSeniorRoleExists = await manager.RoleExistsAsync(RoleNames.SeniorEmployee);
             if(!isSeniorRoleExists)
             {
                 await manager.CreateAsync(new IdentityRole(RoleNames.SeniorEmployee));

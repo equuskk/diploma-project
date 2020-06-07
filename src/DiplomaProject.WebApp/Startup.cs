@@ -10,6 +10,7 @@ using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,7 +33,7 @@ namespace DiplomaProject.WebApp
             services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString,
                                                                                      x => x.UseNetTopologySuite()));
 
-            services.AddDefaultIdentity<Employee>(options =>
+            services.AddIdentity<Employee, IdentityRole>(options =>
                     {
 #if DEBUG
                         options.User.RequireUniqueEmail = true;
@@ -54,6 +55,7 @@ namespace DiplomaProject.WebApp
             services.AddScoped<HttpClient>();
 
             services.AddHostedService<SeedDatabaseHostedService>();
+            services.AddHostedService<InitDefaultRolesHostedService>();
 
             services.AddMediatR(typeof(GetAllSectorsQuery).GetTypeInfo().Assembly);
             services.AddMatToaster(config =>
@@ -65,6 +67,16 @@ namespace DiplomaProject.WebApp
                 config.ShowProgressBar = false;
                 config.MaximumOpacity = 100;
                 config.VisibleStateDuration = 4000;
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(nameof(RoleNames.JuniorEmployee),
+                                  policy => policy.RequireRole(RoleNames.JuniorEmployee, RoleNames.SeniorEmployee));
+                options.AddPolicy(nameof(RoleNames.SeniorEmployee),
+                                  policy => policy.RequireRole(RoleNames.SeniorEmployee));
+                options.AddPolicy(nameof(RoleNames.Administrator),
+                                  policy => policy.RequireRole(RoleNames.Administrator));
             });
         }
 

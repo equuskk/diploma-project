@@ -49,5 +49,10 @@ namespace DiplomaProject.Application.StationsData.Commands
         public float Depth { get; set; }
 
         public int StationId { get; set; }
+
+        public CreateStationDataCommand()
+        {
+            Date = DateTimeOffset.Now;
+        }
     }
 }

@@ -4,6 +4,7 @@
 @using DiplomaProject.Application.Sectors.Queries
 @inject IMediator Mediator
 @inject IMatToaster Toaster
+@inject NavigationManager NavigationManager
 
 <MatH5>Станции</MatH5>
 
@@ -26,7 +27,7 @@ else
             <th>Название</th>
             <th>Местоположение</th>
             <th>Привязана к сектору</th>
-            <th></th>
+            <th colspan="2"></th>
         </MatTableHeader>
         <MatTableRow>
             <td>@context.Id</td>
@@ -35,6 +36,9 @@ else
             <td>@context.Sector.Title</td>
             <td>
                 <MatButton Class="button-danger" Unelevated="true" OnClick="() => OpenDeleteDialog(context)">Удалить станцию</MatButton>
+            </td>
+            <td>
+                <MatButton OnClick="() => NavigateToDetails(context.Id)">Данные со станции</MatButton>
             </td>
         </MatTableRow>
     </MatTable>
@@ -156,6 +160,11 @@ else
         {
             Toaster.Add(e.Message, MatToastType.Danger, "Ошибка");
         }
+    }
+
+    public void NavigateToDetails(int id)
+    {
+        NavigationManager.NavigateTo($"/stations/details/{id}");
     }
 
 }

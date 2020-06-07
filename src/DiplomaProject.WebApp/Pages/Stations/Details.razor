@@ -1,0 +1,172 @@
+﻿@page "/stations/details/{StationId:int}"
+@using DiplomaProject.Application.StationsData.Commands
+@using DiplomaProject.Application.StationsData.Queries
+@inject IMediator Mediator
+@inject IMatToaster Toaster
+
+<MatH5>Данные со станции #@StationId</MatH5>
+
+<MatButton Raised OnClick="() => IsCreateDialogOpened = true">Добавить данные</MatButton>
+
+
+@if(_stationsData == null)
+{
+    <MatProgressBar Indeterminate="true"/>
+}
+else if(_stationsData.Length == 0)
+{
+    <MatH3>Список пуст.</MatH3>
+}
+else
+{
+    <MatTable Items="@_stationsData" class="mat-elevation-z5" ShowFooter="false" ShowPaging="false" Striped="true">
+        <MatTableHeader>
+            <th>Id</th>
+            <th>Дата</th>
+            <th>Температура</th>
+            <th>Плотность воды</th>
+            <th>Глубина</th>
+            <th></th>
+        </MatTableHeader>
+        <MatTableRow>
+            <td>@context.Id</td>
+            <td>@context.Date.LocalDateTime</td>
+            <td>@context.Temperature</td>
+            <td>@context.Density</td>
+            <td>@context.Depth</td>
+            <td>
+                <MatButton Class="button-danger" Unelevated="true" OnClick="() => OpenDeleteDialog(context)">Удалить</MatButton>
+            </td>
+        </MatTableRow>
+    </MatTable>
+}
+
+<MatDialog @bind-IsOpen="@IsDeleteDialogOpened">
+    <MatDialogTitle>Удаление данных станции</MatDialogTitle>
+    <MatDialogContent>
+        <MatBody1>Вы действительно хотите удалить эти данные?</MatBody1>
+        <MatBody2>Дата: @SelectedStationData?.Date</MatBody2>
+        <MatBody2>Температура: @SelectedStationData?.Temperature</MatBody2>
+        <MatBody2>Плотность воды: @SelectedStationData?.Density</MatBody2>
+        <MatBody2>Глубина: @SelectedStationData?.Depth</MatBody2>
+        <MatBody2>Идентификатор станции: #@SelectedStationData?.StationId</MatBody2>
+        <MatBody1 Class="text-danger">
+            ВНИМАНИЕ! Данное действие приведёт к удалению всех связанных с сектором данных!
+        </MatBody1>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="() => IsDeleteDialogOpened = false">Нет</MatButton>
+        <MatButton Class="button-danger" Unelevated="true" OnClick="DeleteStationData">Да, удалить</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
+
+<MatDialog @bind-IsOpen="@IsCreateDialogOpened">
+    <MatDialogTitle>Добавление данные</MatDialogTitle>
+    <MatDialogContent>
+        <p>
+            <MatDatePicker Label="Дата" @bind-Value="@DateTime" EnableTime="true" Enable24hours="true"/>
+        </p>
+        <p>
+            <MatNumericUpDownField Label="Температура"
+                                   @bind-Value="@Command.Temperature"
+                                   DecimalPlaces="2"
+                                   Maximum="200"
+                                   Minimum="-200" Required="true"/>
+        </p>
+        <p>
+            <MatNumericUpDownField Label="Плотность воды"
+                                   @bind-Value="@Command.Density"
+                                   DecimalPlaces="4"
+                                   Minimum="0" Required="true"/>
+        </p>
+        <p>
+            <MatNumericUpDownField Label="Глубина"
+                                   @bind-Value="@Command.Depth"
+                                   DecimalPlaces="2"
+                                   Minimum="0" Required="true"/>
+        </p>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="() => IsCreateDialogOpened = false">Отменить</MatButton>
+        <MatButton Unelevated="true" OnClick="CreateStationData">Добавить</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
+@code {
+
+    [Parameter]
+    public int StationId { get; set; }
+
+    private StationData[] _stationsData;
+
+    public bool IsDeleteDialogOpened { get; set; }
+    public StationData SelectedStationData { get; set; }
+
+    public bool IsCreateDialogOpened { get; set; }
+    public CreateStationDataCommand Command { get; set; } = new CreateStationDataCommand();
+    public DateTime DateTime { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _stationsData = await Mediator.Send(new GetDataFromStationByIdQuery
+        {
+            StationId = StationId
+        });
+    }
+
+    public void OpenDeleteDialog(StationData stationData)
+    {
+        IsDeleteDialogOpened = true;
+        SelectedStationData = stationData;
+    }
+
+    public async Task DeleteStationData()
+    {
+        const string message = "Данные успешно удалены!";
+        const string title = "Удаление данных";
+
+        try
+        {
+            await Mediator.Send(new DeleteStationDataCommand
+            {
+                StationDataId = SelectedStationData.Id
+            });
+            Toaster.Add(message, MatToastType.Success, title);
+            _stationsData = await Mediator.Send(new GetDataFromStationByIdQuery
+            {
+                StationId = StationId
+            });
+            IsDeleteDialogOpened = false;
+        }
+        catch(Exception e)
+        {
+            Toaster.Add(e.Message, MatToastType.Danger, title);
+        }
+    }
+
+    public async Task CreateStationData()
+    {
+        try
+        {
+            Command.StationId = StationId;
+            Command.Date = new DateTimeOffset(DateTime);
+
+            await Mediator.Send(Command);
+            Toaster.Add("Станция успешно добавлена!", MatToastType.Success, "Добавление");
+
+            _stationsData = await Mediator.Send(new GetDataFromStationByIdQuery
+            {
+                StationId = StationId
+            });
+            IsCreateDialogOpened = false;
+            Command = new CreateStationDataCommand();
+            DateTime = DateTime.Now;
+        }
+        catch(Exception e)
+        {
+            Toaster.Add(e.Message, MatToastType.Danger, "Ошибка");
+        }
+    }
+
+}

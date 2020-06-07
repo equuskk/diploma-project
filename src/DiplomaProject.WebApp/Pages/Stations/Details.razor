@@ -3,6 +3,7 @@
 @using DiplomaProject.Application.StationsData.Queries
 @inject IMediator Mediator
 @inject IMatToaster Toaster
+@attribute [Authorize]
 
 <MatH5>Данные со станции #@StationId</MatH5>
 

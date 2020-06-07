@@ -2,6 +2,8 @@
 @using DiplomaProject.Domain.DTOs
 @using DiplomaProject.Application.Employees.Queries
 @inject IMediator Mediator
+@attribute [Authorize]
+
 <MatH5>Список сотрудников</MatH5>
 
 <MatTable Items="@_employees" Striped="true" ShowFooter="false" ShowPaging="false">

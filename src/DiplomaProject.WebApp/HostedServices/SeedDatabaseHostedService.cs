@@ -62,15 +62,12 @@ namespace DiplomaProject.WebApp.HostedServices
                 var isSeaweedTypesEmpty = !await dbContext.SeaweedTypes.AnyAsync();
                 if(isSeaweedTypesEmpty)
                 {
-                    await dbContext.SeaweedTypes.AddRangeAsync(new SeaweedType("Ahnfelia plicafa"),
-                                                               new SeaweedType("Alaria esculenta"),
-                                                               new SeaweedType("Asciphylum nodosum"),
-                                                               new SeaweedType("Chondrus crispus"),
-                                                               new SeaweedType("Fucus Infi"),
-                                                               new SeaweedType("Fucus distichus"),
-                                                               new SeaweedType("Fucus serratus"),
-                                                               new SeaweedType("Laminaria digitata"),
-                                                               new SeaweedType("Laminaria sacharina"));
+                    await dbContext.SeaweedTypes.AddRangeAsync(new SeaweedType("Ahnfelia"),
+                                                               new SeaweedType("Alaria"),
+                                                               new SeaweedType("Asciphylum"),
+                                                               new SeaweedType("Chondrus"),
+                                                               new SeaweedType("Fucus"),
+                                                               new SeaweedType("Laminaria"));
                     await dbContext.SaveChangesAsync();
                 }
             }

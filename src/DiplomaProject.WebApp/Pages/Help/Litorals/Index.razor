@@ -1,39 +1,128 @@
 ﻿@page "/help/litorals/index"
+@using DiplomaProject.Application.Litorals.Command
 @using DiplomaProject.Application.Litorals.Queries
 @inject IMediator Mediator
+@inject IMatToaster Toaster
+@attribute [Authorize]
 
 <MatH5>Литорали</MatH5>
-<MatBody1>
-    Литораль - участок берега, который затопляется морской водой во время прилива и осушается во время отлива.
-    Располагается между самым высоким уровнем воды в прилив и самым низким в отлив.
-    Зону, расположенную ниже литорали, называют сублитора́льной зоной (сублитора́лью); зону, расположенную над литоральной — супралитора́льной зоной (супралитора́лью).
-</MatBody1>
+
+<AuthorizeView Policy="@nameof(RoleNames.SeniorEmployee)">
+    <MatButton Raised OnClick="() => IsCreateDialogOpened = true">Добавить литораль</MatButton>
+</AuthorizeView>
 
 
-@if(_litorals == null)
+@if(_Litorals == null)
 {
     <MatProgressBar Indeterminate="true"/>
 }
 else
 {
-    <MatTable Items="@_litorals" class="mat-elevation-z5" ShowFooter="false" ShowPaging="false">
+    <MatTable Items="@_Litorals" class="mat-elevation-z5" ShowFooter="false" ShowPaging="false" PageSize="@int.MaxValue">
         <MatTableHeader>
             <th>#</th>
             <th>Название</th>
+            <th></th>
         </MatTableHeader>
         <MatTableRow>
             <td>@context.Id</td>
             <td>@context.Title</td>
+            <td>
+                <AuthorizeView Policy="@nameof(RoleNames.SeniorEmployee)" Context="Auth">
+                    <MatButton Class="button-danger" Unelevated="true" OnClick="() => OpenDeleteDialog(context)">Удалить</MatButton>
+                </AuthorizeView>
+            </td>
         </MatTableRow>
     </MatTable>
 }
 
+
+<MatDialog @bind-IsOpen="@IsDeleteDialogOpened">
+    <MatDialogTitle>Удаление литорали</MatDialogTitle>
+    <MatDialogContent>
+        <MatBody1>Вы действительно хотите удалить эту литораль?</MatBody1>
+        <MatBody2>Название: @SelectedItem?.Title</MatBody2>
+        <MatBody1 Class="text-danger">
+            ВНИМАНИЕ! Данное действие приведёт к удалению всех связанных с этой литоралью данных!
+        </MatBody1>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="() => IsDeleteDialogOpened = false">Нет</MatButton>
+        <MatButton Class="button-danger" Unelevated="true" OnClick="Delete">Да, удалить</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
+<MatDialog @bind-IsOpen="@IsCreateDialogOpened">
+    <MatDialogTitle>Добавление литорали</MatDialogTitle>
+    <MatDialogContent>
+        <p>
+            <MatTextField @bind-Value="@Command.Title" Label="Название"/>
+        </p>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="() => IsCreateDialogOpened = false">Отменить</MatButton>
+        <MatButton Unelevated="true" OnClick="Create">Добавить</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
 @code {
-    private Litoral[] _litorals;
+    private Litoral[] _Litorals;
+
+    public bool IsDeleteDialogOpened { get; set; }
+    public Litoral SelectedItem { get; set; }
+
+    public bool IsCreateDialogOpened { get; set; }
+    public CreateLitoralCommand Command { get; set; } = new CreateLitoralCommand();
 
     protected override async Task OnInitializedAsync()
     {
-        _litorals = await Mediator.Send(new GetAllLitoralsQuery());
+        _Litorals = await Mediator.Send(new GetAllLitoralsQuery());
+    }
+
+    public void OpenDeleteDialog(Litoral item)
+    {
+        IsDeleteDialogOpened = true;
+        SelectedItem = item;
+    }
+
+    public async Task Delete()
+    {
+        const string message = "Литораль успешно удалена!";
+        const string title = "Удаление";
+
+        try
+        {
+            await Mediator.Send(new DeleteLitoralCommand
+            {
+                Id = SelectedItem.Id
+            });
+            Toaster.Add(message, MatToastType.Success, title);
+            _Litorals = await Mediator.Send(new GetAllLitoralsQuery());
+
+            IsDeleteDialogOpened = false;
+            SelectedItem = null;
+        }
+        catch(Exception e)
+        {
+            Toaster.Add(e.Message, MatToastType.Danger, title);
+        }
+    }
+
+    public async Task Create()
+    {
+        try
+        {
+            await Mediator.Send(Command);
+            Toaster.Add("Литораль успешно добавлена!", MatToastType.Success, "Добавление");
+            _Litorals = await Mediator.Send(new GetAllLitoralsQuery());
+            IsCreateDialogOpened = false;
+
+            Command = new CreateLitoralCommand();
+        }
+        catch(Exception e)
+        {
+            Toaster.Add(e.Message, MatToastType.Danger, "Ошибка");
+        }
     }
 
 }

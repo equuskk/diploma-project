@@ -1,0 +1,90 @@
+﻿@page "/admin/employees/index"
+@using DiplomaProject.Domain.DTOs
+@using DiplomaProject.Application.Employees.Queries
+@using DiplomaProject.Application.Employees.Commands
+@inject IMediator Mediator
+@inject IMatToaster Toaster
+@attribute [Authorize(Policy = nameof(RoleNames.Administrator))]
+
+<MatH5>Список сотрудников</MatH5>
+
+<MatTable Items="@_employees" Striped="true" ShowFooter="false" ShowPaging="false">
+    <MatTableHeader>
+        <th>ФИО</th>
+        <th>Пол</th>
+        <th>Дата рождения</th>
+        <th>Дата трудоустройства</th>
+        <th>Стаж</th>
+        <th>Должность</th>
+        <th colspan="2"></th>
+    </MatTableHeader>
+    <MatTableRow>
+        <td>@context.Fio</td>
+        <td>@context.Sex</td>
+        <td>@context.BirthDay.LocalDateTime.ToString(DateTimeFormats.DefaultDateFormat)</td>
+        <td>@context.EmploymentDate.LocalDateTime.ToString(DateTimeFormats.DefaultDateFormat)</td>
+        <td>@((DateTime.Today - context.EmploymentDate.LocalDateTime).Days / 365) лет</td>
+        <td>@context.Role</td>
+        <td>
+            <MatButton Outlined="true">Изменить роль</MatButton>
+        </td>
+        <td>
+            <MatButton Class="button-danger" Unelevated="true" OnClick="() => OpenDeleteDialog(context)">Удалить пользователя</MatButton>
+        </td>
+    </MatTableRow>
+</MatTable>
+
+<MatDialog @bind-IsOpen="@IsDeleteDialogOpened">
+    <MatDialogTitle>Удаление сотрудника</MatDialogTitle>
+    <MatDialogContent>
+        <MatBody1>Вы действительно хотите удалить данного сотрудинка?</MatBody1>
+        <MatBody2>ФИО: @SelectedEmployee?.Fio</MatBody2>
+        <MatBody2>Должность: @SelectedEmployee?.Role</MatBody2>
+        <MatBody1 Class="text-danger">
+            ВНИМАНИЕ! Данное действие приведёт к удалению всех связанных с сотрудником данных!
+        </MatBody1>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="() => IsDeleteDialogOpened = false">Нет</MatButton>
+        <MatButton Class="button-danger" Unelevated="true" OnClick="Delete">Да, удалить</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
+@code {
+
+    private EmployeeDto[] _employees;
+
+    public bool IsDeleteDialogOpened { get; set; }
+    public EmployeeDto SelectedEmployee { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _employees = await Mediator.Send(new GetAllEmployeesQuery());
+    }
+
+    private void OpenDeleteDialog(EmployeeDto item)
+    {
+        SelectedEmployee = item;
+        IsDeleteDialogOpened = true;
+    }
+
+    private async Task Delete()
+    {
+        try
+        {
+            await Mediator.Send(new DeleteEmployeeCommand
+            {
+                EmployeeId = SelectedEmployee.Id
+            });
+            Toaster.Add("Сотрудник успешно удалён", MatToastType.Success, "Удаление");
+            _employees = await Mediator.Send(new GetAllEmployeesQuery());
+            SelectedEmployee = null;
+        }
+        catch(Exception e)
+        {
+            Toaster.Add(e.Message, MatToastType.Danger, "Удаление");
+        }
+        IsDeleteDialogOpened = false;
+    }
+
+}

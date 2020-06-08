@@ -27,7 +27,7 @@
         <td>@((DateTime.Today - context.EmploymentDate.LocalDateTime).Days / 365) лет</td>
         <td>@context.Role</td>
         <td>
-            <MatButton Outlined="true">Изменить роль</MatButton>
+            <MatButton Outlined="true" OnClick="() => OpenEditDialog(context)">Изменить роль</MatButton>
         </td>
         <td>
             <MatButton Class="button-danger" Unelevated="true" OnClick="() => OpenDeleteDialog(context)">Удалить пользователя</MatButton>
@@ -51,6 +51,24 @@
     </MatDialogActions>
 </MatDialog>
 
+<MatDialog @bind-IsOpen="@IsEditRoleDialogOpened">
+    <MatDialogTitle>Добавление роли</MatDialogTitle>
+    <MatDialogContent>
+        <MatBody1>ФИО: @SelectedEmployee?.Fio</MatBody1>
+        <MatBody2>Должность: @SelectedEmployee?.Role</MatBody2>
+        <MatSelect Label="Выберите новую должность" @bind-Value="RoleName">
+            <MatOptionString Disabled="true"></MatOptionString>
+            <MatOptionString Value="@RoleNames.JuniorEmployee">@RoleNames.JuniorEmployee</MatOptionString>
+            <MatOptionString Value="@RoleNames.SeniorEmployee">@RoleNames.SeniorEmployee</MatOptionString>
+            <MatOptionString Value="@RoleNames.Administrator">@RoleNames.Administrator</MatOptionString>
+        </MatSelect>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="() => IsEditRoleDialogOpened = false">Отмена</MatButton>
+        <MatButton Class="button-danger" Unelevated="true" OnClick="Edit">Изменить</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
 @code {
 
     private EmployeeDto[] _employees;
@@ -58,9 +76,39 @@
     public bool IsDeleteDialogOpened { get; set; }
     public EmployeeDto SelectedEmployee { get; set; }
 
+    public bool IsEditRoleDialogOpened { get; set; }
+    public string RoleName { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         _employees = await Mediator.Send(new GetAllEmployeesQuery());
+    }
+
+    private void OpenEditDialog(EmployeeDto item)
+    {
+        SelectedEmployee = item;
+        IsEditRoleDialogOpened = true;
+    }
+
+    private async Task Edit()
+    {
+        try
+        {
+            await Mediator.Send(new AddEmployeeToRoleCommand
+            {
+                EmployeeId = SelectedEmployee.Id,
+                RoleName = RoleName
+            });
+            Toaster.Add("Роль успешно изменена", MatToastType.Success, "Изменение роли");
+            _employees = await Mediator.Send(new GetAllEmployeesQuery());
+            SelectedEmployee = null;
+            RoleName = string.Empty;
+        }
+        catch(Exception e)
+        {
+            Toaster.Add(e.Message, MatToastType.Danger, "Изменение роли");
+        }
+        IsEditRoleDialogOpened = false;
     }
 
     private void OpenDeleteDialog(EmployeeDto item)

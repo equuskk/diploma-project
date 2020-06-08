@@ -41,12 +41,12 @@ else
         </MatTableHeader>
         <MatTableRow>
             <td>@context.Id</td>
-            <td>@context.Location</td>
+            <td>@context.Location.Y, @context.Location.X</td>
             <td>@context.Date.ToString(DateTimeFormats.DateTimeFormatWithTimeZone)</td>
             <td>@context.WeightPerMeter</td>
             <td>@context.Length м.</td>
             <td>@context.Width м.</td>
-            <td>@context.Stock</td>
+            <td>@context.Stock.ToString("f2") кг</td>
             <td>@context.Litoral.Title</td>
             <td>@context.GroundType.Title</td>
             <td>@context.Seaweed.Title</td>

@@ -57,8 +57,11 @@ else
     <MatDialogTitle>Добавление типа</MatDialogTitle>
     <MatDialogContent>
         <p>
-            <MatTextField @bind-Value="@Command.Title" Label="Название"/>
+            <MatTextField @bind-Value="@Command.Title" Label="Название" FullWidth="true"/>
         </p>
+        <MatBody1 Class="text-danger">
+            ВНИМАНИЕ! Проверьте правильность написания названия, так как эти данные невозможно будет изменить!
+        </MatBody1>
     </MatDialogContent>
     <MatDialogActions>
         <MatButton OnClick="() => IsCreateDialogOpened = false">Отменить</MatButton>

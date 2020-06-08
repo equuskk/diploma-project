@@ -36,7 +36,7 @@ else
         <MatTableRow>
             <td>@context.Id</td>
             <td>@context.Title</td>
-            <td>@context.Location</td>
+            <td>@context.Location.Y, @context.Location.X</td>
             <td>@context.Sector.Title</td>
             <td>
                 <AuthorizeView Policy="@nameof(RoleNames.SeniorEmployee)" Context="Auth">

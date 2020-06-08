@@ -61,8 +61,8 @@
                 <th>Сектор</th>
             </MatTableHeader>
             <MatTableRow>
-                <td>@context.Location</td>
-                <td>@context.Date.ToString()</td>
+                <td>@context.Location.Y, @context.Location.X</td>
+                <td>@context.Date.ToString(DateTimeFormats.DateTimeFormatWithTimeZone)</td>
                 <td>@context.WeightPerMeter</td>
                 <td>@context.Length м.</td>
                 <td>@context.Width м.</td>

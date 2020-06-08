@@ -1,5 +1,4 @@
-﻿@using DiplomaProject.Domain
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 
 <MatDialog @bind-IsOpen="@IsOpen">
     <MatDialogTitle>Регистрация</MatDialogTitle>
@@ -15,7 +14,11 @@
                 <MatStringField Required name="MidName" Value="@string.Empty" Label="Отчество"/>
             </p>
             <p>
-                <MatSelectItem name="Sex" Items="@sexItems" Label="Пол"/>
+                <input type="hidden" name="Sex" @bind="Sex"/>
+                <MatSelect TValue="int" Label="Пол" @bind-Value="Sex">
+                    <MatOption TValue="int" Value="0">Мужской</MatOption>
+                    <MatOption TValue="int" Value="1">Женский</MatOption>
+                </MatSelect>
             </p>
             <p>
                 <input type="hidden" name="BirthDay" @bind="BirthDay"/>
@@ -37,7 +40,7 @@
 </MatDialog>
 
 @code {
-    readonly Sex[] sexItems = Enum.GetValues(typeof(Sex)).Cast<Sex>().ToArray();
+    public int Sex { get; set; }
 
     [Parameter]
     public bool IsOpen { get; set; }

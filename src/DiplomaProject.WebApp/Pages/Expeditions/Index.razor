@@ -18,7 +18,7 @@
 }
 else
 {
-    <MatTable Items="@_expeditions" class="mat-elevation-z5" ShowFooter="false" ShowPaging="false" UseSortHeaderRow="true">
+    <MatTable Items="@_expeditions" class="mat-elevation-z5" ShowFooter="false" ShowPaging="false" UseSortHeaderRow="true" PageSize="25">
         <MatTableHeader>
             <th>#</th>
             <th>С даты</th>
@@ -35,7 +35,7 @@ else
             </td>
             <td>
                 <AuthorizeView Policy="@nameof(RoleNames.SeniorEmployee)" Context="Auth">
-                    <MatButton Style="background-color: #B00020" Unelevated="true" OnClick="() => OpenDeleteDialog(context)">Удалить</MatButton>
+                    <MatButton Class="button-danger" Unelevated="true" OnClick="() => OpenDeleteDialog(context)">Удалить</MatButton>
                 </AuthorizeView>
             </td>
         </MatTableRow>

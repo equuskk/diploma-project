@@ -7,6 +7,11 @@
 
 <MatH5>Подробности об экспедиции #@ExpeditionId</MatH5>
 
+@if(_expedition is null)
+{
+    <MatBody1>Экспедиция под номером #@ExpeditionId не найдена</MatBody1>
+    return;
+}
 <MatTabGroup>
     <MatTab Label="Сотрудники">
         <MatBody1>В экспедиции участвовали следующие сотрудники:</MatBody1>

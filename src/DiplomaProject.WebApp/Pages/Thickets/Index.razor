@@ -24,7 +24,7 @@ else if(_thickets.Length == 0)
 }
 else
 {
-    <MatTable Items="@_thickets" class="mat-elevation-z5" PageRecordCountLabel="Кол-во секторов на страницу" Striped="true">
+    <MatTable Items="@_thickets" class="mat-elevation-z5" PageRecordCountLabel="Кол-во секторов на страницу" Striped="true" PageSize="@int.MaxValue">
         <MatTableHeader>
             <th>Id</th>
             <th>Местоположение</th>

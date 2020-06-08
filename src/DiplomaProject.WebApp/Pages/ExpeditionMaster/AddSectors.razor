@@ -9,7 +9,7 @@
 <MatH5>Добавление секторов к эспедиции</MatH5>
 <MatBody1>Для добавления сектора к экспедиции просто нажмите на нужную строчку</MatBody1>
 
-<MatTable Items="@_sectors" Striped="true" AllowSelection="true" SelectionChanged="SelectionChangedEvent" ShowFooter="false" ShowPaging="false">
+<MatTable Items="@_sectors" Striped="true" AllowSelection="true" SelectionChanged="SelectionChangedEvent" ShowFooter="false" ShowPaging="false" PageSize="@int.MaxValue">
     <MatTableHeader>
         <th>Id</th>
         <th>Название</th>

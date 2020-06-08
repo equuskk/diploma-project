@@ -10,7 +10,7 @@
 <MatH5>Добавление сотрудников к эспедиции</MatH5>
 <MatBody1>Для добавления сотрудинков к экспедиции просто нажмите на нужную строчку</MatBody1>
 
-<MatTable Items="@_employees" Striped="true" AllowSelection="true" ShowFooter="false" ShowPaging="false" SelectionChanged="SelectionChangedEvent">
+<MatTable Items="@_employees" Striped="true" AllowSelection="true" ShowFooter="false" ShowPaging="false" SelectionChanged="SelectionChangedEvent" PageSize="@int.MaxValue">
     <MatTableHeader>
         <th>ФИО</th>
         <th>Пол</th>

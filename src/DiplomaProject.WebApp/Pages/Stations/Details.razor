@@ -20,7 +20,7 @@ else if(_stationsData.Length == 0)
 }
 else
 {
-    <MatTable Items="@_stationsData" class="mat-elevation-z5" ShowFooter="false" ShowPaging="false" Striped="true">
+    <MatTable Items="@_stationsData" class="mat-elevation-z5" ShowFooter="false" ShowPaging="false" Striped="true" PageSize="@int.MaxValue">
         <MatTableHeader>
             <th>Id</th>
             <th>Дата</th>

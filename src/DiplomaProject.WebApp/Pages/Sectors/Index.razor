@@ -22,7 +22,7 @@ else if(_sectors.Length == 0)
 }
 else
 {
-    <MatTable Items="@_sectors" class="mat-elevation-z5" PageRecordCountLabel="Кол-во секторов на страницу" Striped="true">
+    <MatTable Items="@_sectors" class="mat-elevation-z5" PageRecordCountLabel="Кол-во секторов на страницу" Striped="true" PageSize="@int.MaxValue">
         <MatTableHeader>
             <th>Id</th>
             <th>Название</th>

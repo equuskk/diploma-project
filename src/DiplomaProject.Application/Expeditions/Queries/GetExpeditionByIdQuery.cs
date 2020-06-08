@@ -63,9 +63,6 @@ namespace DiplomaProject.Application.Expeditions.Queries
             var sectorIds = sectors.Select(x => x.Id).ToArray();
 
             var thickets = await _context.Thickets
-                                         .Where(x => sectorIds.Any(sector => sector == x.SectorId) &&
-                                                     expedition.FromDate < x.Date &&
-                                                     expedition.ToDate > x.Date)
                                          .Include(x => x.Seaweed)
                                          .Include(x => x.GroundType)
                                          .Include(x => x.Litoral)
@@ -78,7 +75,10 @@ namespace DiplomaProject.Application.Expeditions.Queries
                 ToDate = expedition.ToDate,
                 Employees = employeesDto.ToArray(),
                 Sectors = sectors,
-                Thickets = thickets
+                Thickets = thickets.Where(x => sectorIds.Any(sector => sector == x.SectorId) &&
+                                               expedition.FromDate < x.Date &&
+                                               expedition.ToDate > x.Date)
+                                   .ToArray() //TODO: для тестов ага
             };
         }
     }

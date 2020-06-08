@@ -1,4 +1,4 @@
-﻿namespace DiplomaProject.WebApp
+﻿namespace DiplomaProject.Domain
 {
     public static class RoleNames
     {

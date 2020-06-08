@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using DiplomaProject.Application.Employees.Commands;
 using DiplomaProject.Domain.Entities;
-using DiplomaProject.WebApp.Models;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -13,13 +14,13 @@ namespace DiplomaProject.WebApp.Controllers
     public class SecurityController : ControllerBase
     {
         private readonly ILogger _logger;
+        private readonly IMediator _mediator;
         private readonly SignInManager<Employee> _signInManager;
-        private readonly UserManager<Employee> _userManager;
 
-        public SecurityController(SignInManager<Employee> signInManager, UserManager<Employee> userManager)
+        public SecurityController(SignInManager<Employee> signInManager, IMediator mediator)
         {
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _mediator = mediator;
             _logger = Log.ForContext<SecurityController>();
         }
 
@@ -46,24 +47,13 @@ namespace DiplomaProject.WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register([FromForm] RegisterModel model)
+        public async Task<IActionResult> Register([FromForm] CreateEmployeeCommand command)
         {
-            var employee = new Employee
-            {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                MidName = model.MidName,
-                BirthDay = model.BirthDay,
-                EmploymentDate = model.EmploymentDate,
-                Email = model.Email,
-                UserName = model.Email,
-                Sex = model.Sex
-            };
-
-            var result = await _userManager.CreateAsync(employee, model.Password);
+            var result = await _mediator.Send(command);
             if(result.Succeeded)
             {
-                await _signInManager.PasswordSignInAsync(employee.Email, model.Password, true, true);
+                await _signInManager.PasswordSignInAsync(command.Email, command.Password, true, true);
+                _logger.Information("Пользователь {0} вошёл в аккаунт", command.Email);
                 return LocalRedirect("/");
             }
 

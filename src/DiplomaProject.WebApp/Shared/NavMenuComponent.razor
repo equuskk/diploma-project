@@ -1,4 +1,5 @@
-﻿<MatNavMenu>
+﻿@using DiplomaProject.Domain
+<MatNavMenu>
     <AuthorizeView Policy="@nameof(RoleNames.JuniorEmployee)">
         <MatNavItem Href="/expeditions/index">Экспедиции</MatNavItem>
         <MatNavItem Href="/sectors/index">Секторы</MatNavItem>

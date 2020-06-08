@@ -2,6 +2,7 @@ using System.Net.Http;
 using System.Reflection;
 using DiplomaProject.Application.Sectors.Queries;
 using DiplomaProject.DataAccess;
+using DiplomaProject.Domain;
 using DiplomaProject.Domain.Entities;
 using DiplomaProject.WebApp.Areas.Identity;
 using DiplomaProject.WebApp.HostedServices;

@@ -81,7 +81,7 @@
             по <b>@_expedition.ToDate.ToString(DateTimeFormats.DateFormatWithTimeZone)</b>
             (всего @((_expedition.ToDate - _expedition.FromDate).Days) дней)
         </MatBody1>
-        <hr/>
+        <MatDivider/>
         <MatBody1>В экспедиции участвовало @_expedition?.Employees.Length человек, а именно:</MatBody1>
         <MatList TwoLine="true">
             @foreach(var employee in _expedition?.Employees)
@@ -94,7 +94,7 @@
                 </MatListItem>
             }
         </MatList>
-        <hr/>
+        <MatDivider/>
 
         <MatBody1>В ходе экспедиции было посещено @_expedition?.Sectors.Length секторов, а именно:</MatBody1>
         <MatList TwoLine="true">
@@ -108,7 +108,7 @@
                 </MatListItem>
             }
         </MatList>
-        <hr/>
+        <MatDivider/>
 
         <MatBody1>Были обнаружены следующие заросли:</MatBody1>
         <MatList TwoLine="true">
@@ -122,7 +122,7 @@
                 </MatListItem>
             }
         </MatList>
-        <hr/>
+        <MatDivider/>
 
         <MatBody1>
             Суммарный запас по всем видам водорослей в результате экспедиции равен:

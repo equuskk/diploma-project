@@ -24,12 +24,12 @@ else if(_thickets.Length == 0)
 }
 else
 {
-    <MatTable Items="@_thickets" class="mat-elevation-z5" PageRecordCountLabel="Кол-во секторов на страницу" Striped="true" PageSize="@int.MaxValue">
+    <MatTable Items="@_thickets" class="mat-elevation-z5" Striped="true" PageSize="@int.MaxValue" ShowFooter="false"ShowPaging="false">
         <MatTableHeader>
             <th>Id</th>
             <th>Местоположение</th>
             <th>Дата</th>
-            <th>Масса на м^2 (в кг)</th>
+            <th>Масса на кв. м. (в кг)</th>
             <th>Длина</th>
             <th>Ширина</th>
             <th>Запас</th>
@@ -62,8 +62,6 @@ else
     <MatDialogTitle>Удаление заросли</MatDialogTitle>
     <MatDialogContent>
         <MatBody1>Вы действительно хотите удалить данную заросль?</MatBody1>
-        @* <MatBody2>Название: @SelectedItem?.Title</MatBody2> *@
-        @* <MatBody2>Описание: @SelectedItem?.Description</MatBody2> *@
         <MatBody1 Class="text-danger">
             ВНИМАНИЕ! Данное действие приведёт к удалению всех связанных с зарослью данных!
         </MatBody1>

@@ -28,17 +28,20 @@ else
             <th>Id</th>
             <th>Название</th>
             <th>Описание</th>
-            <th>Действия</th>
+            <th colspan="2">Действия</th>
         </MatTableHeader>
         <MatTableRow>
             <td>@context.Id</td>
             <td>@context.Title</td>
             <td>@context.Description</td>
-            <td>
-                <AuthorizeView Policy="@nameof(RoleNames.SeniorEmployee)" Context="Auth">
+            <AuthorizeView Policy="@nameof(RoleNames.SeniorEmployee)" Context="Auth">
+                <td>
+                    <MatButton Unelevated="true" OnClick="() => OpenEditDialog(context)">Изменить сектор</MatButton>
+                </td>
+                <td>
                     <MatButton Class="button-danger" Unelevated="true" OnClick="() => OpenDeleteDialog(context)">Удалить сектор</MatButton>
-                </AuthorizeView>
-            </td>
+                </td>
+            </AuthorizeView>
         </MatTableRow>
     </MatTable>
 }
@@ -63,15 +66,31 @@ else
     <MatDialogTitle>Добавление сектора</MatDialogTitle>
     <MatDialogContent>
         <p>
-            <MatTextField @bind-Value="@Command.Title" Label="Название"></MatTextField>
+            <MatTextField @bind-Value="@CreateCommand.Title" Label="Название"/>
         </p>
         <p>
-            <MatTextField @bind-Value="@Command.Description" Label="Описание" TextArea="true" FullWidth="true" rows="6"></MatTextField>
+            <MatTextField @bind-Value="@CreateCommand.Description" Label="Описание" TextArea="true" FullWidth="true" rows="6"/>
         </p>
     </MatDialogContent>
     <MatDialogActions>
         <MatButton OnClick="() => IsCreateDialogOpened = false">Отменить</MatButton>
         <MatButton Unelevated="true" OnClick="CreateSector">Добавить</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
+<MatDialog @bind-IsOpen="@IsEditDialogOpened">
+    <MatDialogTitle>Изменение сектора</MatDialogTitle>
+    <MatDialogContent>
+        <p>
+            <MatTextField @bind-Value="@EditTitle" Label="Название"/>
+        </p>
+        <p>
+            <MatTextField @bind-Value="@EditDescription" Label="Описание" TextArea="true" FullWidth="true" rows="6"/>
+        </p>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="() => IsEditDialogOpened = false">Отменить</MatButton>
+        <MatButton Unelevated="true" OnClick="EditSector">Изменить</MatButton>
     </MatDialogActions>
 </MatDialog>
 
@@ -82,11 +101,46 @@ else
     public Sector SelectedItem { get; set; }
 
     public bool IsCreateDialogOpened { get; set; }
-    public CreateSectorCommand Command { get; set; } = new CreateSectorCommand();
+    public CreateSectorCommand CreateCommand { get; set; } = new CreateSectorCommand();
+
+    public bool IsEditDialogOpened { get; set; }
+    public string EditTitle { get; set; }
+    public string EditDescription { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         _sectors = await Mediator.Send(new GetAllSectorsQuery());
+    }
+
+    public void OpenEditDialog(Sector sector)
+    {
+        IsEditDialogOpened = true;
+        SelectedItem = sector;
+        EditTitle = sector.Title;
+        EditDescription = sector.Description;
+    }
+
+    public async Task EditSector()
+    {
+        try
+        {
+            await Mediator.Send(new UpdateSectorCommand
+            {
+                SectorId = SelectedItem.Id,
+                Title = EditTitle,
+                Description = EditDescription
+            });
+            Toaster.Add("Информация обновлена", MatToastType.Success, "Изменение");
+            _sectors = await Mediator.Send(new GetAllSectorsQuery());
+            IsEditDialogOpened = false;
+            SelectedItem = null;
+            EditDescription = string.Empty;
+            EditTitle = string.Empty;
+        }
+        catch(Exception e)
+        {
+            Toaster.Add(e.Message, MatToastType.Danger, "Изменение");
+        }
     }
 
     public void OpenDeleteDialog(Sector sector)
@@ -121,12 +175,12 @@ else
     {
         try
         {
-            await Mediator.Send(Command);
+            await Mediator.Send(CreateCommand);
             Toaster.Add("Сектор успешно добавлен!", MatToastType.Success, "Добавление");
             _sectors = await Mediator.Send(new GetAllSectorsQuery());
             IsCreateDialogOpened = false;
 
-            Command = new CreateSectorCommand();
+            CreateCommand = new CreateSectorCommand();
         }
         catch(Exception e)
         {

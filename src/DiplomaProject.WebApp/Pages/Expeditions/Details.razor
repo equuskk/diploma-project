@@ -26,8 +26,8 @@
             <MatTableRow>
                 <td>@context.Fio</td>
                 <td>@context.Sex</td>
-                <td>@context.BirthDay</td>
-                <td>@context.EmploymentDate</td>
+                <td>@context.BirthDay.ToString(DateTimeFormats.DefaultDateFormat)</td>
+                <td>@context.EmploymentDate.ToString(DateTimeFormats.DefaultDateFormat)</td>
                 <td>@context.Role</td>
             </MatTableRow>
         </MatTable>
@@ -47,7 +47,7 @@
     </MatTab>
     <MatTab Label="Заросли">
         <MatBody1>В результате экспедиции были добавлены следующие заросли:</MatBody1>
-        <MatTable Items="@_expedition?.Thickets" Striped="true">
+        <MatTable Items="@_expedition?.Thickets" Striped="true" ShowFooter="false" ShowPaging="false">
             <MatTableHeader>
                 <th>Местоположение</th>
                 <th>Дата</th>
@@ -66,7 +66,7 @@
                 <td>@context.WeightPerMeter</td>
                 <td>@context.Length м.</td>
                 <td>@context.Width м.</td>
-                <td>@context.Stock.ToString("f2")</td>
+                <td>@context.Stock.ToString("f2") кг.</td>
                 <td>@context.Litoral.Title</td>
                 <td>@context.GroundType.Title</td>
                 <td>@context.Seaweed.Title</td>

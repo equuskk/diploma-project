@@ -1,8 +1,18 @@
 ﻿@page "/help/seaweeds/index"
+@using DiplomaProject.Application.Seaweeds.Commands
 @using DiplomaProject.Application.Seaweeds.Queries
+@using DiplomaProject.Application.SeaweedTypes.Queries
+@using DiplomaProject.Domain
+@using DiplomaProject.Application.SeaweedCategories.Queries
 @inject IMediator Mediator
+@inject IMatToaster Toaster
+@attribute [Authorize]
 
 <MatH5>Водоросли</MatH5>
+
+<AuthorizeView Policy="@nameof(RoleNames.SeniorEmployee)">
+    <MatButton Raised OnClick="() => IsCreateDialogOpened = true">Добавить категорию</MatButton>
+</AuthorizeView>
 
 
 @if(_seaweeds == null)
@@ -27,12 +37,102 @@ else
     </MatTable>
 }
 
+@* <MatDialog @bind-IsOpen="@IsDeleteDialogOpened"> *@
+@*     <MatDialogTitle>Удаление водоросли</MatDialogTitle> *@
+@*     <MatDialogContent> *@
+@*         <MatBody1>Вы действительно хотите удалить данную водоросль?</MatBody1> *@
+@*         <MatBody2>Название: @SelectedItem?.Title</MatBody2> *@
+@*         <MatBody2>Тип: @SelectedItem?.Type.Title</MatBody2> *@
+@*         <MatBody2>Категория: @SelectedItem?.Category.Title</MatBody2> *@
+@*         <MatBody1 Class="text-danger"> *@
+@*             ВНИМАНИЕ! Данное действие приведёт к удалению всех связанных с этой категорией данных! *@
+@*         </MatBody1> *@
+@*     </MatDialogContent> *@
+@*     <MatDialogActions> *@
+@*         <MatButton OnClick="() => IsDeleteDialogOpened = false">Нет</MatButton> *@
+@*         <MatButton Class="button-danger" Unelevated="true" OnClick="Delete">Да, удалить</MatButton> *@
+@*     </MatDialogActions> *@
+@* </MatDialog> *@
+
+<MatDialog @bind-IsOpen="@IsCreateDialogOpened">
+    <MatDialogTitle>Добавление водоросли</MatDialogTitle>
+    <MatDialogContent>
+        <p>
+            <MatTextField @bind-Value="@Command.Title" Label="Название" FullWidth="true"/>
+        </p>
+        <p>
+            <MatSelectItem Label="Категория" @bind-Value="SelectedCategory" Items="@_seaweedCategories">
+                <ItemTemplate>
+                    <span>@context.Title</span>
+                </ItemTemplate>
+            </MatSelectItem>
+        </p>
+        <p>
+            <MatSelectItem Label="Тип" @bind-Value="SelectedType" Items="@_seaweedTypes">
+                <ItemTemplate>
+                    <span>@context.Title</span>
+                </ItemTemplate>
+            </MatSelectItem>
+        </p>
+        <MatBody1 Class="text-danger">
+            ВНИМАНИЕ! Проверьте правильность написания названия, так как эти данные невозможно будет изменить!
+        </MatBody1>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="() => IsCreateDialogOpened = false">Отменить</MatButton>
+        <MatButton Unelevated="true" OnClick="Create">Добавить</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
 @code {
-    private Seaweed[] _seaweeds;
+
+    private Seaweed[] _seaweeds =
+    {
+    };
+
+    private SeaweedCategory[] _seaweedCategories =
+    {
+    };
+
+    private SeaweedType[] _seaweedTypes =
+    {
+    };
+
+    public bool IsDeleteDialogOpened { get; set; }
+    public SeaweedCategory SelectedItem { get; set; }
+
+    public bool IsCreateDialogOpened { get; set; }
+    public SeaweedType SelectedType { get; set; }
+    public SeaweedCategory SelectedCategory { get; set; }
+    public CreateSeaweedCommand Command { get; set; } = new CreateSeaweedCommand();
 
     protected override async Task OnInitializedAsync()
     {
         _seaweeds = await Mediator.Send(new GetAllSeaweedsQuery());
+        _seaweedCategories = await Mediator.Send(new GetAllSeaweedCategoriesQuery());
+        _seaweedTypes = await Mediator.Send(new GetAllSeaweedTypesQuery());
+    }
+
+    public async Task Create()
+    {
+        try
+        {
+            Command.SeaweedCategoryId = SelectedCategory.Id;
+            Command.SeaweedTypeId = SelectedType.Id;
+
+            await Mediator.Send(Command);
+            Toaster.Add("Водоросль успешно добавлена!", MatToastType.Success, "Добавление");
+            _seaweeds = await Mediator.Send(new GetAllSeaweedsQuery());
+            IsCreateDialogOpened = false;
+
+            Command = new CreateSeaweedCommand();
+            SelectedCategory = null;
+            SelectedType = null;
+        }
+        catch(Exception e)
+        {
+            Toaster.Add(e.Message, MatToastType.Danger, "Ошибка");
+        }
     }
 
 }

@@ -17,7 +17,7 @@
         <th>Дата трудоустройства</th>
         <th>Стаж</th>
         <th>Должность</th>
-        <th colspan="2"></th>
+        <th colspan="3"></th>
     </MatTableHeader>
     <MatTableRow>
         <td>@context.Fio</td>
@@ -27,7 +27,10 @@
         <td>@((DateTime.Today - context.EmploymentDate.LocalDateTime).Days / 365) лет</td>
         <td>@context.Role</td>
         <td>
-            <MatButton Outlined="true" OnClick="() => OpenEditDialog(context)">Изменить роль</MatButton>
+            <MatButton Outlined="true" OnClick="() => OpenEditRoleDialog(context)">Изменить роль</MatButton>
+        </td>
+        <td>
+            <MatButton Outlined="true" OnClick="() => OpenEditDialog(context)">Изменить данные</MatButton>
         </td>
         <td>
             <MatButton Class="button-danger" Unelevated="true" OnClick="() => OpenDeleteDialog(context)">Удалить пользователя</MatButton>
@@ -65,7 +68,32 @@
     </MatDialogContent>
     <MatDialogActions>
         <MatButton OnClick="() => IsEditRoleDialogOpened = false">Отмена</MatButton>
-        <MatButton Class="button-danger" Unelevated="true" OnClick="Edit">Изменить</MatButton>
+        <MatButton Class="button-danger" Unelevated="true" OnClick="EditRole">Изменить</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
+<MatDialog @bind-IsOpen="@IsEditDialogOpened">
+    <MatDialogTitle>Изменение информации</MatDialogTitle>
+    <MatDialogContent>
+        <p>
+            <MatStringField Required @bind-Value="@FirstName" Label="Имя"/>
+        </p>
+        <p>
+            <MatStringField Required @bind-Value="@LastName" Label="Фамилия"/>
+        </p>
+        <p>
+            <MatStringField Required @bind-Value="@MidName" Label="Отчество"/>
+        </p>
+        <p>
+            <MatDatePicker @bind-Value="@BirthDay" Label="Дата рождения"/>
+        </p>
+        <p>
+            <MatDatePicker @bind-Value="@EmploymentDate" Label="Дата приёма на работу"/>
+        </p>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="() => IsEditDialogOpened = false">Нет</MatButton>
+        <MatButton Unelevated="true" OnClick="Edit">Изменить</MatButton>
     </MatDialogActions>
 </MatDialog>
 
@@ -79,6 +107,13 @@
     public bool IsEditRoleDialogOpened { get; set; }
     public string RoleName { get; set; }
 
+    public bool IsEditDialogOpened { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string MidName { get; set; }
+    public DateTime BirthDay { get; set; } = DateTime.Today;
+    public DateTime EmploymentDate { get; set; } = DateTime.Today;
+
     protected override async Task OnInitializedAsync()
     {
         _employees = await Mediator.Send(new GetAllEmployeesQuery());
@@ -86,11 +121,51 @@
 
     private void OpenEditDialog(EmployeeDto item)
     {
+        FirstName = item.FirstName;
+        LastName = item.LastName;
+        MidName = item.MidName;
+        BirthDay = item.BirthDay.DateTime;
+        EmploymentDate = item.EmploymentDate.DateTime;
+        SelectedEmployee = item;
+        IsEditDialogOpened = true;
+    }
+
+    private async Task Edit()
+    {
+        try
+        {
+            await Mediator.Send(new UpdateEmployeeCommand
+            {
+                Id = SelectedEmployee.Id,
+                FirstName = FirstName,
+                LastName = LastName,
+                MidName = MidName,
+                BirthDay = new DateTimeOffset(BirthDay),
+                EmploymentDate = new DateTimeOffset(EmploymentDate)
+            });
+            Toaster.Add("Информация обновлена", MatToastType.Success, "Изменение данных");
+            _employees = await Mediator.Send(new GetAllEmployeesQuery());
+
+            IsEditDialogOpened = false;
+            SelectedEmployee = null;
+            RoleName = string.Empty;
+            BirthDay = DateTime.Today;
+            EmploymentDate = DateTime.Today;
+        }
+        catch(Exception e)
+        {
+            Toaster.Add(e.Message, MatToastType.Danger, "Изменение данных");
+        }
+        IsEditRoleDialogOpened = false;
+    }
+
+    private void OpenEditRoleDialog(EmployeeDto item)
+    {
         SelectedEmployee = item;
         IsEditRoleDialogOpened = true;
     }
 
-    private async Task Edit()
+    private async Task EditRole()
     {
         try
         {

@@ -66,7 +66,7 @@
                 <td>@context.WeightPerMeter</td>
                 <td>@context.Length м.</td>
                 <td>@context.Width м.</td>
-                <td>@context.Stock</td>
+                <td>@context.Stock.ToString("f2")</td>
                 <td>@context.Litoral.Title</td>
                 <td>@context.GroundType.Title</td>
                 <td>@context.Seaweed.Title</td>
@@ -117,14 +117,17 @@
                 <MatListItem>
                     <MatListItemText>
                         <MatListItemPrimaryText>@thicket.Seaweed.Title</MatListItemPrimaryText>
-                        <MatListItemSecondaryText>Запас: @thicket.Stock кг</MatListItemSecondaryText>
+                        <MatListItemSecondaryText>Запас: @thicket.Stock.ToString("f2") кг</MatListItemSecondaryText>
                     </MatListItemText>
                 </MatListItem>
             }
         </MatList>
         <hr/>
 
-        <MatBody1>Суммарный запас по всем видам водорослей в результате экспедиции равен: @_expedition?.Thickets.Sum(x => x.Stock) кг</MatBody1>
+        <MatBody1>
+            Суммарный запас по всем видам водорослей в результате экспедиции равен:
+            @_expedition?.Thickets.Sum(x => x.Stock).ToString("f2") кг
+        </MatBody1>
         <MatButton Raised="true">Экспортировать данные в csv</MatButton>
     </MatTab>
 </MatTabGroup>

@@ -21,8 +21,8 @@
     <MatTableRow>
         <td>@context.Fio</td>
         <td>@context.Sex</td>
-        <td>@context.BirthDay</td>
-        <td>@context.EmploymentDate</td>
+        <td>@context.BirthDay.ToString(DateTimeFormats.DefaultDateFormat)</td>
+        <td>@context.EmploymentDate.ToString(DateTimeFormats.DefaultDateFormat)</td>
     </MatTableRow>
 </MatTable>
 

@@ -55,8 +55,8 @@ else
     <MatDialogContent>
         <MatBody1>Вы действительно хотите удалить данную станцию?</MatBody1>
         <MatBody2>Название: @SelectedItem?.Title</MatBody2>
-        <MatBody2>Местоположение: @SelectedItem?.Location</MatBody2>
-        <MatBody2>Связана с зарослью: @SelectedItem?.SectorId</MatBody2>
+        <MatBody2>Местоположение: @SelectedItem?.Location.Y, @SelectedItem?.Location.X</MatBody2>
+        <MatBody2>Связана с сектором: @SelectedItem?.Sector.Title</MatBody2>
         <MatBody1 Class="text-danger">
             ВНИМАНИЕ! Данное действие приведёт к удалению всех связанных с сектором данных!
         </MatBody1>

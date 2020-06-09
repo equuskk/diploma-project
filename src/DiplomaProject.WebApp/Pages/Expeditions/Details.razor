@@ -20,7 +20,7 @@
                 <th>ФИО</th>
                 <th>Пол</th>
                 <th>Дата рождения</th>
-                <th>Стаж</th>
+                <th>Дата трудоустройства</th>
                 <th>Должность</th>
             </MatTableHeader>
             <MatTableRow>
@@ -112,12 +112,12 @@
 
         <MatBody1>Были обнаружены следующие заросли:</MatBody1>
         <MatList TwoLine="true">
-            @foreach(var thicket in _expedition?.Thickets)
+            @foreach(var group in _expedition?.Thickets.GroupBy(x => x.Seaweed.Title))
             {
                 <MatListItem>
                     <MatListItemText>
-                        <MatListItemPrimaryText>@thicket.Seaweed.Title</MatListItemPrimaryText>
-                        <MatListItemSecondaryText>Запас: @thicket.Stock.ToString("f2") кг</MatListItemSecondaryText>
+                        <MatListItemPrimaryText>@group.Key</MatListItemPrimaryText>
+                        <MatListItemSecondaryText>Запас: @group.Sum(x => x.Stock).ToString("f2") кг</MatListItemSecondaryText>
                     </MatListItemText>
                 </MatListItem>
             }
@@ -128,7 +128,7 @@
             Суммарный запас по всем видам водорослей в результате экспедиции равен:
             @_expedition?.Thickets.Sum(x => x.Stock).ToString("f2") кг
         </MatBody1>
-        <MatButton Raised="true">Экспортировать данные в csv</MatButton>
+        @* <MatButton Raised="true">Экспортировать данные в csv</MatButton> *@
     </MatTab>
 </MatTabGroup>
 <br/>

@@ -20,7 +20,7 @@ namespace DiplomaProject.Application.UnitTests.Expedition.Queries
             var store = new Mock<IUserStore<Employee>>();
             var mgr = new Mock<UserManager<Employee>>(store.Object, null, null, null, null, null, null, null, null);
             mgr.Setup(a => a.GetRolesAsync(It.IsAny<Employee>()))
-               .Returns(Task.FromResult<IList<string>>(new List<string> { "Роль1" }));
+               .ReturnsAsync(new List<string> { "Роль1" });
             var command = new GetExpeditionByIdQuery
             {
                 Id = 1

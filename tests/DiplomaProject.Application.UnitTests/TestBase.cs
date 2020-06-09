@@ -10,7 +10,8 @@ namespace DiplomaProject.Application.UnitTests
 {
     public class TestBase
     {
-        public string UserId { get; set; }
+        public string UserId => Employee.Id;
+        public Employee Employee { get; set; }
         public readonly ApplicationDbContext ApplicationContext;
 
         public TestBase()
@@ -60,7 +61,7 @@ namespace DiplomaProject.Application.UnitTests
 
         private void InitEmployees(ApplicationDbContext context)
         {
-            var user = new Employee
+            Employee = new Employee
             {
                 FirstName = "Иван",
                 LastName = "Иванов",
@@ -70,10 +71,8 @@ namespace DiplomaProject.Application.UnitTests
                 Sex = Sex.Male,
                 EmploymentDate = new DateTime(2019, 01, 01)
             };
-            context.Users.Add(user);
+            context.Users.Add(Employee);
             context.SaveChanges();
-
-            UserId = user.Id;
         }
 
         private void InitLitorals(ApplicationDbContext context)

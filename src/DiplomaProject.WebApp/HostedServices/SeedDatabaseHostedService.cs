@@ -24,6 +24,13 @@ namespace DiplomaProject.WebApp.HostedServices
             await Seed();
         }
 
+        private async Task Migrate<T>(CancellationToken cancellationToken) where T : DbContext
+        {
+            using var scope = _serviceProvider.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<T>();
+            await dbContext.Database.MigrateAsync(cancellationToken);
+        }
+
         private async Task Seed()
         {
             using var scope = _serviceProvider.CreateScope();
@@ -88,13 +95,6 @@ namespace DiplomaProject.WebApp.HostedServices
         public Task StopAsync(CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
-        }
-
-        private async Task Migrate<T>(CancellationToken cancellationToken) where T : DbContext
-        {
-            using var scope = _serviceProvider.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<T>();
-            await dbContext.Database.MigrateAsync(cancellationToken);
         }
     }
 }

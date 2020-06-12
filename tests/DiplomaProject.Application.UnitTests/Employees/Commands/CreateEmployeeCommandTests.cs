@@ -31,7 +31,7 @@ namespace DiplomaProject.Application.UnitTests.Employees.Commands
                 LastName = "Иванов",
                 MidName = "Иванович",
                 BirthDay = new DateTime(1980, 01, 01),
-                Sex = Sex.Male,
+                Sex = Sex.Female,
                 EmploymentDate = new DateTime(2019, 01, 01),
                 Email = "ivan@company.com",
                 Password = "123456"

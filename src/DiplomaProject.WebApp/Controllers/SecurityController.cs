@@ -36,7 +36,7 @@ namespace DiplomaProject.WebApp.Controllers
                 return LocalRedirect("/");
             }
 
-            return BadRequest(); //TODO:
+            return BadRequest();
         }
 
         [HttpPost]
@@ -57,7 +57,7 @@ namespace DiplomaProject.WebApp.Controllers
                 return LocalRedirect("/");
             }
 
-            return BadRequest(); //TODO:
+            return BadRequest();
         }
     }
 }

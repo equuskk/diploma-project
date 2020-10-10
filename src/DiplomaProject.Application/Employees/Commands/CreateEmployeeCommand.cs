@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DiplomaProject.Domain;
@@ -32,19 +31,9 @@ namespace DiplomaProject.Application.Employees.Commands
                 Sex = request.Sex
             };
 
-            var createResult = await _userManager.CreateAsync(employee, request.Password);
+            await _userManager.CreateAsync(employee, request.Password);
 
-            if(!createResult.Succeeded)
-            {
-                return IdentityResult.Failed(createResult.Errors.First()); // TODO:
-            }
-
-            employee = await _userManager.FindByEmailAsync(employee.Email);
-            var roleResult = await _userManager.AddToRoleAsync(employee, RoleNames.JuniorEmployee);
-            if(!roleResult.Succeeded)
-            {
-                return IdentityResult.Failed(roleResult.Errors.First());
-            }
+            await _userManager.AddToRoleAsync(employee, RoleNames.JuniorEmployee);
 
             return IdentityResult.Success;
         }

@@ -4,7 +4,7 @@
 @using DiplomaProject.Domain
 @inject IMediator Mediator
 @inject IMatToaster Toaster
-@attribute [Authorize]
+@attribute [Authorize(Policy = nameof(RoleNames.JuniorEmployee))]
 
 <MatH5>Секторы</MatH5>
 
@@ -23,7 +23,7 @@ else if(_sectors.Length == 0)
 }
 else
 {
-    <MatTable Items="@_sectors" class="mat-elevation-z5" PageRecordCountLabel="Кол-во секторов на страницу" Striped="true" PageSize="@int.MaxValue">
+    <MatTable Items="@_sectors" class="mat-elevation-z5" PageRecordCountLabel="Кол-во секторов на страницу" Striped="true" PageSize="25">
         <MatTableHeader>
             <th>Id</th>
             <th>Название</th>
@@ -112,6 +112,50 @@ else
         _sectors = await Mediator.Send(new GetAllSectorsQuery());
     }
 
+    public void OpenDeleteDialog(Sector sector)
+    {
+        IsDeleteDialogOpened = true;
+        SelectedItem = sector;
+    }
+
+    public async Task DeleteSector()
+    {
+        const string title = "Удаление сектора";
+
+        try
+        {
+            await Mediator.Send(new DeleteSectorCommand
+            {
+                SectorId = -SelectedItem.Id
+            });
+            Toaster.Add("Сектор успешно удалён!", MatToastType.Success, title);
+            _sectors = await Mediator.Send(new GetAllSectorsQuery());
+            IsDeleteDialogOpened = false;
+            SelectedItem = null;
+        }
+        catch(Exception e)
+        {
+            Toaster.Add(e.Message, MatToastType.Danger, title);
+        }
+    }
+
+    public async Task CreateSector()
+    {
+        try
+        {
+            await Mediator.Send(CreateCommand);
+            Toaster.Add("Сектор успешно добавлен!", MatToastType.Success, "Добавление");
+            _sectors = await Mediator.Send(new GetAllSectorsQuery());
+            IsCreateDialogOpened = false;
+
+            CreateCommand = new CreateSectorCommand();
+        }
+        catch(Exception e)
+        {
+            Toaster.Add(e.Message, MatToastType.Danger, "Ошибка");
+        }
+    }
+
     public void OpenEditDialog(Sector sector)
     {
         IsEditDialogOpened = true;
@@ -140,51 +184,6 @@ else
         catch(Exception e)
         {
             Toaster.Add(e.Message, MatToastType.Danger, "Изменение");
-        }
-    }
-
-    public void OpenDeleteDialog(Sector sector)
-    {
-        IsDeleteDialogOpened = true;
-        SelectedItem = sector;
-    }
-
-    public async Task DeleteSector()
-    {
-        const string message = "Сектор успешно удалён!";
-        const string title = "Удаление сектора";
-
-        try
-        {
-            await Mediator.Send(new DeleteSectorCommand
-            {
-                SectorId = SelectedItem.Id
-            });
-            Toaster.Add(message, MatToastType.Success, title);
-            _sectors = await Mediator.Send(new GetAllSectorsQuery());
-            IsDeleteDialogOpened = false;
-            SelectedItem = null;
-        }
-        catch(Exception e)
-        {
-            Toaster.Add(e.Message, MatToastType.Danger, title);
-        }
-    }
-
-    public async Task CreateSector()
-    {
-        try
-        {
-            await Mediator.Send(CreateCommand);
-            Toaster.Add("Сектор успешно добавлен!", MatToastType.Success, "Добавление");
-            _sectors = await Mediator.Send(new GetAllSectorsQuery());
-            IsCreateDialogOpened = false;
-
-            CreateCommand = new CreateSectorCommand();
-        }
-        catch(Exception e)
-        {
-            Toaster.Add(e.Message, MatToastType.Danger, "Ошибка");
         }
     }
 

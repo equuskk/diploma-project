@@ -20,14 +20,14 @@
                 <th>ФИО</th>
                 <th>Пол</th>
                 <th>Дата рождения</th>
-                <th>Дата трудоустройства</th>
+                <th>Стаж</th>
                 <th>Должность</th>
             </MatTableHeader>
             <MatTableRow>
                 <td>@context.Fio</td>
                 <td>@context.Sex</td>
                 <td>@context.BirthDay.ToString(DateTimeFormats.DefaultDateFormat)</td>
-                <td>@context.EmploymentDate.ToString(DateTimeFormats.DefaultDateFormat)</td>
+                <td>@((DateTime.Today - context.EmploymentDate.LocalDateTime).Days / 365) лет</td>
                 <td>@context.Role</td>
             </MatTableRow>
         </MatTable>
@@ -110,7 +110,7 @@
         </MatList>
         <MatDivider/>
 
-        <MatBody1>Были обнаружены следующие заросли:</MatBody1>
+        <MatBody1>Были обнаружены следующие водоросли:</MatBody1>
         <MatList TwoLine="true">
             @foreach(var group in _expedition?.Thickets.GroupBy(x => x.Seaweed.Title))
             {

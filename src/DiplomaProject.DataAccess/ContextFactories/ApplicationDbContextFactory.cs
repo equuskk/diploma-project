@@ -9,8 +9,7 @@ namespace DiplomaProject.DataAccess.ContextFactories
     {
         public ApplicationDbContext CreateDbContext(string[] args)
         {
-            var basePath = Directory.GetCurrentDirectory() +
-                           string.Format("{0}..{0}DiplomaProject.WebApp", Path.DirectorySeparatorChar);
+            var basePath = Path.Combine(Directory.GetCurrentDirectory(), "..", "DiplomaProject.WebApp");
 
             var configuration = new ConfigurationBuilder()
                                 .SetBasePath(basePath)
@@ -20,7 +19,8 @@ namespace DiplomaProject.DataAccess.ContextFactories
 
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
             var connectionString = configuration.GetConnectionString("DefaultConnection");
-            builder.UseNpgsql(connectionString, x => x.UseNetTopologySuite().EnableRetryOnFailure());
+            builder.UseNpgsql(connectionString,
+                              x => x.UseNetTopologySuite().EnableRetryOnFailure());
             return new ApplicationDbContext(builder.Options);
         }
     }

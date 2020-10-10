@@ -78,7 +78,7 @@ namespace DiplomaProject.Application.Expeditions.Queries
                 Thickets = thickets.Where(x => sectorIds.Any(sector => sector == x.SectorId) &&
                                                expedition.FromDate < x.Date &&
                                                expedition.ToDate > x.Date)
-                                   .ToArray() //TODO: для тестов ага
+                                   .ToArray()
             };
         }
     }

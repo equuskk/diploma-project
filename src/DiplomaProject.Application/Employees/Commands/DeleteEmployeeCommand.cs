@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using DiplomaProject.Domain.Entities;
 using DiplomaProject.Domain.Exceptions;
@@ -25,13 +24,9 @@ namespace DiplomaProject.Application.Employees.Commands
                 throw new NotFoundException(request.EmployeeId, nameof(Employee));
             }
 
-            var deleteResult = await _userManager.DeleteAsync(item);
-            if(deleteResult.Succeeded)
-            {
-                return Unit.Value;
-            }
+            _ = await _userManager.DeleteAsync(item);
 
-            throw new ArgumentException(); // TODO:
+            return Unit.Value;
         }
     }
 

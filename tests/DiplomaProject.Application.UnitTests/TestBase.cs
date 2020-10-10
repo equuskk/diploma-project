@@ -19,7 +19,7 @@ namespace DiplomaProject.Application.UnitTests
             ApplicationContext = GetDbContext();
         }
 
-        public ApplicationDbContext GetDbContext()
+        private ApplicationDbContext GetDbContext()
         {
             if(ApplicationContext != null)
             {
@@ -30,7 +30,8 @@ namespace DiplomaProject.Application.UnitTests
             connection.Open();
 
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                          .UseSqlite(connection, x => x.UseNetTopologySuite())
+                          .UseSqlite(connection,
+                                     x => x.UseNetTopologySuite())
                           .Options;
 
             var context = new ApplicationDbContext(options);
@@ -44,148 +45,146 @@ namespace DiplomaProject.Application.UnitTests
 
         private void InitDbContext(ApplicationDbContext context)
         {
-            InitEmployees(context);
-            InitLitorals(context);
-            InitSectors(context);
-            InitExpeditions(context);
-            InitSeaweedTypes(context);
-            InitSeaweedCategories(context);
-            InitSeaweeds(context);
-            InitGroundTypes(context);
-            InitThickets(context);
-            InitStations(context);
-            InitStationsData(context);
+            InitEmployees();
+            InitLitorals();
+            InitSectors();
+            InitExpeditions();
+            InitSeaweedTypes();
+            InitSeaweedCategories();
+            InitSeaweeds();
+            InitGroundTypes();
+            InitThickets();
+            InitStations();
+            InitStationsData();
 
-            context.SaveChanges();
-        }
-
-        private void InitEmployees(ApplicationDbContext context)
-        {
-            Employee = new Employee
+            void InitEmployees()
             {
-                FirstName = "Иван",
-                LastName = "Иванов",
-                MidName = "Иванович",
-                BirthDay = new DateTime(1980, 01, 01),
-                Email = "ivan@company.com",
-                Sex = Sex.Male,
-                EmploymentDate = new DateTime(2019, 01, 01)
-            };
-            context.Users.Add(Employee);
-            context.SaveChanges();
-        }
+                Employee = new Employee
+                {
+                    FirstName = "Иван",
+                    LastName = "Иванов",
+                    MidName = "Иванович",
+                    BirthDay = new DateTime(1980, 01, 01),
+                    Email = "ivan@company.com",
+                    Sex = Sex.Male,
+                    EmploymentDate = new DateTime(2019, 01, 01)
+                };
+                context.Users.Add(Employee);
+                context.SaveChanges();
+            }
 
-        private void InitLitorals(ApplicationDbContext context)
-        {
-            context.Litorals.AddRange(new Litoral("Скальная литораль"), new Litoral("Каменистая литораль"),
-                                      new Litoral("Песчаная литораль"), new Litoral("Илистая литораль"));
-            context.SaveChanges();
-        }
-
-        private void InitSectors(ApplicationDbContext context)
-        {
-            context.Sectors.AddRange(new Sector
-                                     {
-                                         Title = "Title #1",
-                                         Description = "Description #1"
-                                     },
-                                     new Sector
-                                     {
-                                         Title = "Title #2",
-                                         Description = "Description #2"
-                                     });
-            context.SaveChanges();
-        }
-
-        private void InitExpeditions(ApplicationDbContext context)
-        {
-            var date = new DateTimeOffset(2019, 01, 01, 0, 0, 0, TimeSpan.Zero);
-            context.Expeditions.Add(new Domain.Entities.Expedition
+            void InitLitorals()
             {
-                FromDate = date,
-                ToDate = date.AddMonths(1)
-            });
-            context.SaveChanges();
-        }
+                context.Litorals.AddRange(new Litoral("Скальная литораль"), new Litoral("Каменистая литораль"),
+                                          new Litoral("Песчаная литораль"), new Litoral("Илистая литораль"));
+                context.SaveChanges();
+            }
 
-        private void InitSeaweedTypes(ApplicationDbContext context)
-        {
-            context.SeaweedTypes.AddRange(new SeaweedType("Тип1"),
-                                          new SeaweedType("Тип2"));
-            context.SaveChanges();
-        }
-
-        private void InitSeaweedCategories(ApplicationDbContext context)
-        {
-            context.SeaweedCategories.AddRange(new SeaweedCategory("I"),
-                                               new SeaweedCategory("II"));
-            context.SaveChanges();
-        }
-
-        private void InitSeaweeds(ApplicationDbContext context)
-        {
-            context.Seaweeds.AddRange(new Seaweed
-                                      {
-                                          SeaweedCategoryId = 1,
-                                          SeaweedTypeId = 1,
-                                          Title = "Seaweed #1"
-                                      },
-                                      new Seaweed
-                                      {
-                                          SeaweedCategoryId = 2,
-                                          SeaweedTypeId = 2,
-                                          Title = "Seaweed #2"
-                                      });
-            context.SaveChanges();
-        }
-
-        private void InitGroundTypes(ApplicationDbContext context)
-        {
-            context.GroundTypes.AddRange(new GroundType("Песок"),
-                                         new GroundType("Ил"));
-            context.SaveChanges();
-        }
-
-        private void InitThickets(ApplicationDbContext context)
-        {
-            context.Add(new Thicket
+            void InitSectors()
             {
-                Date = new DateTimeOffset(2019, 01, 01, 0, 0, 0, TimeSpan.Zero),
-                GroundTypeId = 1,
-                LitoralId = 1,
-                SeaweedId = 1,
-                SectorId = 1,
-                Length = 10,
-                Width = 10,
-                Location = new Point(1.1, 1.1),
-                WeightPerMeter = 1,
-                Stock = 10 * 10 * 1
-            });
-            context.SaveChanges();
-        }
+                context.Sectors.AddRange(new Sector
+                                         {
+                                             Title = "Title #1",
+                                             Description = "Description #1"
+                                         },
+                                         new Sector
+                                         {
+                                             Title = "Title #2",
+                                             Description = "Description #2"
+                                         });
+                context.SaveChanges();
+            }
 
-        private void InitStations(ApplicationDbContext context)
-        {
-            context.Stations.Add(new Station
+            void InitExpeditions()
             {
-                Location = new Point(1.1, 1.1),
-                SectorId = 1,
-                Title = "Title"
-            });
-            context.SaveChanges();
-        }
+                var date = new DateTimeOffset(2019, 01, 01, 0, 0, 0, TimeSpan.Zero);
+                context.Expeditions.Add(new Domain.Entities.Expedition
+                {
+                    FromDate = date,
+                    ToDate = date.AddMonths(1)
+                });
+                context.SaveChanges();
+            }
 
-        private void InitStationsData(ApplicationDbContext context)
-        {
-            context.StationsData.Add(new StationData
+            void InitSeaweedTypes()
             {
-                Date = new DateTimeOffset(2019, 01, 01, 01, 01, 01, TimeSpan.Zero),
-                Density = 10,
-                Depth = 0.2f,
-                StationId = 1,
-                Temperature = -7.3f
-            });
-            context.SaveChanges();
+                context.SeaweedTypes.AddRange(new SeaweedType("Тип1"),
+                                              new SeaweedType("Тип2"));
+                context.SaveChanges();
+            }
+
+            void InitSeaweedCategories()
+            {
+                context.SeaweedCategories.AddRange(new SeaweedCategory("I"),
+                                                   new SeaweedCategory("II"));
+                context.SaveChanges();
+            }
+
+            void InitSeaweeds()
+            {
+                context.Seaweeds.AddRange(new Seaweed
+                                          {
+                                              SeaweedCategoryId = 1,
+                                              SeaweedTypeId = 1,
+                                              Title = "Seaweed #1"
+                                          },
+                                          new Seaweed
+                                          {
+                                              SeaweedCategoryId = 2,
+                                              SeaweedTypeId = 2,
+                                              Title = "Seaweed #2"
+                                          });
+                context.SaveChanges();
+            }
+
+            void InitGroundTypes()
+            {
+                context.GroundTypes.AddRange(new GroundType("Песок"),
+                                             new GroundType("Ил"));
+                context.SaveChanges();
+            }
+
+            void InitThickets()
+            {
+                context.Add(new Thicket
+                {
+                    Date = new DateTimeOffset(2019, 01, 01, 0, 0, 0, TimeSpan.Zero),
+                    GroundTypeId = 1,
+                    LitoralId = 1,
+                    SeaweedId = 1,
+                    SectorId = 1,
+                    Length = 10,
+                    Width = 10,
+                    Location = new Point(1.1, 1.1),
+                    WeightPerMeter = 1,
+                    Stock = 10 * 10 * 1
+                });
+                context.SaveChanges();
+            }
+
+            void InitStations()
+            {
+                context.Stations.Add(new Station
+                {
+                    Location = new Point(1.1, 1.1),
+                    SectorId = 1,
+                    Title = "Title"
+                });
+                context.SaveChanges();
+            }
+
+            void InitStationsData()
+            {
+                context.StationsData.Add(new StationData
+                {
+                    Date = new DateTimeOffset(2019, 01, 01, 01, 01, 01, TimeSpan.Zero),
+                    Density = 10,
+                    Depth = 0.2f,
+                    StationId = 1,
+                    Temperature = -7.3f
+                });
+                context.SaveChanges();
+            }
         }
     }
 }
